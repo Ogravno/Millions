@@ -15,9 +15,7 @@ public class PurchaseCalculator implements TransactionCalculator {
   /**
    * Constructor for the PurchaseCalculator class.
    *
-   * <p>share must not be null</p>
-   *
-   * @param share the share to be purchase
+   * @param share the share to be purchased. must not be null
    * @throws IllegalArgumentException when share is null
    */
   PurchaseCalculator(Share share) {
@@ -50,7 +48,7 @@ public class PurchaseCalculator implements TransactionCalculator {
    */
   @Override
   public BigDecimal calculateCommission() {
-    return this.calculateGross().multiply(BigDecimal.valueOf(0.005));
+    return calculateGross().multiply(BigDecimal.valueOf(0.005));
   }
 
   /**
@@ -66,14 +64,14 @@ public class PurchaseCalculator implements TransactionCalculator {
   }
 
   /**
-   * Method to calculate the total price of the purchase.
+   * Method to calculate the total value for the purchase.
    *
-   * <p>The total price is the gross value + commission + tax</p>
+   * <p>The total value is the gross value + commission + tax</p>
    *
-   * @return the total price of the purchase
+   * @return the total value for the purchase
    */
   @Override
   public BigDecimal calculateTotal() {
-    return this.calculateGross().add(this.calculateCommission()).add(this.calculateTax());
+    return calculateGross().add(calculateCommission()).add(calculateTax());
   }
 }

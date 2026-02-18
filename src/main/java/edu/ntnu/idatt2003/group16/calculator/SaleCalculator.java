@@ -38,7 +38,7 @@ public class SaleCalculator implements TransactionCalculator {
    */
   @Override
   public BigDecimal calculateGross() {
-    return this.salesPrice.multiply(this.quantity);
+    return salesPrice.multiply(quantity);
   }
 
   /**
@@ -50,7 +50,7 @@ public class SaleCalculator implements TransactionCalculator {
    */
   @Override
   public BigDecimal calculateCommission() {
-    return this.calculateGross().multiply(BigDecimal.valueOf(0.01));
+    return calculateGross().multiply(BigDecimal.valueOf(0.01));
   }
 
   /**
@@ -64,8 +64,8 @@ public class SaleCalculator implements TransactionCalculator {
    */
   @Override
   public BigDecimal calculateTax() {
-    BigDecimal purchaseExpenditures = this.purchasePrice.multiply(this.quantity);
-    BigDecimal profit = this.calculateGross().subtract(this.calculateCommission())
+    BigDecimal purchaseExpenditures = purchasePrice.multiply(quantity);
+    BigDecimal profit = calculateGross().subtract(calculateCommission())
         .subtract(purchaseExpenditures);
 
     return profit.multiply(BigDecimal.valueOf(0.3));
@@ -74,12 +74,12 @@ public class SaleCalculator implements TransactionCalculator {
   /**
    * Method to calculate the total sale value.
    *
-   * <p>The sales value is the gross value minus the commission minus the tax</p>
+   * <p>The total sale value is the gross value minus the commission minus the tax</p>
    *
    * @return the total sale value
    */
   @Override
   public BigDecimal calculateTotal() {
-    return this.calculateGross().subtract(this.calculateCommission()).subtract(this.calculateTax());
+    return calculateGross().subtract(calculateCommission()).subtract(calculateTax());
   }
 }
