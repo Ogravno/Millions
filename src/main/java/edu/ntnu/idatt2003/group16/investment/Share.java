@@ -20,7 +20,7 @@ public class Share {
    * @param quantity is the amount of shares to buy.
    * @param purchasePrice is the price pr share.
    * @throws IllegalArgumentException if stock, quantity or purchasePrice is null,
-   * and if quantity and purchasePrice is not greater than zero.
+   *         and if quantity and purchasePrice is not greater than zero.
    *
    * @Author Robin Strand Prestmo
    */
@@ -31,7 +31,7 @@ public class Share {
 
     if (quantity == null || quantity.compareTo(BigDecimal.ZERO) <= 0) {
       throw new IllegalArgumentException("quantity cannot be null, "
-         + "and must be greater than zero.");
+          + "and must be greater than zero.");
     }
 
     if (purchasePrice == null || purchasePrice.compareTo(BigDecimal.ZERO) <= 0) {
