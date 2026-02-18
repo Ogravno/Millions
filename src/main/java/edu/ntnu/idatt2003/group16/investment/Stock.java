@@ -20,10 +20,25 @@ public class Stock {
    * @param symbol is the company´s unique identifier
    * @param company is the name of the company
    * @param salesPrice is the present price of the stock
+   * @throws IllegalArgumentException if symbol or company is null/blank,
+   *         or if salesPrice is null or not greater than zero.
    *
    * @Author Robin Strand Prestmo
    */
   public Stock(String symbol, String company, BigDecimal salesPrice) {
+    if (symbol == null || symbol.isBlank()) {
+      throw new IllegalArgumentException("Symbol cannot be null or blank.");
+    }
+
+    if (company == null || company.isBlank()) {
+      throw new IllegalArgumentException("Company cannot be null or blank.");
+    }
+
+    if (salesPrice == null || salesPrice.compareTo(BigDecimal.ZERO) <= 0) {
+      throw new IllegalArgumentException("Sales price cannot be null,"
+          + " and must be greater than zero.");
+    }
+
     this.symbol = symbol;
     this.company = company;
 
@@ -45,13 +60,20 @@ public class Stock {
   }
 
   /**
-   * Add´s a new price to the stock
+   * Add´s a new price to the stock.
    *
    * @param newPrice is the new price to the stock
+   * @throws IllegalArgumentException if symbol or company is null/blank,
+   *         or if salesPrice is null or not greater than zero
    *
    * @Author Robin Strand Prestmo
    */
   public void addNewSalesPrice(BigDecimal newPrice) {
+    if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) <= 0) {
+      throw new IllegalArgumentException("Sales price cannot be null, "
+          + "and must be greater than zero.");
+    }
+
     prices.add(newPrice);
   }
 }
