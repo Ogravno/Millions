@@ -27,8 +27,8 @@ public class SaleCalculator implements TransactionCalculator {
     }
 
     this.purchasePrice == share.getPurchasePrice();
-    this.salesPrice == share.getStock.getSalesPrice;
-    this.quantity == share.getQuantity;
+    this.salesPrice == share.getStock().getSalesPrice();
+    this.quantity == share.getQuantity();
   }
 
   /**
