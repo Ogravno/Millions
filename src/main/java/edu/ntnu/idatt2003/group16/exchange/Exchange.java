@@ -42,9 +42,16 @@ public class Exchange {
 
   public boolean hasStock(String symbol) {
     if (symbol == null || symbol.isBlank()) {
-      throw new IllegalArgumentException("Stock cannot be null or blank.");
+      throw new IllegalArgumentException("Symbol cannot be null or blank.");
     }
     return stockMap.containsKey(symbol);
+  }
+
+  public Stock getStock(String symbol) {
+    if (symbol == null || symbol.isBlank()) {
+      throw new IllegalArgumentException("Symbol cannot be null or blank.");
+    }
+    return stockMap.get(symbol);
   }
 }
 

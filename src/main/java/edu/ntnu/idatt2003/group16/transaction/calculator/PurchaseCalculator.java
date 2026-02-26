@@ -25,8 +25,8 @@ public class PurchaseCalculator implements TransactionCalculator {
       throw new IllegalArgumentException("Share must not be null");
     }
 
-    this.purchasePrice == share.getPurchasePrice();
-    this.quantity == share.getQuantity();
+    this.purchasePrice = share.getPurchasePrice();
+    this.quantity = share.getQuantity();
   }
 
   /**
