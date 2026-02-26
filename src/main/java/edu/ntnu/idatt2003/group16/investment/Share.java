@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2003.group16.investment;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.UUID;
 
 /**

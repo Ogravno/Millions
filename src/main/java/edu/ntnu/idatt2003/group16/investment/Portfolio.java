@@ -4,13 +4,29 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The {@code Portfolio} class represents a collection of the user's shares.
+ * Includes features such as addShare, removeShare, getShares and contains.
+ *
+ * @author Robin Strand Prestmo
+ */
 public class Portfolio {
   private final List<Share> shares;
 
+  /**
+   * Creates an empty portfolio.
+   */
   public Portfolio() {
     this.shares = new ArrayList<>();
   }
 
+  /**
+   * Adds a new share to the portfolio.
+   *
+   * @param share to be added.
+   * @return {@code true} if the share was added.
+   * @throws IllegalArgumentException if share is null.
+   */
   public boolean addShare(Share share) {
     if (share == null) {
       throw new IllegalArgumentException("Share cannot be null");
@@ -18,6 +34,13 @@ public class Portfolio {
     return shares.add(share);
   }
 
+  /**
+   * Removes a share from the portfolio.
+   *
+   * @param share to be removed.
+   * @return {@code true} if the share was removed.
+   * @throws IllegalArgumentException if share is null.
+   */
   public boolean removeShare(Share share) {
     if (share == null) {
       throw new IllegalArgumentException("Share cannot be null");
@@ -25,11 +48,22 @@ public class Portfolio {
     return shares.remove(share);
   }
 
-  // Get all
+  /**
+   * Get all shares in the portfolio.
+   *
+   * @return an unmodifiable list with all the shares.
+   */
   public List<Share> getShares() {
     return Collections.unmodifiableList(shares);
   }
 
+  /**
+   * Get all shares with the chosen symbol.
+   *
+   * @param symbol to filter the right shares.
+   * @return a list with shares that matches the symbol.
+   * @throws IllegalArgumentException if symbol is null or blank.
+   */
   public List<Share> getShares(String symbol) {
     if (symbol == null || symbol.isBlank()) {
       throw new IllegalArgumentException("Symbol cannot be null or blank.");
@@ -38,7 +72,12 @@ public class Portfolio {
       .filter(share -> share.getStock().getSymbol().equals(symbol)).toList();
   }
 
-
+  /**
+   * Checks if the portfolio contains the given share.
+   *
+   * @param share the share to check for.
+   * @return {@code true} if the portfolio contains the share.
+   */
   public boolean contains(Share share) {
     return shares.contains(share);
   }
