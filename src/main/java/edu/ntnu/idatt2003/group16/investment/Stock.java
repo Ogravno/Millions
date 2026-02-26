@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Represents a share in a company.
  *
- * @Author Robin Strand Prestmo
+ * @author Robin Strand Prestmo
  */
 public class Stock {
   private final String symbol;
@@ -22,8 +22,6 @@ public class Stock {
    * @param salesPrice is the present price of the stock
    * @throws IllegalArgumentException if symbol or company is null/blank,
    *         or if salesPrice is null or not greater than zero.
-   *
-   * @Author Robin Strand Prestmo
    */
   public Stock(String symbol, String company, BigDecimal salesPrice) {
     if (symbol == null || symbol.isBlank()) {
@@ -65,10 +63,8 @@ public class Stock {
    * @param newPrice is the new price to the stock
    * @throws IllegalArgumentException if symbol or company is null/blank,
    *         or if salesPrice is null or not greater than zero
-   *
-   * @Author Robin Strand Prestmo
    */
-  public void addNewSalesPrice(BigDecimal newPrice) {
+  public void addSalesPrice(BigDecimal newPrice) {
     if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) <= 0) {
       throw new IllegalArgumentException("Sales price cannot be null, "
           + "and must be greater than zero.");
