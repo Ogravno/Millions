@@ -53,6 +53,24 @@ public class Exchange {
     }
     return stockMap.get(symbol);
   }
+
+  public List<Stock> findStocks(String searchTerm) {
+    if (searchTerm == null || searchTerm.isBlank()) {
+      throw new IllegalArgumentException("SearchTerm cannot be null or blank.");
+    }
+
+    String searchLower = searchTerm.toLowerCase();
+    List<Stock> result = new ArrayList<>();
+
+    for (Stock stock : stockMap.values()) {
+      String symbolLower = stock.getSymbol().toLowerCase();
+      String companyLower = stock.getCompany().toLowerCase();
+      if (symbolLower.contains(searchLower) || companyLower.contains(searchLower)){
+        result.add(stock);
+      }
+    }
+    return result;
+  }
 }
 
 
