@@ -31,6 +31,21 @@ public class Exchange {
       stockMap.put(stock.getSymbol(), stock);
     }
   }
+
+  public String getName() {
+    return name;
+  }
+
+  public int getWeek() {
+    return week;
+  }
+
+  public boolean hasStock(String symbol) {
+    if (symbol == null || symbol.isBlank()) {
+      throw new IllegalArgumentException("Stock cannot be null or blank.");
+    }
+    return stockMap.containsKey(symbol);
+  }
 }
 
 
