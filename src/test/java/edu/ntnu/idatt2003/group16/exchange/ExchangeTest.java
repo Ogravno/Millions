@@ -115,4 +115,42 @@ class ExchangeTest {
       assertNull(result);
     }
   }
+
+  @Nested
+  class findStocksTests {
+
+    @Test
+    void findStocks_shouldThrowIfSearchTermIsNull() {
+      assertThrows(IllegalArgumentException.class, () -> exchange.findStocks(null));
+    }
+
+    @Test
+    void findStocks_shouldThrowIfSearchTermIsBlank() {
+      assertThrows(IllegalArgumentException.class, () -> exchange.findStocks(" "));
+    }
+
+    @Test
+    void findStocks_shouldReturnCorrectStock() {
+      List<Stock> result = exchange.findStocks("apl");
+
+      assertEquals(1, result.size());
+      assertTrue(result.contains(apple));
+    }
+
+    @Test
+    void findStocks_shouldReturnCorrectStocks() {
+      List<Stock> result = exchange.findStocks("l");
+
+      assertEquals(2, result.size());
+      assertTrue(result.contains(apple));
+      assertTrue(result.contains(tesla));
+    }
+
+    @Test
+    void findStocks_shouldReturnEmptyList() {
+      List<Stock> result = exchange.findStocks("Windows");
+
+      assertTrue(result.isEmpty());
+    }
+  }
 }

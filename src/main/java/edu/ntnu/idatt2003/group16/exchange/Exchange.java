@@ -1,14 +1,17 @@
 package edu.ntnu.idatt2003.group16.exchange;
 
 import edu.ntnu.idatt2003.group16.investment.Stock;
+import edu.ntnu.idatt2003.group16.player.Player;
+import edu.ntnu.idatt2003.group16.transaction.Transaction;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 public class Exchange {
-  private String name;
-  private int week;
-  private Map<String, Stock> stockMap;
-  private Random random;
+  private final String name;
+  private final int week;
+  private final Map<String, Stock> stockMap;
+  private final Random random;
 
   public Exchange(String name, List<Stock> stocks) {
     if (name == null || name.isBlank()) {
@@ -71,6 +74,11 @@ public class Exchange {
     }
     return result;
   }
+
+  // Future implementations.
+  //public Transaction buy() {};
+  //public Transaction sell() {};
+  //public void Advance() {};
 }
 
 
