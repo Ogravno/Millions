@@ -1,10 +1,12 @@
-package edu.ntnu.idatt2003.group16.calculator;
+package edu.ntnu.idatt2003.group16.transaction.calculator;
 
 import edu.ntnu.idatt2003.group16.investment.Share;
 import java.math.BigDecimal;
 
 /**
  * Class for the calculator used for purchase transactions.
+ *
+ * <p>Implements {@link TransactionCalculator}</p>
  *
  * @author Odin Grav
  */
@@ -13,12 +15,12 @@ public class PurchaseCalculator implements TransactionCalculator {
   private BigDecimal quantity;
 
   /**
-   * Constructor for the PurchaseCalculator class.
+   * Constructor for the {@link PurchaseCalculator} class.
    *
    * @param share the share to be purchased. must not be null
    * @throws IllegalArgumentException when share is null
    */
-  PurchaseCalculator(Share share) {
+  public PurchaseCalculator(Share share) {
     if (share == null) {
       throw new IllegalArgumentException("Share must not be null");
     }
