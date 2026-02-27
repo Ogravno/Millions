@@ -61,6 +61,9 @@ public abstract class Transaction {
    * @param player the player performing the transaction
    */
   public void commit(Player player) {
-    // TODO: Implement commit method
+    if (player == null) {
+      throw new IllegalArgumentException("player cannot be null");
+    }
+    committed = true;
   }
 }
