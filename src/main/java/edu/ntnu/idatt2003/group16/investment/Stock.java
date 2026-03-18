@@ -87,4 +87,13 @@ public class Stock {
     return prices.stream().min(BigDecimal::compareTo)
       .orElseThrow(() -> new IllegalStateException("No prices found"));
   }
+
+  public BigDecimal getLatestPriceChange() {
+    if (prices.size() <= 1) {
+      return new BigDecimal("0");
+    }
+    BigDecimal latestPrice = prices.getLast();
+    BigDecimal secondLatestPrice = prices.get(prices.size() - 2);
+    return latestPrice.subtract(secondLatestPrice);
+  }
 }
