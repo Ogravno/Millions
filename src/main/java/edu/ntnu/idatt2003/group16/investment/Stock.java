@@ -54,7 +54,7 @@ public class Stock {
     return company;
   }
 
-  public BigDecimal getSalesPrice() {
+  public BigDecimal getCurrentPrice() {
     return prices.getLast();
   }
 
@@ -65,7 +65,7 @@ public class Stock {
    * @throws IllegalArgumentException if symbol or company is null/blank,
    *         or if salesPrice is null or not greater than zero
    */
-  public void addCurrentPrice(BigDecimal newPrice) {
+  public void changeCurrentPrice(BigDecimal newPrice) {
     if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) <= 0) {
       throw new IllegalArgumentException("Sales price cannot be null, "
           + "and must be greater than zero.");
@@ -76,5 +76,15 @@ public class Stock {
 
   public List<BigDecimal> getHistoricalPrices() {
     return Collections.unmodifiableList(prices);
+  }
+
+  public BigDecimal getHighestPrice() {
+    return prices.stream().max(BigDecimal::compareTo)
+      .orElseThrow(() -> new IllegalStateException("No prices found"));
+  }
+
+  public BigDecimal getLowestPrice() {
+    return prices.stream().min(BigDecimal::compareTo)
+      .orElseThrow(() -> new IllegalStateException("No prices found"));
   }
 }
