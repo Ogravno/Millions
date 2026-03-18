@@ -11,8 +11,8 @@ import java.math.BigDecimal;
  * @author Odin Grav
  */
 public class PurchaseCalculator implements TransactionCalculator {
-  private BigDecimal purchasePrice;
-  private BigDecimal quantity;
+  private final BigDecimal purchasePrice;
+  private final BigDecimal quantity;
 
   /**
    * Constructor for the {@link PurchaseCalculator} class.
