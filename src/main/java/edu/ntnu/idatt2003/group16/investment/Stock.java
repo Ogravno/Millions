@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.group16.investment;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -64,12 +65,16 @@ public class Stock {
    * @throws IllegalArgumentException if symbol or company is null/blank,
    *         or if salesPrice is null or not greater than zero
    */
-  public void addSalesPrice(BigDecimal newPrice) {
+  public void addCurrentPrice(BigDecimal newPrice) {
     if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) <= 0) {
       throw new IllegalArgumentException("Sales price cannot be null, "
           + "and must be greater than zero.");
     }
 
     prices.add(newPrice);
+  }
+
+  public List<BigDecimal> getHistoricalPrices() {
+    return Collections.unmodifiableList(prices);
   }
 }
