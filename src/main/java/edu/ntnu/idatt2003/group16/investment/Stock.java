@@ -74,20 +74,43 @@ public class Stock {
     prices.add(newPrice);
   }
 
+  /**
+   * Returns an unmodifiable list of the historical prices of a stock.
+   *
+   * @return an unmodifiable list
+   */
   public List<BigDecimal> getHistoricalPrices() {
     return Collections.unmodifiableList(prices);
   }
 
+  /**
+   * Gets the highest all-time price for the stock.
+   *
+   * @return highest price as {@code BigDecimal}
+   * @throws IllegalStateException if the list is empty
+   */
   public BigDecimal getHighestPrice() {
     return prices.stream().max(BigDecimal::compareTo)
       .orElseThrow(() -> new IllegalStateException("No prices found"));
   }
 
+  /**
+   * Gets the lowest all-time price for the stock.
+   *
+   * @return lowest price as {@code BigDecimal}
+   * @throws IllegalStateException if the list is empty
+   */
   public BigDecimal getLowestPrice() {
     return prices.stream().min(BigDecimal::compareTo)
       .orElseThrow(() -> new IllegalStateException("No prices found"));
   }
 
+  /**
+   * Gets the latest price change for a stock.
+   *
+   * @return the latest price change as {@code BigDecimal},
+   *         or 0 if there are fewer than two prices in the list.
+   */
   public BigDecimal getLatestPriceChange() {
     if (prices.size() <= 1) {
       return new BigDecimal("0");
