@@ -4,14 +4,16 @@ import edu.ntnu.idatt2003.group16.investment.Share;
 import edu.ntnu.idatt2003.group16.investment.Stock;
 import edu.ntnu.idatt2003.group16.player.Player;
 import edu.ntnu.idatt2003.group16.transaction.Purchase;
+import edu.ntnu.idatt2003.group16.transaction.Sale;
 import edu.ntnu.idatt2003.group16.transaction.Transaction;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class Exchange {
   private final String name;
-  private final int week;
+  private int week;
   private final Map<String, Stock> stockMap;
   private final Random random;
 
@@ -100,9 +102,36 @@ public class Exchange {
     return transaction;
   };
 
-  // Future implementations.
-  // public Transaction sell() {};
-  //public void Advance() {};
+   public Transaction sell(Share share, Player player) {
+     if (share == null) {
+       throw new IllegalArgumentException("Share cannot be null");
+     }
+     if (player == null) {
+       throw new IllegalArgumentException("Player cannot be null");
+     }
+
+     Transaction transaction = new Sale(share, week);
+     transaction.commit(player);
+     return transaction;
+   };
+
+   public void Advance() {
+     week++;
+
+     stockMap.values().forEach(stock -> {
+       BigDecimal currentPrice = stock.getCurrentPrice();
+
+       double change = (random.nextDouble() - 0.5) * 0.1; // +- 5%
+       BigDecimal multiplier = BigDecimal.valueOf(1 + change);
+
+       BigDecimal newPrice = currentPrice
+         .multiply(multiplier)
+         .max(BigDecimal.valueOf(0.01)) // Set minimum price
+         .setScale(2, RoundingMode.HALF_UP);
+
+       stock.changeCurrentPrice(newPrice);
+     });
+   };
 }
 
 
