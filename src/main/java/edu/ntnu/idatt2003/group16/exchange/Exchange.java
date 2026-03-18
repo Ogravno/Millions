@@ -1,7 +1,9 @@
 package edu.ntnu.idatt2003.group16.exchange;
 
+import edu.ntnu.idatt2003.group16.investment.Share;
 import edu.ntnu.idatt2003.group16.investment.Stock;
 import edu.ntnu.idatt2003.group16.player.Player;
+import edu.ntnu.idatt2003.group16.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.transaction.Transaction;
 
 import java.math.BigDecimal;
@@ -75,9 +77,31 @@ public class Exchange {
     return result;
   }
 
+  public Transaction buy(String symbol, BigDecimal quantity, Player player) {
+    if (symbol == null || symbol.isBlank()) {
+      throw new IllegalArgumentException("Symbol cannot be null or blank");
+    }
+    if (quantity == null || quantity.compareTo(BigDecimal.ZERO) <= 0) {
+      throw new IllegalArgumentException("Quantity must be positive");
+    }
+    if (player == null) {
+      throw new IllegalArgumentException("Player cannot be null");
+    }
+    if (!hasStock(symbol)) {
+      throw new IllegalArgumentException("Stock not found: " + symbol);
+    }
+
+    Stock stock = getStock(symbol);
+
+    Share share = new Share(stock, quantity, stock.getCurrentPrice());
+    Transaction transaction = new Purchase(share, week);
+
+    transaction.commit(player);
+    return transaction;
+  };
+
   // Future implementations.
-  //public Transaction buy() {};
-  //public Transaction sell() {};
+  // public Transaction sell() {};
   //public void Advance() {};
 }
 
