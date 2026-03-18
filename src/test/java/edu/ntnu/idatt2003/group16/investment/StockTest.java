@@ -119,4 +119,19 @@ class StockTest {
 
     assertEquals(new BigDecimal("95"),stock.getLowestPrice());
   }
+
+  @Test
+  void shouldGetLatestPriceChange() {
+    Stock stock = new Stock("AAPL","Apple", new BigDecimal("127.53"));
+    stock.changeCurrentPrice(new BigDecimal("95"));
+
+    assertEquals(new BigDecimal("-32.53"), stock.getLatestPriceChange());
+  }
+
+  @Test
+  void shouldGetLastestPriceChangeAsZero() {
+    Stock stock = new Stock("AAPL","Apple", new BigDecimal("127.53"));
+
+    assertEquals(new BigDecimal("0"), stock.getLatestPriceChange());
+  }
 }
