@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.group16.investment;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,7 +54,7 @@ public class Stock {
     return company;
   }
 
-  public BigDecimal getSalesPrice() {
+  public BigDecimal getCurrentPrice() {
     return prices.getLast();
   }
 
@@ -64,12 +65,58 @@ public class Stock {
    * @throws IllegalArgumentException if symbol or company is null/blank,
    *         or if salesPrice is null or not greater than zero
    */
-  public void addSalesPrice(BigDecimal newPrice) {
+  public void changeCurrentPrice(BigDecimal newPrice) {
     if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) <= 0) {
       throw new IllegalArgumentException("Sales price cannot be null, "
           + "and must be greater than zero.");
     }
 
     prices.add(newPrice);
+  }
+
+  /**
+   * Returns an unmodifiable list of the historical prices of a stock.
+   *
+   * @return an unmodifiable list
+   */
+  public List<BigDecimal> getHistoricalPrices() {
+    return Collections.unmodifiableList(prices);
+  }
+
+  /**
+   * Gets the highest all-time price for the stock.
+   *
+   * @return highest price as {@code BigDecimal}
+   * @throws IllegalStateException if the list is empty
+   */
+  public BigDecimal getHighestPrice() {
+    return prices.stream().max(BigDecimal::compareTo)
+      .orElseThrow(() -> new IllegalStateException("No prices found"));
+  }
+
+  /**
+   * Gets the lowest all-time price for the stock.
+   *
+   * @return lowest price as {@code BigDecimal}
+   * @throws IllegalStateException if the list is empty
+   */
+  public BigDecimal getLowestPrice() {
+    return prices.stream().min(BigDecimal::compareTo)
+      .orElseThrow(() -> new IllegalStateException("No prices found"));
+  }
+
+  /**
+   * Gets the latest price change for a stock.
+   *
+   * @return the latest price change as {@code BigDecimal},
+   *         or 0 if there are fewer than two prices in the list.
+   */
+  public BigDecimal getLatestPriceChange() {
+    if (prices.size() <= 1) {
+      return new BigDecimal("0");
+    }
+    BigDecimal latestPrice = prices.getLast();
+    BigDecimal secondLatestPrice = prices.get(prices.size() - 2);
+    return latestPrice.subtract(secondLatestPrice);
   }
 }
