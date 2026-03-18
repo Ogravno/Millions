@@ -25,6 +25,19 @@ public class Purchase extends Transaction {
 
   @Override
   public void commit(Player player) {
-    // TODO: Implement commit method
+    if (player == null) {
+      throw new IllegalArgumentException("player cannot be null");
+    }
+    if (isCommitted()) {
+      return;
+    }
+    if (player.getMoney().compareTo(getCalculator().calculateTotal()) < 0) {
+      return;
+    }
+
+    super.commit(player);
+    player.withdrawMoney(getCalculator().calculateTotal());
+    player.getPortfolio().addShare(getShare());
+    player.getTransactionArchive().add(this);
   }
 }
