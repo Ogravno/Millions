@@ -36,8 +36,12 @@ class PurchaseCalculatorTest {
   }
 
   @Test
-  void constructorTest() {
+  void constructorSuccessfull() {
     assertDoesNotThrow(() -> new PurchaseCalculator(share));
+  }
+
+  @Test
+  void constructorParameterIsNull() {
     assertThrows(IllegalArgumentException.class, () -> new PurchaseCalculator(null));
   }
 
