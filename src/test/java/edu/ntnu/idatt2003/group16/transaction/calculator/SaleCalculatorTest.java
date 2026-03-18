@@ -27,10 +27,12 @@ class SaleCalculatorTest {
     BigDecimal quantity = new BigDecimal("3");
     share = new Share(stock, quantity, purchasePrice);
 
-    expectedGrossValue = purchasePrice.multiply(quantity);
+    BigDecimal salesPrice = stock.getSalesPrice();
+
+    expectedGrossValue = salesPrice.multiply(quantity);
     expectedCommission = expectedGrossValue.multiply(new BigDecimal("0.01"));
     expectedTax = expectedGrossValue.subtract(expectedCommission)
-        .subtract(purchasePrice.multiply(quantity)).multiply(BigDecimal.valueOf(0.3));
+        .subtract(salesPrice.multiply(quantity)).multiply(BigDecimal.valueOf(0.3));
     expectedTotal = expectedGrossValue.subtract(expectedCommission).subtract(expectedTax);
 
     saleCalculator = new SaleCalculator(share);
