@@ -8,6 +8,7 @@ import edu.ntnu.idatt2003.group16.investment.Share;
 import edu.ntnu.idatt2003.group16.investment.Stock;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class SaleCalculatorTest {
@@ -38,14 +39,17 @@ class SaleCalculatorTest {
     saleCalculator = new SaleCalculator(share);
   }
 
-  @Test
-  void constructorSuccessful() {
-    assertDoesNotThrow(() -> new SaleCalculator(share));
-  }
+  @Nested
+  class ConstructorClasses {
+    @Test
+    void constructorSuccessful() {
+      assertDoesNotThrow(() -> new SaleCalculator(share));
+    }
 
-  @Test
-  void constructorParameterIsNull() {
-    assertThrows(IllegalArgumentException.class, () -> new SaleCalculator(null));
+    @Test
+    void constructorParameterIsNull() {
+      assertThrows(IllegalArgumentException.class, () -> new SaleCalculator(null));
+    }
   }
 
   @Test
