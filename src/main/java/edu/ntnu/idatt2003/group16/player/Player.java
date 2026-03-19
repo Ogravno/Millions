@@ -19,8 +19,8 @@ public class Player {
    *
    * @param name the name of the player
    * @param startingMoney the money the player will start with
-   * @throws IllegalArgumentException when name is null or blank
-   * @throws IllegalArgumentException when startingMoney null, negative or zero
+   * @throws IllegalArgumentException when {@code name} is null or blank
+   * @throws IllegalArgumentException when {@code startingMoney} null, negative or zero
    */
   public Player(String name, BigDecimal startingMoney) {
     if (name == null || name.isBlank()) {
@@ -48,8 +48,8 @@ public class Player {
    * Adds money.
    *
    * @param amount the amount of money to add
-   * @throws IllegalArgumentException if amount is null
-   * @throws IllegalArgumentException if amount is negative or zero
+   * @throws IllegalArgumentException if {@code amount} is null
+   * @throws IllegalArgumentException if {@code amount} is negative or zero
    */
   public void addMoney(BigDecimal amount) {
     moneyValidation(amount, "amount");
@@ -61,9 +61,9 @@ public class Player {
    * Withdraws money.
    *
    * @param amount the amount of money to withdraw
-   * @throws IllegalArgumentException if amount is null
-   * @throws IllegalArgumentException if amount is negative or zero
-   * @throws IllegalArgumentException if amount is larger than player's amount of money
+   * @throws IllegalArgumentException if {@code amount} is null
+   * @throws IllegalArgumentException if {@code amount} is negative or zero
+   * @throws IllegalArgumentException if {@code amount} is larger than player's amount of money
    */
   public void withdrawMoney(BigDecimal amount) {
     moneyValidation(amount, "amount");
@@ -87,8 +87,8 @@ public class Player {
    *
    * @param money the amount of money to validate
    * @param parameterName the name of the parameter being validated
-   * @throws IllegalArgumentException if money is null
-   * @throws IllegalArgumentException if money is negative or zero
+   * @throws IllegalArgumentException if {@code money} is null
+   * @throws IllegalArgumentException if @code money} is negative or zero
    */
   private void moneyValidation(BigDecimal money, String parameterName) {
     if (money == null) {
