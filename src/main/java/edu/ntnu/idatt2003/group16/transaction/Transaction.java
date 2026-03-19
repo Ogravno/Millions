@@ -13,7 +13,7 @@ public abstract class Transaction {
   private Share share;
   private int week;
   private TransactionCalculator calculator;
-  private boolean committed;
+  protected boolean committed;
 
   /**
    * Constructor for {@link Transaction} class.
@@ -64,6 +64,5 @@ public abstract class Transaction {
     if (player == null) {
       throw new IllegalArgumentException("player cannot be null");
     }
-    committed = true;
   }
 }

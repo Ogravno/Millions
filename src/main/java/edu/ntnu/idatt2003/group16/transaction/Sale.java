@@ -28,8 +28,11 @@ public class Sale extends Transaction {
     if (player == null) {
       throw new IllegalArgumentException("player cannot be null");
     }
+    if (committed) {
+      return;
+    }
 
-    super.commit(player);
+    committed = true;
     player.addMoney(getCalculator().calculateTotal());
     player.getPortfolio().removeShare(getShare());
     player.getTransactionArchive().add(this);

@@ -27,7 +27,7 @@ class SaleCalculatorTest {
     BigDecimal quantity = new BigDecimal("3");
     share = new Share(stock, quantity, purchasePrice);
 
-    BigDecimal salesPrice = stock.getSalesPrice();
+    BigDecimal salesPrice = stock.getCurrentPrice();
 
     expectedGrossValue = salesPrice.multiply(quantity);
     expectedCommission = expectedGrossValue.multiply(new BigDecimal("0.01"));
