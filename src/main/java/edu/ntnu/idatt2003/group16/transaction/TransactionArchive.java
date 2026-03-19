@@ -1,5 +1,7 @@
 package edu.ntnu.idatt2003.group16.transaction;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,9 @@ public class TransactionArchive {
     if (transaction == null) {
       throw new IllegalArgumentException("transaction cannot be null");
     }
+    if (getTransactions().contains(transaction)) {
+      throw new IllegalArgumentException("Transaction already in archive");
+    }
 
     return transactions.add(transaction);
   }
@@ -40,6 +45,10 @@ public class TransactionArchive {
    */
   public boolean isEmpty() {
     return transactions.isEmpty();
+  }
+
+  public List<Transaction> getTransactions() {
+    return transactions;
   }
 
   /**

@@ -1,0 +1,182 @@
+package edu.ntnu.idatt2003.group16.transaction;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import edu.ntnu.idatt2003.group16.investment.Share;
+import edu.ntnu.idatt2003.group16.investment.Stock;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+class TransactionArchiveTest {
+  TransactionArchive transactionArchive;
+  List<Purchase> purchases;
+  List<Sale> sales;
+
+  @BeforeEach
+  void setUp() {
+    BigDecimal purchasePrice = new BigDecimal("3.15");
+    Stock stock = new Stock(
+        "GOOG", "Alphabet Inc Class C", purchasePrice);
+    stock.changeCurrentPrice(new BigDecimal("3.25"));
+    stock.changeCurrentPrice(new BigDecimal("3.30"));
+    stock.changeCurrentPrice(new BigDecimal("3.33"));
+    BigDecimal quantity = new BigDecimal("3");
+
+    transactionArchive = new TransactionArchive();
+    purchases = new ArrayList<>();
+    sales = new ArrayList<>();
+
+    Share share1 = new Share(stock, quantity, purchasePrice);
+    purchases.add(new Purchase(share1, 1));
+    sales.add(new Sale(share1, 2));
+
+    Share share2 = new Share(stock, quantity, purchasePrice);
+    purchases.add(new Purchase(share2, 2));
+    sales.add(new Sale(share2, 3));
+
+    Share share3 = new Share(stock, quantity, purchasePrice);
+    purchases.add(new Purchase(share3, 1));
+    sales.add(new Sale(share3, 3));
+  }
+
+  @Test
+  void constructorSuccessful() {
+    assertDoesNotThrow(() -> new TransactionArchive());
+  }
+
+  @Nested
+  class addTests {
+    @Test
+    void addTransactionIsNull() {
+      assertThrows(IllegalArgumentException.class, () -> transactionArchive.add(null));
+    }
+
+    @Test
+    void addTransactionSuccess() {
+      transactionArchive.add(purchases.getFirst());
+      assertTrue(transactionArchive.getTransactions().contains(purchases.getFirst()));
+    }
+
+    @Test
+    void addTransactionAlreadyInArchive() {
+      transactionArchive.add(purchases.get(0));
+      assertThrows(IllegalArgumentException.class, () -> transactionArchive.add(purchases.get(0)));
+    }
+  }
+
+  @Nested
+  class getTransactionTests {
+    @Test
+    void getTransactionsWeekIsNegative() {
+      assertThrows(IllegalArgumentException.class, () ->
+          transactionArchive.getTransactions(-1));
+    }
+
+    @Test
+    void getTransactionsWeekIsZero() {
+      assertThrows(IllegalArgumentException.class, () ->
+          transactionArchive.getTransactions(0));
+    }
+
+    @Test
+    void getTransactionsReturnsTransactions() {
+      List<Transaction> expectedResult = new ArrayList<>();
+      expectedResult.add(sales.get(0));
+      expectedResult.add(purchases.get(1));
+
+      purchases.forEach(purchase -> transactionArchive.add(purchase));
+      sales.forEach(sale -> transactionArchive.add(sale));
+      List<Transaction> transactionsWeek2 = transactionArchive.getTransactions(2);
+
+      assertTrue(transactionsWeek2.containsAll(expectedResult));
+      assertEquals(transactionsWeek2.size(), expectedResult.size());
+    }
+  }
+
+  @Nested
+  class getPurchasesTests {
+    @Test
+    void getPurchasesWeekIsNegative() {
+      assertThrows(IllegalArgumentException.class, () ->
+          transactionArchive.getPurchases(-1));
+    }
+
+    @Test
+    void getPurchasesWeekIsZero() {
+      assertThrows(IllegalArgumentException.class, () ->
+          transactionArchive.getPurchases(0));
+    }
+
+    @Test
+    void getPurchasesReturnsPurchases() {
+      List<Transaction> expectedResult = new ArrayList<>();
+      expectedResult.add(purchases.get(0));
+      expectedResult.add(purchases.get(2));
+
+      purchases.forEach(purchase -> transactionArchive.add(purchase));
+      List<Transaction> purchasesWeek1 = transactionArchive.getPurchases(1);
+
+      assertTrue(purchasesWeek1.containsAll(expectedResult));
+      assertEquals(purchasesWeek1.size(), expectedResult.size());
+    }
+  }
+
+  @Nested
+  class getSalesTests {
+    @Test
+    void getSalesWeekIsNegative() {
+      assertThrows(IllegalArgumentException.class, () ->
+          transactionArchive.getSales(-1));
+    }
+
+    @Test
+    void getSalesWeekIsZero() {
+      assertThrows(IllegalArgumentException.class, () ->
+          transactionArchive.getSales(0));
+    }
+
+    @Test
+    void getSalesReturnsSales() {
+      List<Transaction> expectedResult = new ArrayList<>();
+      expectedResult.add(sales.get(1));
+      expectedResult.add(sales.get(2));
+
+      sales.forEach(sale -> transactionArchive.add(sale));
+      List<Transaction> salesWeek1 = transactionArchive.getSales(3);
+
+      assertTrue(salesWeek1.containsAll(expectedResult));
+      assertEquals(salesWeek1.size(), expectedResult.size());
+    }
+  }
+
+  @Nested
+  class isEmptyTests {
+    @Test
+    void isEmptyArchiveEmpty() {
+      assertTrue(transactionArchive.isEmpty());
+    }
+
+    @Test
+    void isEmptyArchiveNotEmpty() {
+      transactionArchive.add(purchases.getFirst());
+      assertFalse(transactionArchive.isEmpty());
+    }
+  }
+
+  @Test
+  void countDistinctWeeks() {
+    purchases.forEach(purchase -> transactionArchive.add(purchase));
+    sales.forEach(sale -> transactionArchive.add(sale));
+
+    assertEquals(3, transactionArchive.countDistinctWeeks());
+  }
+}
