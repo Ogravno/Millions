@@ -32,6 +32,9 @@ public class Purchase extends Transaction {
    *
    * @param player the player performing the purchase
    * @throws IllegalArgumentException when {@code player} is null
+   * @throws IllegalStateException if the purchase has already been committed
+   * @throws IllegalStateException if the player has insufficient funds
+   * @throws IllegalStateException if the player already owns the share
    */
   @Override
   public void commit(Player player) {
@@ -44,10 +47,13 @@ public class Purchase extends Transaction {
     if (player.getMoney().compareTo(getCalculator().calculateTotal()) < 0) {
       throw new IllegalStateException("Player has insufficient funds");
     }
+    if (player.getPortfolio().contains(getShare())) {
+      throw new IllegalStateException("Player already owns share");
+    }
 
-    committed = true;
     player.withdrawMoney(getCalculator().calculateTotal());
     player.getPortfolio().addShare(getShare());
     player.getTransactionArchive().add(this);
+    committed = true;
   }
 }

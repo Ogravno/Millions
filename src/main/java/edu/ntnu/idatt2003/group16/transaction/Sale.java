@@ -29,7 +29,10 @@ public class Sale extends Transaction {
       throw new IllegalArgumentException("player cannot be null");
     }
     if (committed) {
-      return;
+      throw new IllegalStateException("Sale already committed");
+    }
+    if (!player.getPortfolio().contains(getShare())) {
+      throw new IllegalStateException("Player does not own share");
     }
 
     committed = true;
