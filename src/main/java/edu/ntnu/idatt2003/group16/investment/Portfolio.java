@@ -1,5 +1,7 @@
 package edu.ntnu.idatt2003.group16.investment;
 
+import edu.ntnu.idatt2003.group16.transaction.calculator.SaleCalculator;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,11 +28,16 @@ public class Portfolio {
    * @param share to be added.
    * @return {@code true} if the share was added.
    * @throws IllegalArgumentException if share is null.
+   * @throws IllegalArgumentException if share is already in portfolio
    */
   public boolean addShare(Share share) {
     if (share == null) {
       throw new IllegalArgumentException("Share cannot be null");
     }
+    if (shares.contains(share)) {
+      throw new IllegalArgumentException("Share already in portfolio");
+    }
+
     return shares.add(share);
   }
 
@@ -40,11 +47,16 @@ public class Portfolio {
    * @param share to be removed.
    * @return {@code true} if the share was removed.
    * @throws IllegalArgumentException if share is null.
+   * @throws IllegalArgumentException if share is not in portfolio
    */
   public boolean removeShare(Share share) {
     if (share == null) {
       throw new IllegalArgumentException("Share cannot be null");
     }
+    if (!shares.contains(share)) {
+      throw new IllegalArgumentException("Share not in portfolio");
+    }
+
     return shares.remove(share);
   }
 
@@ -79,6 +91,27 @@ public class Portfolio {
    * @return {@code true} if the portfolio contains the share.
    */
   public boolean contains(Share share) {
+    if (share == null) {
+      throw new IllegalArgumentException("Share cannot be null");
+    }
+
     return shares.contains(share);
+  }
+
+  /**
+   * Calculates the portfolio's net worth.
+   *
+   * <p>The portfolio's net worth is calculated by summing the sales value of all the shares in
+   * the portfolio.</p>
+   *
+   * @return the portfolio's net worth
+   */
+  public BigDecimal getNetWorth() {
+    return shares.stream()
+        .map(share -> {
+          SaleCalculator calculator = new SaleCalculator(share);
+          return calculator.calculateTotal();
+        })
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 }

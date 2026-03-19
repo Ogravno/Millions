@@ -99,4 +99,16 @@ public class Player {
       throw new IllegalArgumentException(parameterName + " has to be positive");
     }
   }
+
+  /**
+   * Calculates the player's net worth.
+   *
+   * <p>The player's net worth is calculated by adding together the player's money
+   * and the net worth of the player's portfolio.</p>
+   *
+   * @return the player's net worth
+   */
+  public BigDecimal getNetWorth() {
+    return money.add(portfolio.getNetWorth());
+  }
 }
