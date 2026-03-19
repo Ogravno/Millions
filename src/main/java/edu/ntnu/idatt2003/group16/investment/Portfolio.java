@@ -26,11 +26,16 @@ public class Portfolio {
    * @param share to be added.
    * @return {@code true} if the share was added.
    * @throws IllegalArgumentException if share is null.
+   * @throws IllegalArgumentException if share is already in portfolio
    */
   public boolean addShare(Share share) {
     if (share == null) {
       throw new IllegalArgumentException("Share cannot be null");
     }
+    if (shares.contains(share)) {
+      throw new IllegalArgumentException("Share already in portfolio");
+    }
+
     return shares.add(share);
   }
 
@@ -40,11 +45,16 @@ public class Portfolio {
    * @param share to be removed.
    * @return {@code true} if the share was removed.
    * @throws IllegalArgumentException if share is null.
+   * @throws IllegalArgumentException if share is not in portfolio
    */
   public boolean removeShare(Share share) {
     if (share == null) {
       throw new IllegalArgumentException("Share cannot be null");
     }
+    if (!shares.contains(share)) {
+      throw new IllegalArgumentException("Share not in portfolio");
+    }
+
     return shares.remove(share);
   }
 
@@ -79,6 +89,10 @@ public class Portfolio {
    * @return {@code true} if the portfolio contains the share.
    */
   public boolean contains(Share share) {
+    if (share == null) {
+      throw new IllegalArgumentException("Share cannot be null");
+    }
+
     return shares.contains(share);
   }
 }
