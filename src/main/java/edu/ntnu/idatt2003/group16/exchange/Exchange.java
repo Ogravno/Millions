@@ -1,4 +1,99 @@
 package edu.ntnu.idatt2003.group16.exchange;
 
+import edu.ntnu.idatt2003.group16.investment.Stock;
+import edu.ntnu.idatt2003.group16.player.Player;
+import edu.ntnu.idatt2003.group16.transaction.Transaction;
+
+import java.math.BigDecimal;
+import java.util.*;
+
 public class Exchange {
+  private final String name;
+  private final int week;
+  private final Map<String, Stock> stockMap;
+  private final Random random;
+
+  public Exchange(String name, List<Stock> stocks) {
+    if (name == null || name.isBlank()) {
+      throw new IllegalArgumentException("Name cannot be null or blank.");
+    }
+
+    if (stocks == null) {
+      throw new IllegalArgumentException("Stocks cannot be null.");
+    }
+
+    this.name = name;
+    this.week = 0;
+    this.stockMap = new HashMap<>();
+    this.random = new Random();
+
+    for (Stock stock : stocks) {
+      if (stock == null) {
+        throw new IllegalArgumentException("Stock cannot be null.");
+      }
+      stockMap.put(stock.getSymbol(), stock);
+    }
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public int getWeek() {
+    return week;
+  }
+
+  public boolean hasStock(String symbol) {
+    if (symbol == null || symbol.isBlank()) {
+      throw new IllegalArgumentException("Symbol cannot be null or blank.");
+    }
+    return stockMap.containsKey(symbol);
+  }
+
+  public Stock getStock(String symbol) {
+    if (symbol == null || symbol.isBlank()) {
+      throw new IllegalArgumentException("Symbol cannot be null or blank.");
+    }
+    return stockMap.get(symbol);
+  }
+
+  public List<Stock> findStocks(String searchTerm) {
+    if (searchTerm == null || searchTerm.isBlank()) {
+      throw new IllegalArgumentException("SearchTerm cannot be null or blank.");
+    }
+
+    String searchLower = searchTerm.toLowerCase();
+    List<Stock> result = new ArrayList<>();
+
+    for (Stock stock : stockMap.values()) {
+      String symbolLower = stock.getSymbol().toLowerCase();
+      String companyLower = stock.getCompany().toLowerCase();
+      if (symbolLower.contains(searchLower) || companyLower.contains(searchLower)){
+        result.add(stock);
+      }
+    }
+    return result;
+  }
+
+  // Future implementations.
+  //public Transaction buy() {};
+  //public Transaction sell() {};
+  //public void Advance() {};
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
