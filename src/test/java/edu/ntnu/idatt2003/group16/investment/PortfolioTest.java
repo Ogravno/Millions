@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import edu.ntnu.idatt2003.group16.transaction.calculator.SaleCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,25 @@ class PortfolioTest {
         "AAPL", "Alphabet Inc Class C", applePurchasePrice);
     BigDecimal appleQuantity = new BigDecimal("2");
     appleShare = new Share(appleStock, appleQuantity, applePurchasePrice);
+  }
+
+  @Test
+  void getNetWorth() {
+    BigDecimal expectedResult = BigDecimal.ZERO;
+    SaleCalculator googleCalculator = new SaleCalculator(googleShare);
+    expectedResult = expectedResult.add(googleCalculator.calculateTotal());
+
+    SaleCalculator googleCalculator2 = new SaleCalculator(googleShare2);
+    expectedResult = expectedResult.add(googleCalculator2.calculateTotal());
+
+    SaleCalculator appleCalculator = new SaleCalculator(appleShare);
+    expectedResult = expectedResult.add(appleCalculator.calculateTotal());
+
+    portfolio.addShare(googleShare);
+    portfolio.addShare(googleShare2);
+    portfolio.addShare(appleShare);
+
+    assertEquals(expectedResult, portfolio.getNetWorth());
   }
 
   @Nested

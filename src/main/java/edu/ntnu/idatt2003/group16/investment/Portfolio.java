@@ -1,5 +1,8 @@
 package edu.ntnu.idatt2003.group16.investment;
 
+import edu.ntnu.idatt2003.group16.transaction.calculator.SaleCalculator;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -94,5 +97,19 @@ public class Portfolio {
     }
 
     return shares.contains(share);
+  }
+
+  /**
+   * Sums the sales value of all the shares in the portfolio.
+   *
+   * @return the sum of the shares in the portfolio
+   */
+  public BigDecimal getNetWorth() {
+    return shares.stream()
+        .map(share -> {
+          SaleCalculator calculator = new SaleCalculator(share);
+          return calculator.calculateTotal();
+        })
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 }
