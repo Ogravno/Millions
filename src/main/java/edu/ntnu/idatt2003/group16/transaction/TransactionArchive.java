@@ -1,7 +1,5 @@
 package edu.ntnu.idatt2003.group16.transaction;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 

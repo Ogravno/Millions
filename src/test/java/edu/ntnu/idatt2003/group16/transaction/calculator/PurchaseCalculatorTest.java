@@ -37,7 +37,7 @@ class PurchaseCalculatorTest {
   }
 
   @Nested
-  class constructorTests {
+  class ConstructorTests {
     @Test
     void constructorSuccessful() {
       assertDoesNotThrow(() -> new PurchaseCalculator(share));
@@ -57,7 +57,7 @@ class PurchaseCalculatorTest {
   @Test
   void calculateCommission() {
     assertEquals(expectedCommission, purchaseCalculator.calculateCommission());
-    }
+  }
 
   @Test
   void calculateTax() {

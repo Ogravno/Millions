@@ -8,13 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.ntnu.idatt2003.group16.investment.Share;
 import edu.ntnu.idatt2003.group16.investment.Stock;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 class TransactionArchiveTest {
   TransactionArchive transactionArchive;
@@ -23,6 +22,10 @@ class TransactionArchiveTest {
 
   @BeforeEach
   void setUp() {
+    transactionArchive = new TransactionArchive();
+    purchases = new ArrayList<>();
+    sales = new ArrayList<>();
+
     BigDecimal purchasePrice = new BigDecimal("3.15");
     Stock stock = new Stock(
         "GOOG", "Alphabet Inc Class C", purchasePrice);
@@ -30,10 +33,6 @@ class TransactionArchiveTest {
     stock.changeCurrentPrice(new BigDecimal("3.30"));
     stock.changeCurrentPrice(new BigDecimal("3.33"));
     BigDecimal quantity = new BigDecimal("3");
-
-    transactionArchive = new TransactionArchive();
-    purchases = new ArrayList<>();
-    sales = new ArrayList<>();
 
     Share share1 = new Share(stock, quantity, purchasePrice);
     purchases.add(new Purchase(share1, 1));
@@ -54,7 +53,7 @@ class TransactionArchiveTest {
   }
 
   @Nested
-  class addTests {
+  class AddTests {
     @Test
     void addTransactionIsNull() {
       assertThrows(IllegalArgumentException.class, () -> transactionArchive.add(null));
@@ -74,7 +73,7 @@ class TransactionArchiveTest {
   }
 
   @Nested
-  class getTransactionTests {
+  class GetTransactionTests {
     @Test
     void getTransactionsWeekIsNegative() {
       assertThrows(IllegalArgumentException.class, () ->
@@ -103,7 +102,7 @@ class TransactionArchiveTest {
   }
 
   @Nested
-  class getPurchasesTests {
+  class GetPurchasesTests {
     @Test
     void getPurchasesWeekIsNegative() {
       assertThrows(IllegalArgumentException.class, () ->
@@ -131,7 +130,7 @@ class TransactionArchiveTest {
   }
 
   @Nested
-  class getSalesTests {
+  class GetSalesTests {
     @Test
     void getSalesWeekIsNegative() {
       assertThrows(IllegalArgumentException.class, () ->
@@ -159,7 +158,7 @@ class TransactionArchiveTest {
   }
 
   @Nested
-  class isEmptyTests {
+  class IsEmptyTests {
     @Test
     void isEmptyArchiveEmpty() {
       assertTrue(transactionArchive.isEmpty());

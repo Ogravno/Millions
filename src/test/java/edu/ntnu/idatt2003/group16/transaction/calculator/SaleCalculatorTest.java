@@ -40,7 +40,7 @@ class SaleCalculatorTest {
   }
 
   @Nested
-  class constructorClasses {
+  class ConstructorClasses {
     @Test
     void constructorSuccessful() {
       assertDoesNotThrow(() -> new SaleCalculator(share));

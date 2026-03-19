@@ -38,7 +38,7 @@ class SaleTest {
   }
 
   @Nested
-  class constructorTests {
+  class ConstructorTests {
     @Test
     void constructorSuccessful() {
       assertDoesNotThrow(() -> new SaleCalculator(share));
@@ -51,7 +51,7 @@ class SaleTest {
   }
 
   @Nested
-  class commitTests {
+  class CommitTests {
     @Test
     void commitPlayerIsNull() {
       assertThrows(IllegalArgumentException.class, () -> sale.commit(null));

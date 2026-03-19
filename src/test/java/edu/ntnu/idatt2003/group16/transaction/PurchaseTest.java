@@ -9,10 +9,10 @@ import edu.ntnu.idatt2003.group16.investment.Share;
 import edu.ntnu.idatt2003.group16.investment.Stock;
 import edu.ntnu.idatt2003.group16.player.Player;
 import edu.ntnu.idatt2003.group16.transaction.calculator.PurchaseCalculator;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import java.math.BigDecimal;
 
 class PurchaseTest {
   Share share;
@@ -36,7 +36,7 @@ class PurchaseTest {
   }
 
   @Nested
-  class constructorTests {
+  class ConstructorTests {
     @Test
     void constructorSuccessful() {
       assertDoesNotThrow(() -> new PurchaseCalculator(share));
@@ -49,7 +49,7 @@ class PurchaseTest {
   }
 
   @Nested
-  class commitTests {
+  class CommitTests {
     @Test
     void commitPlayerIsNull() {
       assertThrows(IllegalArgumentException.class, () -> purchase.commit(null));
