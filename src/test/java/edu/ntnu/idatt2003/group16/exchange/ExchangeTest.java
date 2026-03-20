@@ -20,12 +20,14 @@ class ExchangeTest {
   private Stock tesla;
   private Exchange exchange;
   private Player player;
+  private Stock norwegian;
 
   @BeforeEach
   void setUp() {
     apple = new Stock("AAPL", "Apple", BigDecimal.valueOf(150));
     tesla = new Stock("TSLA", "Tesla", BigDecimal.valueOf(135));
-    exchange = new Exchange("NASDAQ", List.of(tesla, apple));
+    norwegian = new Stock("NAS", "Norwegian", BigDecimal.valueOf(27));
+    exchange = new Exchange("NASDAQ", List.of(tesla, apple, norwegian));
     player = new Player("Hans", new BigDecimal("1000"));
   }
 
@@ -341,5 +343,43 @@ class ExchangeTest {
       }
     }
 
+  }
+
+  @Nested
+  class getGainersTests{
+
+    @Test
+    void shouldReturnTwoStocks() {
+      exchange.advance();
+      List<Stock> stock = exchange.getGainers(2);
+
+      assertEquals(2, stock.size());
+    }
+
+    @Test
+    void shouldReturnStocksSortedByHighestGain() {
+      Stock s1 = new Stock("A", "AA", new BigDecimal("100"));
+      Stock s2 = new Stock("B", "BB", new BigDecimal("100"));
+      Stock s3 = new Stock("C", "CC", new BigDecimal("100"));
+
+      // Simuler prisendring
+      s1.changeCurrentPrice(new BigDecimal("110")); // +10
+      s2.changeCurrentPrice(new BigDecimal("120")); // +20
+      s3.changeCurrentPrice(new BigDecimal("105")); // +5
+
+      Exchange exchange = new Exchange("Test", List.of(s1, s2, s3));
+
+      List<Stock> result = exchange.getGainers(3);
+
+      assertEquals("B", result.get(0).getSymbol());
+      assertEquals("A", result.get(1).getSymbol());
+      assertEquals("C", result.get(2).getSymbol());
+    }
+
+    @Test
+    void shouldThrowIfLimitIsLessThanOne() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.getGainers(0));
+    }
   }
 }

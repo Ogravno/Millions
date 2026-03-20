@@ -157,7 +157,6 @@ public class Exchange {
     return transaction;
   };
 
-  //TODO: unit tests
   /**
    * Sells a specified quantity of a stock for a player and commits the transaction.
    *
@@ -179,7 +178,6 @@ public class Exchange {
      return transaction;
    };
 
-  //TODO: unit tests
   /**
    * Makes the time go forward with a week.
    * Also changing the prices for the stocks.
@@ -200,5 +198,15 @@ public class Exchange {
 
        stock.changeCurrentPrice(newPrice);
      });
+   }
+
+   public List<Stock> getGainers(int limit) {
+    if (limit < 1) {
+      throw new IllegalArgumentException("limit cannot be less than 1");
+    }
+    return getAllStocks().stream()
+      .sorted(Comparator.comparing(Stock::getLatestPriceChange).reversed())
+      .limit(limit)
+      .toList();
    }
 }
