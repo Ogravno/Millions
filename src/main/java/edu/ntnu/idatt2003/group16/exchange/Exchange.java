@@ -39,7 +39,7 @@ public class Exchange {
     }
 
     this.name = name;
-    this.week = 0;
+    this.week = 1;
     this.stockMap = new HashMap<>();
     this.random = new Random();
 
@@ -140,6 +140,10 @@ public class Exchange {
 
     Share share = new Share(stock, quantity, stock.getCurrentPrice());
     Transaction transaction = new Purchase(share, week);
+
+    if (player.getMoney().compareTo(stock.getCurrentPrice().multiply(quantity)) < 0) {
+      throw new IllegalArgumentException("Player has not enough money");
+    }
 
     transaction.commit(player);
     return transaction;

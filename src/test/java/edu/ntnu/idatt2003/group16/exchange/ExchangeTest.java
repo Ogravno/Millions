@@ -1,6 +1,9 @@
 package edu.ntnu.idatt2003.group16.exchange;
 
+import edu.ntnu.idatt2003.group16.investment.Share;
 import edu.ntnu.idatt2003.group16.investment.Stock;
+import edu.ntnu.idatt2003.group16.player.Player;
+import edu.ntnu.idatt2003.group16.transaction.Transaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,12 +18,14 @@ class ExchangeTest {
   private Stock apple;
   private Stock tesla;
   private Exchange exchange;
+  private Player player;
 
   @BeforeEach
   void setUp() {
     apple = new Stock("AAPL", "Apple", BigDecimal.valueOf(150));
     tesla = new Stock("TSLA", "Tesla", BigDecimal.valueOf(135));
     exchange = new Exchange("NASDAQ", List.of(tesla, apple));
+    player = new Player("Hans", new BigDecimal("1000"));
   }
 
   @Nested
@@ -151,6 +156,93 @@ class ExchangeTest {
       List<Stock> result = exchange.findStocks("Windows");
 
       assertTrue(result.isEmpty());
+    }
+  }
+
+  @Nested
+  class buyTests{
+    @Test
+    void shouldWithdrawMoneyWhenBuyingShares() {
+      exchange.buy("AAPL", new BigDecimal("2"), player);
+
+      BigDecimal expectedResult = new BigDecimal("1000")
+        .subtract(apple.getCurrentPrice()
+          .multiply(new BigDecimal("1.05"))
+            .multiply(new BigDecimal("2")));
+
+      assertEquals(expectedResult, player.getMoney());
+    }
+
+    @Test
+    void shouldReturnTransactionWhenPurchaseIsSuccessful() {
+      Transaction transaction = exchange.buy("AAPL", new BigDecimal("1"), player);
+
+      assertNotNull(transaction);
+    }
+
+    @Test
+    void shouldAddShareToPortfolioWhenPurchaseIsSuccessful() {
+      exchange.buy("AAPL", new BigDecimal("2"), player);
+
+      List<Share> appleShares = player.getPortfolio().getShares("AAPL");
+      Share share = appleShares.getFirst();
+
+      assertEquals(1, player.getPortfolio().getShares("AAPL").size());
+      assertEquals(0, new BigDecimal("2").compareTo(share.getQuantity()));
+    }
+
+    @Test
+    void shouldThrowIfSymbolIsNull() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.buy(null, new BigDecimal("1"), player));
+    }
+
+    @Test
+    void shouldThrowIfSymbolIsBlank() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.buy(" ", new BigDecimal("1"), player));
+    }
+
+    @Test
+    void shouldThrowIfQuantityIsNull() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.buy("AAPL", null, player));
+    }
+
+    @Test
+    void shouldThrowIfQuantityIsBlank() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.buy("AAPL", new BigDecimal(" "), player));
+    }
+
+    @Test
+    void shouldThrowIfQuantityIsZero() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.buy("AAPL", new BigDecimal("0"), player));
+    }
+
+    @Test
+    void shouldThrowIfQuantityIsLessThanZero() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.buy("AAPL", new BigDecimal("-1"), player));
+    }
+
+    @Test
+    void shouldThrowIfPlayerIsNull() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.buy("AAPL", new BigDecimal("1"), null));
+    }
+
+    @Test
+    void shouldThrowIfStockIsNotInExchange() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.buy("APPL", new BigDecimal("1"), player));
+    }
+
+    @Test
+    void shouldThrowIfPlayerCannotAffordThePurchase() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.buy("AAPL", new BigDecimal("100"), player));
     }
   }
 }
