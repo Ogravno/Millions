@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.group16.exchange;
 import edu.ntnu.idatt2003.group16.investment.Share;
 import edu.ntnu.idatt2003.group16.investment.Stock;
 import edu.ntnu.idatt2003.group16.player.Player;
+import edu.ntnu.idatt2003.group16.transaction.Sale;
 import edu.ntnu.idatt2003.group16.transaction.Transaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -244,5 +245,101 @@ class ExchangeTest {
       assertThrows(IllegalArgumentException.class, () ->
         exchange.buy("AAPL", new BigDecimal("100"), player));
     }
+  }
+
+  @Nested
+  class sellTests{
+
+    @BeforeEach
+    void setUp() {
+      exchange.buy("AAPL", new BigDecimal("2"), player);
+    }
+
+    @Test
+    void shouldSellShare() {
+      exchange.sell(player.getPortfolio().getShares("AAPL").getFirst(),player);
+
+      assertEquals(0, player.getPortfolio().getShares().size());
+    }
+
+    @Test
+    void shouldThrowIfShareIsNull() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.sell(null,player));
+    }
+
+    @Test
+    void shouldThrowIfPlayerIsNull() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.sell(player.getPortfolio().getShares("AAPL").getFirst(),null));
+    }
+
+    @Test
+    void shouldReturnTransaction() {
+      Transaction transaction = exchange.sell(player.getPortfolio().getShares("AAPL").getFirst(),player);
+
+      assertNotNull(transaction);
+      assertInstanceOf(Sale.class, transaction);
+    }
+
+    @Test
+    void shouldReturnTransactionWithCorrectShare() {
+      Share share = player.getPortfolio().getShares("AAPL").getFirst();
+
+      Sale sale = (Sale) exchange.sell(share,player);
+
+      assertEquals(share, sale.getShare());
+    }
+
+    @Test
+    void shouldIncreasePlayersBalanceWhenSelling() {
+      Share share = player.getPortfolio().getShares("AAPL").getFirst();
+      BigDecimal balanceBeforeSale = player.getMoney();
+
+      exchange.sell(share, player);
+
+      assertTrue(player.getMoney().compareTo(balanceBeforeSale) > 0);
+    }
+
+  }
+
+  @Nested
+  class advanceTests{
+
+    @BeforeEach
+    void setUp() {
+      exchange.buy("AAPL", new BigDecimal("2"), player);
+    }
+
+    @Test
+    void shouldIncreaseWeek() {
+
+      int week = exchange.getWeek();
+      exchange.advance();
+      int nextWeek = exchange.getWeek();
+
+      assertEquals(week + 1, nextWeek);
+    }
+
+    @Test
+    void shouldKeepPricePositiveAfterAdvance() {
+      exchange.advance();
+
+      for (Stock stock : exchange.getAllStocks()) {
+        assertTrue(stock.getCurrentPrice().compareTo(new BigDecimal("0.01")) >= 0);
+      }
+    }
+
+    @Test
+    void shouldNeverSetPriceBelowMinimum() {
+      Stock cheapStock = new Stock("CHEAP", "Cheap stock", new BigDecimal("0.01"));
+      Exchange exchange = new Exchange("Test", List.of(cheapStock));
+
+      for (int i = 0; i < 100; i++) {
+        exchange.advance();
+        assertTrue(cheapStock.getCurrentPrice().compareTo(new BigDecimal("0.01")) >= 0);
+      }
+    }
+
   }
 }

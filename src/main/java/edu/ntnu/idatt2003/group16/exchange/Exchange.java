@@ -74,6 +74,15 @@ public class Exchange {
   }
 
   /**
+   * Get all stocks in Exchange as a list.
+   *
+   * @return List with copy of stockMap.values()
+   */
+  public List<Stock> getAllStocks() {
+    return List.copyOf(stockMap.values());
+  }
+
+  /**
    * Gets the stock that matches the symbol.
    *
    * @param symbol to find matching stock with
@@ -111,7 +120,6 @@ public class Exchange {
     return result;
   }
 
-  //TODO: unit tests
   /**
    * Buys a specified quantity of a stock for a player and commits the transaction.
    *
@@ -176,7 +184,7 @@ public class Exchange {
    * Makes the time go forward with a week.
    * Also changing the prices for the stocks.
    */
-  public void Advance() {
+  public void advance() {
      week++;
 
      stockMap.values().forEach(stock -> {
@@ -192,5 +200,5 @@ public class Exchange {
 
        stock.changeCurrentPrice(newPrice);
      });
-   };
+   }
 }
