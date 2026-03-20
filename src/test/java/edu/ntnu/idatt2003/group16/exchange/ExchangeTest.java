@@ -382,4 +382,43 @@ class ExchangeTest {
         exchange.getGainers(0));
     }
   }
+
+  @Nested
+  class getLosersTests{
+
+    @Test
+    void shouldReturnTwoStocks() {
+      exchange.advance();
+      List<Stock> stock = exchange.getLosers(2);
+
+      assertEquals(2, stock.size());
+    }
+
+    @Test
+    void shouldReturnStocksSortedByHighestGain() {
+      Stock s1 = new Stock("A", "AA", new BigDecimal("100"));
+      Stock s2 = new Stock("B", "BB", new BigDecimal("100"));
+      Stock s3 = new Stock("C", "CC", new BigDecimal("100"));
+
+      // Simuler prisendring
+      s1.changeCurrentPrice(new BigDecimal("90")); // -10
+      s2.changeCurrentPrice(new BigDecimal("100")); // 0
+      s3.changeCurrentPrice(new BigDecimal("91")); // -9
+
+      Exchange exchange = new Exchange("Test", List.of(s1, s2, s3));
+
+      List<Stock> result = exchange.getLosers(3);
+
+      assertEquals("A", result.get(0).getSymbol());
+      assertEquals("C", result.get(1).getSymbol());
+      assertEquals("B", result.get(2).getSymbol());
+    }
+
+    @Test
+    void shouldThrowIfLimitIsLessThanOne() {
+      assertThrows(IllegalArgumentException.class, () ->
+        exchange.getGainers(0));
+    }
+  }
 }
+

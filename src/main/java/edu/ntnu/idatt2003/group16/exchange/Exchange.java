@@ -209,4 +209,14 @@ public class Exchange {
       .limit(limit)
       .toList();
    }
+
+  public List<Stock> getLosers(int limit) {
+    if (limit < 1) {
+      throw new IllegalArgumentException("limit cannot be less than 1");
+    }
+    return getAllStocks().stream()
+      .sorted(Comparator.comparing(Stock::getLatestPriceChange))
+      .limit(limit)
+      .toList();
+  }
 }
