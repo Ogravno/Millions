@@ -18,7 +18,7 @@ public abstract class Transaction {
   /**
    * Constructor for {@link Transaction} class.
    *
-   * @param share the sare involved in the transaction
+   * @param share the share involved in the transaction
    * @param week the week the transaction happens
    * @param calculator the calculator used for the transaction
    * @throws IllegalArgumentException when share or calculator are null
