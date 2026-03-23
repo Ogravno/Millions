@@ -13,7 +13,6 @@ public class Player {
   private BigDecimal money;
   private final Portfolio portfolio;
   private final TransactionArchive transactionArchive;
-  private Status status;
 
   /**
    * Constructor for the {@link Player} class.
@@ -39,6 +38,10 @@ public class Player {
 
   public String getName() {
     return name;
+  }
+
+  public BigDecimal getStartingMoney() {
+    return startingMoney;
   }
 
   public BigDecimal getMoney() {
@@ -112,4 +115,36 @@ public class Player {
   public BigDecimal getNetWorth() {
     return money.add(portfolio.getNetWorth());
   }
+
+  /**
+   * Gets the status of the player.
+   *
+   * <P>{@code NOVICE} - Starting level for player. No qualification needed.
+   * </P>
+   *
+   * <P>{@code INVESTOR} - Player reaches INVESTOR if player have played for minimum 10 weeks
+   *   and have at least 20% profit.
+   * </P>
+   *
+   * <P>{@code SPECULATOR} - Player reaches INVESTOR if player have played for minimum 20 weeks
+   *    *   and have at least doubled his investments.
+   * </P>
+   *
+   * @return the current status the player are in.
+   */
+  public Status getStatus() {
+    BigDecimal twentyPercentThreshold = startingMoney.multiply(new BigDecimal("1.2"));
+    BigDecimal doubleThreshold = startingMoney.multiply(new BigDecimal("2"));
+    int weeks = transactionArchive.countDistinctWeeks();
+    BigDecimal netWorth = getNetWorth();
+
+    if (weeks >= 20 && netWorth.compareTo(doubleThreshold) >= 0) {
+      return Status.SPECULATOR;
+    } else if (weeks >= 10 && netWorth.compareTo(twentyPercentThreshold) >= 0) {
+      return Status.INVESTOR;
+    } else {
+      return Status.NOVICE;
+    }
+  }
+
 }
