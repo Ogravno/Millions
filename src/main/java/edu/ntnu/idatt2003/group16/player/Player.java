@@ -13,6 +13,7 @@ public class Player {
   private BigDecimal money;
   private final Portfolio portfolio;
   private final TransactionArchive transactionArchive;
+  private Status status;
 
   /**
    * Constructor for the {@link Player} class.
@@ -88,7 +89,7 @@ public class Player {
    * @param money the amount of money to validate
    * @param parameterName the name of the parameter being validated
    * @throws IllegalArgumentException if {@code money} is null
-   * @throws IllegalArgumentException if @code money} is negative or zero
+   * @throws IllegalArgumentException if {@code money} is negative or zero
    */
   private void moneyValidation(BigDecimal money, String parameterName) {
     if (money == null) {

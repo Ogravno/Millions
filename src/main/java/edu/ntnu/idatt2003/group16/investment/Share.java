@@ -22,7 +22,7 @@ public class Share {
    * @param quantity is the amount of shares to buy.
    * @param purchasePrice is the price per share.
    * @throws IllegalArgumentException if stock, quantity or purchasePrice is null,
-   *         and if quantity and purchasePrice is not greater than zero.
+   *         or if quantity or purchasePrice is not greater than zero.
    */
   public Share(Stock stock, BigDecimal quantity, BigDecimal purchasePrice) {
     if (stock == null) {
