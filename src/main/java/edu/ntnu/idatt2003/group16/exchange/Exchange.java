@@ -200,6 +200,13 @@ public class Exchange {
      });
    }
 
+  /**
+   * Get a list of stocks with the most gain since last week.
+   * The amount of stocks depends on the parameter.
+   *
+   * @param limit the amount of stocks to show
+   * @return list with the limit amount of stocks
+   */
    public List<Stock> getGainers(int limit) {
     if (limit < 1) {
       throw new IllegalArgumentException("limit cannot be less than 1");
@@ -210,6 +217,13 @@ public class Exchange {
       .toList();
    }
 
+  /**
+   * Get a list of stocks with the biggest loss since last week.
+   * The amount of stocks depends on the parameter.
+   *
+   * @param limit the amount of stocks to show
+   * @return list with the limit amount of stocks
+   */
   public List<Stock> getLosers(int limit) {
     if (limit < 1) {
       throw new IllegalArgumentException("limit cannot be less than 1");
