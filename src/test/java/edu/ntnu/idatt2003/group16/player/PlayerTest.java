@@ -4,10 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import edu.ntnu.idatt2003.group16.exchange.Exchange;
 import edu.ntnu.idatt2003.group16.investment.Share;
 import edu.ntnu.idatt2003.group16.investment.Stock;
+import edu.ntnu.idatt2003.group16.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.transaction.calculator.SaleCalculator;
 import java.math.BigDecimal;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,23 +21,27 @@ class PlayerTest {
   Share googleShare;
   Share googleShare2;
   Share appleShare;
+  Exchange exchange;
+  Stock appleStock;
+  Stock googleStock;
 
   @BeforeEach
   void setUp() {
     player = new Player("Player 1", new BigDecimal("100"));
 
     BigDecimal googlePurchasePrice = new BigDecimal("3.15");
-    Stock googleStock = new Stock(
+    googleStock = new Stock(
         "GOOG", "Alphabet Inc Class C", googlePurchasePrice);
     BigDecimal googleQuantity = new BigDecimal("3");
     googleShare = new Share(googleStock, googleQuantity, googlePurchasePrice);
     googleShare2 = new Share(googleStock, new BigDecimal("2"), googlePurchasePrice);
 
     BigDecimal applePurchasePrice = new BigDecimal("251.38");
-    Stock appleStock = new Stock(
+    appleStock = new Stock(
         "AAPL", "Alphabet Inc Class C", applePurchasePrice);
-    BigDecimal appleQuantity = new BigDecimal("2");
+    BigDecimal appleQuantity = new BigDecimal("15");
     appleShare = new Share(appleStock, appleQuantity, applePurchasePrice);
+    exchange = new Exchange("exchange", List.of(appleStock, googleStock));
   }
 
   @Test
@@ -140,6 +148,100 @@ class PlayerTest {
       player.withdrawMoney(moneyToWithdraw);
 
       assertEquals(expectedResult, player.getMoney());
+    }
+  }
+
+  @Nested
+  class getStatusTests {
+
+    @Test
+    void shouldReturnNOVICE() {
+      Status status = player.getStatus();
+
+      assertEquals(Status.NOVICE, status);
+    }
+
+    @Test
+    void shouldReturnNOVICEWhenWeekIsLessThanTen() {
+      Player player1 = new Player("Player1", new BigDecimal("3000"));
+
+      for (int i = 0; i < 5; i++) {
+        exchange.buy("AAPL", BigDecimal.ONE, player1);
+        exchange.advance();
+        appleStock.changeCurrentPrice(new BigDecimal("250"));
+      }
+
+      appleStock.changeCurrentPrice(new BigDecimal("5000"));
+      assertEquals(Status.NOVICE, player1.getStatus());
+    }
+
+    @Test
+    void shouldReturnNOVICEWhenNetWorthIsLessThanTwentyPercentThreshold() {
+      Player player1 = new Player("Player1", new BigDecimal("3000"));
+
+      for (int i = 0; i < 10; i++) {
+        exchange.buy("AAPL", BigDecimal.ONE, player1);
+        exchange.advance();
+        appleStock.changeCurrentPrice(new BigDecimal("250"));
+      }
+
+      assertEquals(Status.NOVICE, player1.getStatus());
+    }
+
+    @Test
+    void shouldReturnINVESTOR() {
+      Player player1 = new Player("Player1", new BigDecimal("3000"));
+
+      for (int i = 0; i < 10; i++) {
+        exchange.buy("AAPL", BigDecimal.ONE, player1);
+        exchange.advance();
+        appleStock.changeCurrentPrice(new BigDecimal("250"));
+      }
+
+      appleStock.changeCurrentPrice(new BigDecimal("5000"));
+      assertEquals(Status.INVESTOR, player1.getStatus());
+    }
+
+    @Test
+    void shouldReturnINVESTORWhenWeekIsLessThanTwenty() {
+      Player player1 = new Player("Player1", new BigDecimal("6000"));
+
+      for (int i = 0; i < 15; i++) {
+        exchange.buy("AAPL", BigDecimal.ONE, player1);
+        exchange.advance();
+        appleStock.changeCurrentPrice(new BigDecimal("250"));
+      }
+
+      appleStock.changeCurrentPrice(new BigDecimal("5000"));
+      assertEquals(Status.INVESTOR, player1.getStatus());
+    }
+
+    @Test
+    void shouldReturnINVESTORWhenNetWorthIsBetweenTwentyAndHundredPrecentGain() {
+      Player player1 = new Player("Player1", new BigDecimal("6000"));
+
+      for (int i = 0; i < 20; i++) {
+        exchange.buy("AAPL", BigDecimal.ONE, player1);
+        exchange.advance();
+        appleStock.changeCurrentPrice(new BigDecimal("250"));
+      }
+
+      appleStock.changeCurrentPrice(new BigDecimal("400"));
+      assertEquals(Status.INVESTOR, player1.getStatus());
+    }
+
+    @Test
+    void shouldReturnSPECULATOR() {
+      Player player1 = new Player("Player1", new BigDecimal("6000"));
+
+      for (int i = 0; i < 20; i++) {
+        exchange.buy("AAPL", BigDecimal.ONE, player1);
+        exchange.advance();
+        appleStock.changeCurrentPrice(new BigDecimal("250"));
+      }
+
+      appleStock.changeCurrentPrice(new BigDecimal("5000"));
+      assertEquals(Status.SPECULATOR, player1.getStatus());
     }
   }
 }
