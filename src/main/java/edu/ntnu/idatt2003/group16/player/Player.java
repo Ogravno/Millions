@@ -40,10 +40,18 @@ public class Player {
     return name;
   }
 
+  public BigDecimal getStartingMoney() {
+    return startingMoney;
+  }
+
   public BigDecimal getMoney() {
     return money;
   }
 
+  // Ka brukes denj her t?
+  // E d sånn at bruker kan legg t peng?
+  // I såfall, så bør money legges t starting money?
+  // Sånn at man kan våttå ka som e profitt og ikke?
   /**
    * Adds money.
    *
@@ -88,7 +96,7 @@ public class Player {
    * @param money the amount of money to validate
    * @param parameterName the name of the parameter being validated
    * @throws IllegalArgumentException if {@code money} is null
-   * @throws IllegalArgumentException if @code money} is negative or zero
+   * @throws IllegalArgumentException if {@code money} is negative or zero
    */
   private void moneyValidation(BigDecimal money, String parameterName) {
     if (money == null) {
@@ -111,4 +119,36 @@ public class Player {
   public BigDecimal getNetWorth() {
     return money.add(portfolio.getNetWorth());
   }
+
+  /**
+   * Gets the status of the player.
+   *
+   * <P>{@code NOVICE} - Starting level for player. No qualification needed.
+   * </P>
+   *
+   * <P>{@code INVESTOR} - Player reaches INVESTOR if player have played for minimum 10 weeks
+   *   and have at least 20% profit.
+   * </P>
+   *
+   * <P>{@code SPECULATOR} - Player reaches INVESTOR if player have played for minimum 20 weeks
+   *    *   and have at least doubled his investments.
+   * </P>
+   *
+   * @return the current status the player are in.
+   */
+  public Status getStatus() {
+    BigDecimal twentyPercentThreshold = startingMoney.multiply(new BigDecimal("1.2"));
+    BigDecimal doubleThreshold = startingMoney.multiply(new BigDecimal("2"));
+    int weeks = transactionArchive.countDistinctWeeks();
+    BigDecimal netWorth = getNetWorth();
+
+    if (weeks >= 20 && netWorth.compareTo(doubleThreshold) >= 0) {
+      return Status.SPECULATOR;
+    } else if (weeks >= 10 && netWorth.compareTo(twentyPercentThreshold) >= 0) {
+      return Status.INVESTOR;
+    } else {
+      return Status.NOVICE;
+    }
+  }
+
 }
