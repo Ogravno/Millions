@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:11.8
+    container_name: mariadb-container
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: spw
+      MARIADB_DATABASE: millions
+      MARIADB_USER: myuser
+      MARIADB_PASSWORD: pw
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:
