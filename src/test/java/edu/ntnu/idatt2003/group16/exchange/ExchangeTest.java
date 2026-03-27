@@ -170,7 +170,7 @@ class ExchangeTest {
 
       BigDecimal expectedResult = new BigDecimal("1000")
         .subtract(apple.getCurrentPrice()
-          .multiply(new BigDecimal("1.05"))
+          .multiply(new BigDecimal("1.005"))
             .multiply(new BigDecimal("2")));
 
       assertEquals(expectedResult, player.getMoney());

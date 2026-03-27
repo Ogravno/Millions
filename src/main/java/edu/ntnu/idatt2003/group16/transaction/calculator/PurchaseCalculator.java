@@ -50,7 +50,7 @@ public class PurchaseCalculator implements TransactionCalculator {
    */
   @Override
   public BigDecimal calculateCommission() {
-    return calculateGross().multiply(BigDecimal.valueOf(0.05));
+    return calculateGross().multiply(BigDecimal.valueOf(0.005));
   }
 
   /**
