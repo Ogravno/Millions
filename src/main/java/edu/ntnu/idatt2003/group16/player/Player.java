@@ -48,10 +48,6 @@ public class Player {
     return money;
   }
 
-  // Ka brukes denj her t?
-  // E d sånn at bruker kan legg t peng?
-  // I såfall, så bør money legges t starting money?
-  // Sånn at man kan våttå ka som e profitt og ikke?
   /**
    * Adds money.
    *
