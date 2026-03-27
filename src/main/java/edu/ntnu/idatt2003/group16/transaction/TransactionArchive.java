@@ -29,6 +29,9 @@ public class TransactionArchive {
     if (transaction == null) {
       throw new IllegalArgumentException("transaction cannot be null");
     }
+    if (getTransactions().contains(transaction)) {
+      throw new IllegalArgumentException("Transaction already in archive");
+    }
 
     return transactions.add(transaction);
   }
@@ -40,6 +43,10 @@ public class TransactionArchive {
    */
   public boolean isEmpty() {
     return transactions.isEmpty();
+  }
+
+  public List<Transaction> getTransactions() {
+    return transactions;
   }
 
   /**

@@ -8,6 +8,7 @@ import edu.ntnu.idatt2003.group16.investment.Share;
 import edu.ntnu.idatt2003.group16.investment.Stock;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class PurchaseCalculatorTest {
@@ -35,14 +36,17 @@ class PurchaseCalculatorTest {
     expectedTotal = expectedGrossValue.add(expectedCommission).add(expectedTax);
   }
 
-  @Test
-  void constructorSuccessful() {
-    assertDoesNotThrow(() -> new PurchaseCalculator(share));
-  }
+  @Nested
+  class ConstructorTests {
+    @Test
+    void constructorSuccessful() {
+      assertDoesNotThrow(() -> new PurchaseCalculator(share));
+    }
 
-  @Test
-  void constructorParameterIsNull() {
-    assertThrows(IllegalArgumentException.class, () -> new PurchaseCalculator(null));
+    @Test
+    void constructorParameterIsNull() {
+      assertThrows(IllegalArgumentException.class, () -> new PurchaseCalculator(null));
+    }
   }
 
   @Test
@@ -53,7 +57,7 @@ class PurchaseCalculatorTest {
   @Test
   void calculateCommission() {
     assertEquals(expectedCommission, purchaseCalculator.calculateCommission());
-    }
+  }
 
   @Test
   void calculateTax() {

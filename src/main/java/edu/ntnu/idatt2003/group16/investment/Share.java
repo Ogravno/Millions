@@ -22,7 +22,7 @@ public class Share {
    * @param quantity is the amount of shares to buy.
    * @param purchasePrice is the price per share.
    * @throws IllegalArgumentException if stock, quantity or purchasePrice is null,
-   *         and if quantity and purchasePrice is not greater than zero.
+   *         or if quantity or purchasePrice is not greater than zero.
    */
   public Share(Stock stock, BigDecimal quantity, BigDecimal purchasePrice) {
     if (stock == null) {
@@ -44,8 +44,15 @@ public class Share {
     this.purchasePrice = purchasePrice;
   }
 
-  // Equality is based on unique purchase id
+
   // Ref https://www.geeksforgeeks.org/java/equals-hashcode-methods-java/
+
+  /**
+   * Compares shares based on their unique id.
+   *
+   * @param o the reference object with which to compare.
+   * @return true if both shares have same id, false if not.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -59,6 +66,11 @@ public class Share {
     return id.equals(share.id);
   }
 
+  /**
+   * Return hashcode based on the share's unique id.
+   *
+   * @return hashcode of the id.
+   */
   @Override
   public int hashCode() {
     return id.hashCode();
