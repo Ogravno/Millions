@@ -1,7 +1,6 @@
-package edu.ntnu.idatt2003.group16.fileManagement;
+package edu.ntnu.idatt2003.group16.filemanagement;
 
 import edu.ntnu.idatt2003.group16.investment.Stock;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;

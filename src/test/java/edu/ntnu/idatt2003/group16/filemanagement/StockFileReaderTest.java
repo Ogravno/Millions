@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.group16.fileManagement;
+package edu.ntnu.idatt2003.group16.filemanagement;
 
 import edu.ntnu.idatt2003.group16.investment.Stock;
 import org.junit.jupiter.api.Test;
