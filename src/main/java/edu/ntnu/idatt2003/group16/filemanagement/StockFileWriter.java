@@ -17,7 +17,6 @@ public class StockFileWriter {
   /**
    * Writes stock data to a CSV file.
    *
-   *
    * @param path the path to CSV file to save stock data.
    * @param stocks the stocks to be saved in file
    * @throws IOException if an IO error occurs writing to file.
