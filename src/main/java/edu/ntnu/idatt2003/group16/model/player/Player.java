@@ -1,7 +1,7 @@
-package edu.ntnu.idatt2003.group16.player;
+package edu.ntnu.idatt2003.group16.model.player;
 
-import edu.ntnu.idatt2003.group16.investment.Portfolio;
-import edu.ntnu.idatt2003.group16.transaction.TransactionArchive;
+import edu.ntnu.idatt2003.group16.model.investment.Portfolio;
+import edu.ntnu.idatt2003.group16.model.transaction.TransactionArchive;
 import java.math.BigDecimal;
 
 /**

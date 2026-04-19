@@ -1,5 +1,7 @@
 package edu.ntnu.idatt2003.group16.investment;
 
+import edu.ntnu.idatt2003.group16.model.investment.Share;
+import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

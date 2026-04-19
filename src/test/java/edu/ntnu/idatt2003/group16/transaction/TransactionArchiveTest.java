@@ -6,11 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import edu.ntnu.idatt2003.group16.investment.Share;
-import edu.ntnu.idatt2003.group16.investment.Stock;
+import edu.ntnu.idatt2003.group16.model.investment.Share;
+import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
+import edu.ntnu.idatt2003.group16.model.transaction.Sale;
+import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
+import edu.ntnu.idatt2003.group16.model.transaction.TransactionArchive;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

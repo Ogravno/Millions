@@ -5,7 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import edu.ntnu.idatt2003.group16.transaction.calculator.SaleCalculator;
+import edu.ntnu.idatt2003.group16.model.investment.Portfolio;
+import edu.ntnu.idatt2003.group16.model.investment.Share;
+import edu.ntnu.idatt2003.group16.model.investment.Stock;
+import edu.ntnu.idatt2003.group16.model.transaction.calculator.SaleCalculator;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

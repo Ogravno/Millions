@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.group16.filemanagement;
 
-import edu.ntnu.idatt2003.group16.investment.Stock;
+import edu.ntnu.idatt2003.group16.model.filemanagement.StockFileReader;
+import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

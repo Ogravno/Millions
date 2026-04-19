@@ -1,6 +1,6 @@
-package edu.ntnu.idatt2003.group16.investment;
+package edu.ntnu.idatt2003.group16.model.investment;
 
-import edu.ntnu.idatt2003.group16.transaction.calculator.SaleCalculator;
+import edu.ntnu.idatt2003.group16.model.transaction.calculator.SaleCalculator;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;

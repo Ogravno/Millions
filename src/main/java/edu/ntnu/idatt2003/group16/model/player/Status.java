@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.group16.player;
+package edu.ntnu.idatt2003.group16.model.player;
 
 /**
  * Tells the player's progress

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
+
+import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 

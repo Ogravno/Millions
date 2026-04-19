@@ -5,10 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import edu.ntnu.idatt2003.group16.investment.Share;
-import edu.ntnu.idatt2003.group16.investment.Stock;
-import edu.ntnu.idatt2003.group16.player.Player;
-import edu.ntnu.idatt2003.group16.transaction.calculator.PurchaseCalculator;
+import edu.ntnu.idatt2003.group16.model.investment.Share;
+import edu.ntnu.idatt2003.group16.model.investment.Stock;
+import edu.ntnu.idatt2003.group16.model.player.Player;
+import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
+import edu.ntnu.idatt2003.group16.model.transaction.calculator.PurchaseCalculator;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;

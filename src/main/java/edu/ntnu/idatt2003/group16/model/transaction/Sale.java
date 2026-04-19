@@ -1,8 +1,8 @@
-package edu.ntnu.idatt2003.group16.transaction;
+package edu.ntnu.idatt2003.group16.model.transaction;
 
-import edu.ntnu.idatt2003.group16.investment.Share;
-import edu.ntnu.idatt2003.group16.player.Player;
-import edu.ntnu.idatt2003.group16.transaction.calculator.SaleCalculator;
+import edu.ntnu.idatt2003.group16.model.investment.Share;
+import edu.ntnu.idatt2003.group16.model.player.Player;
+import edu.ntnu.idatt2003.group16.model.transaction.calculator.SaleCalculator;
 
 /**
  * Class representing a sale.

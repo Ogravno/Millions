@@ -4,11 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import edu.ntnu.idatt2003.group16.exchange.Exchange;
-import edu.ntnu.idatt2003.group16.investment.Share;
-import edu.ntnu.idatt2003.group16.investment.Stock;
-import edu.ntnu.idatt2003.group16.transaction.Purchase;
-import edu.ntnu.idatt2003.group16.transaction.calculator.SaleCalculator;
+import edu.ntnu.idatt2003.group16.model.exchange.Exchange;
+import edu.ntnu.idatt2003.group16.model.investment.Share;
+import edu.ntnu.idatt2003.group16.model.investment.Stock;
+import edu.ntnu.idatt2003.group16.model.player.Player;
+import edu.ntnu.idatt2003.group16.model.player.Status;
+import edu.ntnu.idatt2003.group16.model.transaction.calculator.SaleCalculator;
 import java.math.BigDecimal;
 import java.util.List;
 

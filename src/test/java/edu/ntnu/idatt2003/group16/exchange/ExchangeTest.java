@@ -1,10 +1,11 @@
 package edu.ntnu.idatt2003.group16.exchange;
 
-import edu.ntnu.idatt2003.group16.investment.Share;
-import edu.ntnu.idatt2003.group16.investment.Stock;
-import edu.ntnu.idatt2003.group16.player.Player;
-import edu.ntnu.idatt2003.group16.transaction.Sale;
-import edu.ntnu.idatt2003.group16.transaction.Transaction;
+import edu.ntnu.idatt2003.group16.model.exchange.Exchange;
+import edu.ntnu.idatt2003.group16.model.investment.Share;
+import edu.ntnu.idatt2003.group16.model.investment.Stock;
+import edu.ntnu.idatt2003.group16.model.player.Player;
+import edu.ntnu.idatt2003.group16.model.transaction.Sale;
+import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
