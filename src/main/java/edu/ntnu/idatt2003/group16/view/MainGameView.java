@@ -7,6 +7,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
@@ -18,7 +20,13 @@ public class MainGameView implements GameObserver {
 
   private final GameController gameController;
   private final GameSession gameSession;
+
   private final Label weekLabel;
+  private final Label graphPanel;
+  private final Label portfolioPanel;
+  private final Label sharesPanel;
+  private final Label headerLabel;
+
   private final Scene scene;
 
   /**
@@ -32,13 +40,41 @@ public class MainGameView implements GameObserver {
     this.gameSession = gameSession;
 
     this.weekLabel = new Label();
+    this.graphPanel = new Label("Future graph");
+    this.portfolioPanel = new Label("Future Portfolio");
+    this.sharesPanel = new Label("Future shares");
+    this.headerLabel = new Label("Future header");
 
     Button advanceWeekButton = new Button("Advance Week");
-    advanceWeekButton.setOnAction(event -> gameController.advanceWeek());
+    advanceWeekButton.setOnAction(event -> this.gameController.advanceWeek());
 
-    VBox root = new VBox(10);
+    // Main panes
+    BorderPane root = new BorderPane();
+    HBox header = new HBox(10);
+    VBox mainCenter = new VBox(10);
+    // VBox exchangeCenter = new VBox(10);
+    // VBox transactionsCenter = new VBox(10);
+
+    // Header
+    header.getChildren().addAll(headerLabel, weekLabel, advanceWeekButton);
+
+    // MainCenter
+    HBox hBoxMainCenter = new HBox(10); // Contains Graph and portfolio
+    hBoxMainCenter.getChildren().addAll(graphPanel, portfolioPanel);
+    mainCenter.getChildren().addAll(hBoxMainCenter, sharesPanel);
+
+    // Connect panes
+    root.setTop(header);
+    root.setCenter(mainCenter);
+
+    // Padding
     root.setPadding(new Insets(20));
-    root.getChildren().addAll(weekLabel, advanceWeekButton);
+    mainCenter.setPadding(new Insets(10));
+    header.setPadding(new Insets(10));
+
+    // Spacing
+    header.setSpacing(20);
+    hBoxMainCenter.setSpacing(20);
 
     this.scene = new Scene(root, 400, 200);
 
@@ -59,7 +95,10 @@ public class MainGameView implements GameObserver {
    * Updates the view with current game data.
    */
   private void updateView() {
-    weekLabel.setText("Week: " + gameSession.getExchange().getWeek());
+    weekLabel.setText("Week: " + gameSession.getExchange().getWeek()); /*
+    moneyLabel.setText("Money: "+ gameSession.getPlayer().getMoney());
+    netWorthLabel.setText("Net worth: " + gameSession.getPlayer().getNetWorth());
+    statusLabel.setText("Status: " + gameSession.getPlayer().getStatus());      */
   }
 
   @Override
