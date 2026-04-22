@@ -21,11 +21,12 @@ public class MainGameView implements GameObserver {
 
   private final GameController gameController;
   private final GameSession gameSession;
+  private final ExchangeGameView exchangeGameView;
 
   private final Label weekLabel;
   private final Label graphPanel;
-  private final Label portfolioHeader;
-  private final Label sharesHeader;
+  private final Label portfolioLabel;
+  private final Label sharesLabel;
   private final Label headerLabel;
 
   // for portfolio
@@ -46,11 +47,12 @@ public class MainGameView implements GameObserver {
   public MainGameView(GameController gameController, GameSession gameSession) {
     this.gameController = gameController;
     this.gameSession = gameSession;
+    this.exchangeGameView = new ExchangeGameView(gameSession);
 
     this.weekLabel = new Label();
     this.graphPanel = new Label("Future graph");
-    this.portfolioHeader = new Label("Portfolio");
-    this.sharesHeader = new Label("Your Shares");
+    this.portfolioLabel = new Label("Portfolio");
+    this.sharesLabel = new Label("Your Shares");
     this.headerLabel = new Label("Future header");
 
     this.money = new Label();
@@ -66,8 +68,6 @@ public class MainGameView implements GameObserver {
     BorderPane root = new BorderPane();
     HBox header = new HBox(10);
     VBox mainCenter = new VBox(10);
-    // VBox exchangeCenter = new VBox(10);
-    // VBox transactionsCenter = new VBox(10);
 
     // Header
     header.getChildren().addAll(headerLabel, weekLabel, advanceWeekButton);
@@ -76,9 +76,9 @@ public class MainGameView implements GameObserver {
     HBox hBoxMainCenter = new HBox(10); // Contains Graph and portfolio
 
     VBox portfolio = new VBox(10);
-    portfolio.getChildren().addAll(portfolioHeader, money, netWorth, status);
+    portfolio.getChildren().addAll(portfolioLabel, money, netWorth, status);
 
-    sharesBox.getChildren().addAll(sharesHeader);
+    sharesBox.getChildren().addAll(sharesLabel);
 
     hBoxMainCenter.getChildren().addAll(graphPanel, portfolio);
     mainCenter.getChildren().addAll(hBoxMainCenter, sharesBox);
@@ -116,6 +116,7 @@ public class MainGameView implements GameObserver {
    */
   private void updateView() {
     weekLabel.setText("Week: " + gameSession.getExchange().getWeek());
+    exchangeGameView.updateView();
 
     // Portfolio
     money.setText("Your money: " + gameSession.getPlayer().getMoney());
@@ -124,7 +125,7 @@ public class MainGameView implements GameObserver {
 
     // Shares
     sharesBox.getChildren().clear();
-    sharesBox.getChildren().add(sharesHeader);
+    sharesBox.getChildren().add(sharesLabel);
 
     for (Share share : gameSession.getPlayer().getPortfolio().getShares()) {
       Label shareLabel = new Label(
