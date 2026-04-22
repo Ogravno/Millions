@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
+import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -23,9 +24,16 @@ public class MainGameView implements GameObserver {
 
   private final Label weekLabel;
   private final Label graphPanel;
-  private final Label portfolioPanel;
-  private final Label sharesPanel;
+  private final Label portfolioHeader;
+  private final Label sharesHeader;
   private final Label headerLabel;
+
+  // for portfolio
+  private final Label money;
+  private final Label netWorth;
+  private final Label status;
+
+  private final VBox sharesBox;
 
   private final Scene scene;
 
@@ -41,9 +49,15 @@ public class MainGameView implements GameObserver {
 
     this.weekLabel = new Label();
     this.graphPanel = new Label("Future graph");
-    this.portfolioPanel = new Label("Future Portfolio");
-    this.sharesPanel = new Label("Future shares");
+    this.portfolioHeader = new Label("Portfolio");
+    this.sharesHeader = new Label("Your Shares");
     this.headerLabel = new Label("Future header");
+
+    this.money = new Label();
+    this.netWorth = new Label();
+    this.status = new Label();
+
+    this.sharesBox = new VBox(10);
 
     Button advanceWeekButton = new Button("Advance Week");
     advanceWeekButton.setOnAction(event -> this.gameController.advanceWeek());
@@ -60,8 +74,14 @@ public class MainGameView implements GameObserver {
 
     // MainCenter
     HBox hBoxMainCenter = new HBox(10); // Contains Graph and portfolio
-    hBoxMainCenter.getChildren().addAll(graphPanel, portfolioPanel);
-    mainCenter.getChildren().addAll(hBoxMainCenter, sharesPanel);
+
+    VBox portfolio = new VBox(10);
+    portfolio.getChildren().addAll(portfolioHeader, money, netWorth, status);
+
+    sharesBox.getChildren().addAll(sharesHeader);
+
+    hBoxMainCenter.getChildren().addAll(graphPanel, portfolio);
+    mainCenter.getChildren().addAll(hBoxMainCenter, sharesBox);
 
     // Connect panes
     root.setTop(header);
@@ -95,10 +115,23 @@ public class MainGameView implements GameObserver {
    * Updates the view with current game data.
    */
   private void updateView() {
-    weekLabel.setText("Week: " + gameSession.getExchange().getWeek()); /*
-    moneyLabel.setText("Money: "+ gameSession.getPlayer().getMoney());
-    netWorthLabel.setText("Net worth: " + gameSession.getPlayer().getNetWorth());
-    statusLabel.setText("Status: " + gameSession.getPlayer().getStatus());      */
+    weekLabel.setText("Week: " + gameSession.getExchange().getWeek());
+
+    // Portfolio
+    money.setText("Your money: " + gameSession.getPlayer().getMoney());
+    netWorth.setText("Your net worth: " + gameSession.getPlayer().getNetWorth());
+    status.setText("Status: " + gameSession.getPlayer().getStatus());
+
+    // Shares
+    sharesBox.getChildren().clear();
+    sharesBox.getChildren().add(sharesHeader);
+
+    for (Share share : gameSession.getPlayer().getPortfolio().getShares()) {
+      Label shareLabel = new Label(
+        share.getStock().getSymbol() + " - " + share.getQuantity()
+      );
+      sharesBox.getChildren().add(shareLabel);
+    }
   }
 
   @Override
