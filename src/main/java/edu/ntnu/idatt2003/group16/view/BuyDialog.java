@@ -39,11 +39,13 @@ public class BuyDialog extends Dialog<Purchase> {
       quantityField
     );
 
+    ButtonType buyButtonType = new ButtonType("Buy");
+
     getDialogPane().setContent(content);
-    getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+    getDialogPane().getButtonTypes().addAll(buyButtonType, ButtonType.CANCEL);
 
     setResultConverter(button -> {
-      if (button == ButtonType.OK) {
+      if (button == buyButtonType) {
         BigDecimal quantity = new BigDecimal(quantityField.getText());
         return gameController.buyStock(stock.getSymbol(), quantity);
       }
