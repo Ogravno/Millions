@@ -1,8 +1,10 @@
 package edu.ntnu.idatt2003.group16.view;
 
+import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
@@ -13,6 +15,7 @@ import javafx.scene.control.Label;
 public class ExchangeGameView {
 
   private final GameSession gameSession;
+  private final GameController gameController;
 
   private final Label stockNameLabel;
   private final Label stockValueChangeInPercentLabel;
@@ -32,12 +35,16 @@ public class ExchangeGameView {
    *
    * @param gameSession the active game session
    */
-  public ExchangeGameView(GameSession gameSession) {
+  public ExchangeGameView(GameSession gameSession, GameController gameController) {
     if (gameSession == null) {
       throw new IllegalArgumentException("GameSession cannot be null.");
     }
+    if (gameController == null) {
+      throw new IllegalArgumentException("GameController cannot be null.");
+    }
 
     this.gameSession = gameSession;
+    this.gameController = gameController;
 
     this.stockNameLabel = new Label("Stock Name");
     this.stockValueChangeInPercentLabel = new Label("Change in %");
@@ -104,7 +111,17 @@ public class ExchangeGameView {
           + " - "
           + stock.getCurrentPrice()
       );
-      stocksBox.getChildren().add(stockLabel);
+
+      Button buyButton = new Button("Buy");
+
+      buyButton.setOnAction(event -> {
+        BuyDialog buyDialog = new BuyDialog(gameController, stock);
+        buyDialog.showAndGetResult();
+      });
+
+      HBox stockBox = new HBox(10);
+      stockBox.getChildren().addAll(buyButton, stockLabel);
+      stocksBox.getChildren().add(stockBox);
     }
   }
 
