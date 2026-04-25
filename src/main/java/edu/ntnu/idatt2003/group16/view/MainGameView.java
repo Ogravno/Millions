@@ -12,8 +12,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-
-
 /**
  * Main view for the game.
  */
@@ -38,6 +36,7 @@ public class MainGameView implements GameObserver {
   private final HBox header;
   private final VBox mainCenter;
   private final VBox sharesBox;
+  private final HBox sharesHeader;
 
   private final Scene scene;
 
@@ -66,6 +65,7 @@ public class MainGameView implements GameObserver {
     this.header = new HBox(10);
     this.mainCenter = new VBox(10);
     this.sharesBox = new VBox(10);
+    this.sharesHeader = new HBox(10);
 
     Button advanceWeekButton = new Button("Advance Week");
     advanceWeekButton.setOnAction(event -> this.gameController.advanceWeek());
@@ -97,6 +97,25 @@ public class MainGameView implements GameObserver {
 
     mainCenterBox.getChildren().addAll(graphPanel, portfolio);
     mainCenter.getChildren().addAll(mainCenterBox, sharesBox);
+
+    // SharesHeader
+    Label sellShareHeaderLabel = new Label("Sell");
+    Button symbolShareHeaderButton = new Button("Symbol");
+    Button companyShareHeaderButton = new Button("Company Name");
+    Button quantityShareHeaderButton = new Button("Quantity");
+    Button purchasePriceShareHeaderButton = new Button("Purchase Price");
+    Button currentPriceShareHeaderButton = new Button("Current Price");
+    Button changeInPriceShareHeaderButton = new Button("Change in Price");
+
+    sharesHeader.getChildren().addAll(
+      sellShareHeaderLabel,
+      symbolShareHeaderButton,
+      companyShareHeaderButton,
+      quantityShareHeaderButton,
+      purchasePriceShareHeaderButton,
+      currentPriceShareHeaderButton,
+      changeInPriceShareHeaderButton
+    );
 
     // Connect panes
     root.setTop(header);
@@ -161,11 +180,22 @@ public class MainGameView implements GameObserver {
 
   private void updateShares() {
     sharesBox.getChildren().clear();
-    sharesBox.getChildren().add(sharesLabel);
+    sharesBox.getChildren().addAll(sharesLabel, sharesHeader);
 
     for (Share share : gameSession.getPlayer().getPortfolio().getShares()) {
       Label shareLabel = new Label(
-          share.getStock().getSymbol() + " - " + share.getQuantity()
+          share.getStock().getSymbol()
+            + " | "
+            + share.getStock().getCompany()
+            + " | "
+            + share.getQuantity()
+            + " Shares"
+            + " | "
+            + share.getPurchasePrice()
+            + " | "
+            + share.getStock().getCurrentPrice()
+            + " | "
+            + share.getStock().getCurrentPrice().subtract(share.getPurchasePrice())
       );
 
       Button sellButton = new Button("Sell");
