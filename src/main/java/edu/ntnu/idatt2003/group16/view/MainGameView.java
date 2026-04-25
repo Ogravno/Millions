@@ -50,7 +50,7 @@ public class MainGameView implements GameObserver {
   public MainGameView(GameController gameController, GameSession gameSession) {
     this.gameController = gameController;
     this.gameSession = gameSession;
-    this.exchangeGameView = new ExchangeGameView(gameSession);
+    this.exchangeGameView = new ExchangeGameView(gameSession, gameController);
     this.transactionView = new TransactionView(gameSession);
 
     this.weekLabel = new Label();
