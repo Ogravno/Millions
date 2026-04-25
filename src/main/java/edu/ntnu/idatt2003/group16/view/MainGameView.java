@@ -28,13 +28,15 @@ public class MainGameView implements GameObserver {
   private final Label graphPanel;
   private final Label portfolioLabel;
   private final Label sharesLabel;
-  private final Label headerLabel;
 
   // for portfolio
   private final Label money;
   private final Label netWorth;
   private final Label status;
 
+  private final BorderPane root;
+  private final HBox header;
+  private final VBox mainCenter;
   private final VBox sharesBox;
 
   private final Scene scene;
@@ -55,39 +57,50 @@ public class MainGameView implements GameObserver {
     this.graphPanel = new Label("Future graph");
     this.portfolioLabel = new Label("Portfolio");
     this.sharesLabel = new Label("Your Shares");
-    this.headerLabel = new Label("Future header");
 
     this.money = new Label();
     this.netWorth = new Label();
     this.status = new Label();
 
+    this.root = new BorderPane();
+    this.header = new HBox(10);
+    this.mainCenter = new VBox(10);
     this.sharesBox = new VBox(10);
 
     Button advanceWeekButton = new Button("Advance Week");
     advanceWeekButton.setOnAction(event -> this.gameController.advanceWeek());
 
-    // Main panes
-    BorderPane root = new BorderPane();
-    HBox header = new HBox(10);
-    VBox mainCenter = new VBox(10);
+    Button goToMainViewButton = new Button("Home");
+    goToMainViewButton.setOnAction(event -> showMainView());
+
+    Button goToExchangeViewButton = new Button("Exchange");
+    goToExchangeViewButton.setOnAction(event -> showExchangeView());
+
+    Button goToTransactionsViewButton = new Button("Transactions");
+    goToTransactionsViewButton.setOnAction(event -> changeTransactionsView());
 
     // Header
-    header.getChildren().addAll(headerLabel, weekLabel, advanceWeekButton);
+    header.getChildren().addAll(
+        goToMainViewButton,
+        goToExchangeViewButton,
+        goToTransactionsViewButton,
+        weekLabel,
+        advanceWeekButton);
 
     // MainCenter
-    HBox hBoxMainCenter = new HBox(10); // Contains Graph and portfolio
+    HBox mainCenterBox = new HBox(10); // Contains Graph and portfolio
 
     VBox portfolio = new VBox(10);
     portfolio.getChildren().addAll(portfolioLabel, money, netWorth, status);
 
     sharesBox.getChildren().addAll(sharesLabel);
 
-    hBoxMainCenter.getChildren().addAll(graphPanel, portfolio);
-    mainCenter.getChildren().addAll(hBoxMainCenter, sharesBox);
+    mainCenterBox.getChildren().addAll(graphPanel, portfolio);
+    mainCenter.getChildren().addAll(mainCenterBox, sharesBox);
 
     // Connect panes
     root.setTop(header);
-    root.setCenter(transactionView.getView());
+    root.setCenter(mainCenter);
 
     // Padding
     root.setPadding(new Insets(20));
@@ -96,9 +109,9 @@ public class MainGameView implements GameObserver {
 
     // Spacing
     header.setSpacing(20);
-    hBoxMainCenter.setSpacing(20);
+    mainCenterBox.setSpacing(20);
 
-    this.scene = new Scene(root, 400, 200);
+    this.scene = new Scene(root, 600, 400);
 
     gameSession.addObserver(this);
     updateView();
@@ -113,30 +126,57 @@ public class MainGameView implements GameObserver {
     return scene;
   }
 
+  private void showMainView() {
+    root.setCenter(mainCenter);
+  }
+
+  private void showExchangeView() {
+    root.setCenter(exchangeGameView.getView());
+  }
+
+  private void changeTransactionsView() {
+    root.setCenter(transactionView.getView());
+  }
+
   /**
    * Updates the view with current game data.
    */
   private void updateView() {
-    weekLabel.setText("Week: " + gameSession.getExchange().getWeek());
-    exchangeGameView.updateView();
+    updateHeader();
+    updatePortfolio();
+    updateShares();
+    updateExchangeView();
+    updateTransactionsView();
+  }
 
-    // Portfolio
+  private void updateHeader() {
+    weekLabel.setText("Week: " + gameSession.getExchange().getWeek());
+  }
+
+  private void updatePortfolio() {
     money.setText("Your money: " + gameSession.getPlayer().getMoney());
     netWorth.setText("Your net worth: " + gameSession.getPlayer().getNetWorth());
     status.setText("Status: " + gameSession.getPlayer().getStatus());
+  }
 
-    transactionView.updateView();
-
-    // Shares
+  private void updateShares() {
     sharesBox.getChildren().clear();
     sharesBox.getChildren().add(sharesLabel);
 
     for (Share share : gameSession.getPlayer().getPortfolio().getShares()) {
       Label shareLabel = new Label(
-        share.getStock().getSymbol() + " - " + share.getQuantity()
+          share.getStock().getSymbol() + " - " + share.getQuantity()
       );
       sharesBox.getChildren().add(shareLabel);
     }
+  }
+
+  private void updateExchangeView() {
+    exchangeGameView.updateView();
+  }
+
+  private void updateTransactionsView() {
+    transactionView.updateView();
   }
 
   @Override
