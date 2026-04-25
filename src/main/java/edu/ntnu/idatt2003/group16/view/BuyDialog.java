@@ -29,6 +29,7 @@ public class BuyDialog extends Dialog<Purchase> {
     setHeaderText("Buy " + stock.getSymbol());
 
     Label priceLabel = new Label("Price: " + stock.getCurrentPrice());
+    Label playerBalance = new Label("Balance: " + gameController.getPlayerMoney());
     TextField quantityField = new TextField();
     quantityField.setPromptText("Quantity");
 
@@ -36,6 +37,7 @@ public class BuyDialog extends Dialog<Purchase> {
     content.getChildren().addAll(
       new Label("Stock: " + stock.getCompany()),
       priceLabel,
+      playerBalance,
       quantityField
     );
 

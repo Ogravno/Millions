@@ -35,4 +35,8 @@ public class GameController {
   public Sale sellShare(Share share) {
     return gameSession.sellShare(share);
   }
+
+  public BigDecimal getPlayerMoney() {
+    return gameSession.getPlayer().getMoney();
+  }
 }
