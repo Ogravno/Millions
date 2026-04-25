@@ -32,10 +32,6 @@ public class Main extends Application {
     GameController gameController = new GameController(gameSession);
     MainGameView mainGameView = new MainGameView(gameController, gameSession);
 
-    // Test data
-    gameSession.buyStock("MSFT", new BigDecimal("2"));
-    gameSession.buyStock("AAPL", new BigDecimal("1"));
-
     stage.setTitle("Millions");
     stage.setScene(mainGameView.getScene());
     stage.show();

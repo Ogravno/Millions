@@ -167,7 +167,18 @@ public class MainGameView implements GameObserver {
       Label shareLabel = new Label(
           share.getStock().getSymbol() + " - " + share.getQuantity()
       );
-      sharesBox.getChildren().add(shareLabel);
+
+      Button sellButton = new Button("Sell");
+
+      sellButton.setOnAction(event -> {
+        SellDialog sellDialog = new SellDialog(gameController, share);
+        sellDialog.showAndGetResult();
+      });
+
+      HBox shareBox = new HBox(10);
+      shareBox.getChildren().addAll(sellButton, shareLabel);
+
+      sharesBox.getChildren().add(shareBox);
     }
   }
 

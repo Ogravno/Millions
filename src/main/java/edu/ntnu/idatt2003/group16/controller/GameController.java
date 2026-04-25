@@ -1,7 +1,9 @@
 package edu.ntnu.idatt2003.group16.controller;
 
 import edu.ntnu.idatt2003.group16.model.GameSession;
+import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
+import edu.ntnu.idatt2003.group16.model.transaction.Sale;
 
 import java.math.BigDecimal;
 
@@ -28,5 +30,9 @@ public class GameController {
 
   public Purchase buyStock(String symbol, BigDecimal quantity) {
     return gameSession.buyStock(symbol, quantity);
+  }
+
+  public Sale sellShare(Share share) {
+    return gameSession.sellShare(share);
   }
 }
