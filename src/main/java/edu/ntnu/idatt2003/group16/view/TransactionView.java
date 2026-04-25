@@ -1,10 +1,14 @@
 package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.model.GameSession;
+import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * View for displaying transactions
+ */
 public class TransactionView {
   private final GameSession gameSession;
 
@@ -18,12 +22,12 @@ public class TransactionView {
   private final Label shares;
   private final Label amount;
 
-  // Transactions labels
-  private final Label transactionDate;
-  private final Label transactionBoughtSold;
-  private final Label transactionShare;
-  private final Label transactionAmount;
 
+  /**
+   * Creates the transaction view.
+   *
+   * @param gameSession the active game session.
+   */
   public TransactionView(GameSession gameSession) {
     if (gameSession == null) {
       throw new IllegalArgumentException("GamesSession cannot be null");
@@ -35,23 +39,12 @@ public class TransactionView {
     this.shares = new Label("Shares");
     this.amount = new Label("Amount");
 
-    this.transactionDate = new Label();
-    this.transactionBoughtSold = new Label();
-    this.transactionShare = new Label();
-    this.transactionAmount = new Label();
 
     header.getChildren().addAll(
       date,
       boughtSold,
       shares,
       amount
-    );
-
-    transactions.getChildren().addAll(
-      transactionDate,
-      transactionBoughtSold,
-      transactionShare,
-      transactionAmount
     );
 
 
@@ -63,11 +56,34 @@ public class TransactionView {
     return root;
   }
 
+  /**
+   * Updates the transactionView
+   */
   public void updateView() {
     updateTransactions();
   }
 
   public void updateTransactions() {
+    transactions.getChildren().clear();
+
+    for (Transaction transaction : gameSession.getPlayer().getTransactionArchive().getTransactions()) {
+
+      HBox transactionsInRow = new HBox(10);
+
+      Label transactionDate = new Label(String.valueOf(transaction.getWeek()));
+      Label transactionBoughtSold = new Label(transaction.getClass().getSimpleName());
+      Label transactionShare = new Label(transaction.getShare().getStock().getSymbol());
+      Label transactionAmount = new Label(transaction.getShare().getPurchasePrice().toString());
+
+      transactionsInRow.getChildren().addAll(
+        transactionDate,
+        transactionBoughtSold,
+        transactionShare,
+        transactionAmount
+      );
+
+      transactions.getChildren().add(transactionsInRow);
+    }
 
   }
 }

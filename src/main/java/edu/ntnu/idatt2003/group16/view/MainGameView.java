@@ -22,6 +22,7 @@ public class MainGameView implements GameObserver {
   private final GameController gameController;
   private final GameSession gameSession;
   private final ExchangeGameView exchangeGameView;
+  private final TransactionView transactionView;
 
   private final Label weekLabel;
   private final Label graphPanel;
@@ -48,6 +49,7 @@ public class MainGameView implements GameObserver {
     this.gameController = gameController;
     this.gameSession = gameSession;
     this.exchangeGameView = new ExchangeGameView(gameSession);
+    this.transactionView = new TransactionView(gameSession);
 
     this.weekLabel = new Label();
     this.graphPanel = new Label("Future graph");
@@ -85,7 +87,7 @@ public class MainGameView implements GameObserver {
 
     // Connect panes
     root.setTop(header);
-    root.setCenter(mainCenter);
+    root.setCenter(transactionView.getView());
 
     // Padding
     root.setPadding(new Insets(20));
@@ -122,6 +124,8 @@ public class MainGameView implements GameObserver {
     money.setText("Your money: " + gameSession.getPlayer().getMoney());
     netWorth.setText("Your net worth: " + gameSession.getPlayer().getNetWorth());
     status.setText("Status: " + gameSession.getPlayer().getStatus());
+
+    transactionView.updateView();
 
     // Shares
     sharesBox.getChildren().clear();
