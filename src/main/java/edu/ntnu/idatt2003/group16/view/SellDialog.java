@@ -3,12 +3,11 @@ package edu.ntnu.idatt2003.group16.view;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.transaction.Sale;
+import java.util.Optional;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-
-import java.util.Optional;
 
 /**
  * Dialog for selling share.
@@ -23,16 +22,22 @@ public class SellDialog extends Dialog<Sale> {
       throw new IllegalArgumentException("Share cannot be null");
     }
 
-   setTitle("Sell share");
-   setHeaderText("Sell " + share.getStock().getSymbol());
+    setTitle("Sell share");
+    setHeaderText("Sell " + share.getStock().getSymbol());
 
-    Label priceLabel = new Label("Price: " + share.getStock().getCurrentPrice());
-
+    Label buyingPriceLabel = new Label("Buying price: " + share.getPurchasePrice());
+    Label currentPriceLabel = new Label("Current price: " + share.getStock().getCurrentPrice());
+    Label totalProfitLabel = new Label("Total profit: " // Check if there is a selling fee !!!
+        + share.getStock().getCurrentPrice().subtract(
+        share.getPurchasePrice())
+        .multiply(share.getQuantity()));
 
     VBox content = new VBox(10);
     content.getChildren().addAll(
       new Label("Stock: " + share.getStock().getCompany()),
-      priceLabel
+        buyingPriceLabel,
+        currentPriceLabel,
+        totalProfitLabel
     );
 
     ButtonType sellButtonType = new ButtonType("Sell");
