@@ -106,9 +106,9 @@ public class ExchangeGameView {
     for (Stock stock : gameSession.getExchange().getAllStocks()) {
       Label stockLabel = new Label(
         stock.getSymbol()
-          + " - "
+          + " | "
           + stock.getCompany()
-          + " - "
+          + " | "
           + stock.getCurrentPrice()
       );
 
@@ -131,9 +131,9 @@ public class ExchangeGameView {
     for (Stock stock : gameSession.getExchange().getGainers(5)) {
       Label stockLabel = new Label(
         stock.getSymbol()
-          + " - "
+          + " | "
           + stock.getCurrentPrice()
-          + " - "
+          + " | "
           + stock.getLatestPriceChange()
       );
       winnersBox.getChildren().add(stockLabel);
@@ -146,9 +146,9 @@ public class ExchangeGameView {
     for (Stock stock : gameSession.getExchange().getLosers(5)) {
       Label stockLabel = new Label(
         stock.getSymbol()
-          + " - "
+          + " | "
           + stock.getCurrentPrice()
-          + " - "
+          + " | "
           + stock.getLatestPriceChange()
       );
       losersBox.getChildren().add(stockLabel);
