@@ -4,7 +4,6 @@ import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -26,8 +25,6 @@ public class MainGameView implements GameObserver {
 
   private final BorderPane root;
   private final HBox header;
-  private final VBox mainCenter;
-  private final VBox sharesBox;
 
   /**
    * Creates the main game view.
