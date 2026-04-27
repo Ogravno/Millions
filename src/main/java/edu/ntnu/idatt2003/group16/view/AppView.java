@@ -6,14 +6,14 @@ import edu.ntnu.idatt2003.group16.controller.NewGameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 public class AppView implements GameObserver {
   private final AppController appController;
   private final GameSession gameSession;
 
-  private final NewGameView newGameView;
-  private final NewGameController newGameController;
+  private final StartView startView;
 
   private MainGameView mainGameView;
   private GameController gameController;
@@ -24,10 +24,9 @@ public class AppView implements GameObserver {
     this.appController = appController;
     this.gameSession = gameSession;
 
-    newGameController = new NewGameController(appController.getGameSession());
-    newGameView = new NewGameView(newGameController);
+    startView = new StartView(gameSession);
 
-    VBox root = newGameView.getView();
+    BorderPane root = startView.getView();
     scene = new Scene(root, 600, 400);
 
     gameSession.addObserver(this);
