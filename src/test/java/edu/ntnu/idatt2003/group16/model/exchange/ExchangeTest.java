@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.group16.exchange;
+package edu.ntnu.idatt2003.group16.model.exchange;
 
 import edu.ntnu.idatt2003.group16.model.exchange.Exchange;
 import edu.ntnu.idatt2003.group16.model.investment.Share;

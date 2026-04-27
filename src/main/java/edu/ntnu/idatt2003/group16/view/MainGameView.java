@@ -4,7 +4,6 @@ import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -26,8 +25,13 @@ public class MainGameView implements GameObserver {
 
   private final BorderPane root;
   private final HBox header;
-  private final Scene scene;
 
+  /**
+   * Creates the main game view.
+   *
+   * @param gameController the controller for user actions.
+   * @param gameSession the active game session.
+   */
   public MainGameView(GameController gameController, GameSession gameSession) {
     this.gameController = gameController;
     this.gameSession = gameSession;
@@ -68,14 +72,17 @@ public class MainGameView implements GameObserver {
     header.setPadding(new Insets(10));
     header.setSpacing(20);
 
-    this.scene = new Scene(root, 600, 400);
-
     gameSession.addObserver(this);
     updateView();
   }
 
-  public Scene getScene() {
-    return scene;
+  /**
+   * Returns the scene for this view.
+   *
+   * @return the scene
+   */
+  public BorderPane getView() {
+    return root;
   }
 
   private void showMainView() {

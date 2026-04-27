@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.group16.transaction;
+package edu.ntnu.idatt2003.group16.model.transaction;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
