@@ -39,7 +39,8 @@ public class AppView implements GameObserver {
   @Override
   public void onGameStateChanged() {
     if (
-        gameSession.getGameName() != null
+        mainGameView == null
+        && gameSession.getGameName() != null
         && gameSession.getPlayer() != null
         && gameSession.getExchange() != null
     ) {
