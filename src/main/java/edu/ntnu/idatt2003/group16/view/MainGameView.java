@@ -39,8 +39,6 @@ public class MainGameView implements GameObserver {
   private final VBox mainCenter;
   private final VBox sharesBox;
 
-  private final Scene scene;
-
   /**
    * Creates the main game view.
    *
@@ -111,8 +109,6 @@ public class MainGameView implements GameObserver {
     header.setSpacing(20);
     mainCenterBox.setSpacing(20);
 
-    this.scene = new Scene(root, 600, 400);
-
     gameSession.addObserver(this);
     updateView();
   }
@@ -122,8 +118,8 @@ public class MainGameView implements GameObserver {
    *
    * @return the scene
    */
-  public Scene getScene() {
-    return scene;
+  public BorderPane getView() {
+    return root;
   }
 
   private void showMainView() {

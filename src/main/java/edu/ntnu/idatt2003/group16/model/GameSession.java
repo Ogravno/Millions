@@ -16,25 +16,51 @@ import java.util.List;
 
 public class GameSession implements GameObservable {
 
-  private final Player player;
-  private final Exchange exchange;
+  private String gameName;
+  private Player player;
+  private Exchange exchange;
   private final TransactionFactory transactionFactory;
 
   private final List<GameObserver> observers;
 
-  public GameSession(Player player, Exchange exchange, TransactionFactory transactionFactory) {
-    this.player = player;
-    this.exchange = exchange;
+  public GameSession(String gameName, Player player, Exchange exchange,
+                     TransactionFactory transactionFactory) {
+    this.gameName = null;
+    this.player = null;
+    this.exchange = null;
     this.transactionFactory = transactionFactory;
     this.observers = new ArrayList<>();
+  }
+
+  public String getGameName() {
+    return gameName;
+  }
+
+  public void setGameName(String gameName) {
+    if (gameName == null || gameName.isBlank()) {
+      throw new IllegalArgumentException("Parameter gameNane cannot be null or blank");
+    }
+
+    this.gameName = gameName;
+    notifyObservers();
   }
 
   public Player getPlayer() {
     return player;
   }
 
+  public void setPlayer(Player player) {
+    this.player = player;
+    notifyObservers();
+  }
+
   public Exchange getExchange() {
     return exchange;
+  }
+
+  public void setExchange(Exchange exchange) {
+    this.exchange = exchange;
+    notifyObservers();
   }
 
   /**
