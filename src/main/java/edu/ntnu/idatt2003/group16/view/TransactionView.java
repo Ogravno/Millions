@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -70,16 +71,26 @@ public class TransactionView {
 
       HBox transactionsInRow = new HBox(10);
 
-      Label transactionDate = new Label(String.valueOf(transaction.getWeek()));
-      Label transactionBoughtSold = new Label(transaction.getClass().getSimpleName());
-      Label transactionShare = new Label(transaction.getShare().getStock().getSymbol());
-      Label transactionAmount = new Label(transaction.getShare().getPurchasePrice().toString());
+      int transactionDate = transaction.getWeek();
+      String transactionBoughtSold = transaction.getClass().getSimpleName();
+      String transactionShare = transaction.getShare().getStock().getSymbol();
+      String transactionAmount = transaction.getShare().getPurchasePrice().toString();
+
+      Button button = new Button(
+        transactionDate + " | "
+          + transactionBoughtSold + " | "
+          + transactionShare + " | "
+          + transactionAmount
+        );
+
+      button.setOnAction(event -> {
+        ReceiptDialog receiptDialog = new ReceiptDialog(transaction);
+        receiptDialog.showAndGetResult();
+      });
+
 
       transactionsInRow.getChildren().addAll(
-        transactionDate,
-        transactionBoughtSold,
-        transactionShare,
-        transactionAmount
+        button
       );
 
       transactions.getChildren().add(transactionsInRow);
