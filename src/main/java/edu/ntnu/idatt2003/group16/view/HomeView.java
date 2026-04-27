@@ -6,6 +6,7 @@ import edu.ntnu.idatt2003.group16.model.investment.Share;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -54,7 +55,9 @@ public class HomeView {
 
     createSharesHeader();
 
-    root.getChildren().addAll(mainCenterBox, sharesBox);
+    ScrollPane scrollPane = new ScrollPane(sharesBox);
+
+    root.getChildren().addAll(mainCenterBox, scrollPane);
     root.setPadding(new Insets(10));
     mainCenterBox.setSpacing(20);
 
