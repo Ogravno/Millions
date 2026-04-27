@@ -4,6 +4,7 @@ import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -48,8 +49,9 @@ public class TransactionView {
       amount
     );
 
+    ScrollPane transactionsScrollPane = new ScrollPane(transactions);
 
-    root.getChildren().addAll(header, transactions);
+    root.getChildren().addAll(header, transactionsScrollPane);
     updateView();
   }
 
