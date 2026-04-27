@@ -5,6 +5,7 @@ import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
@@ -73,7 +74,8 @@ public class ExchangeGameView {
     );
 
     HBox contentRow = new HBox(40);
-    contentRow.getChildren().addAll(stocksBox, winnersLosersBox);
+    ScrollPane scrollPane = new ScrollPane(stocksBox);
+    contentRow.getChildren().addAll(scrollPane, winnersLosersBox);
 
     this.root = new VBox(20);
     root.setPadding(new Insets(10));
