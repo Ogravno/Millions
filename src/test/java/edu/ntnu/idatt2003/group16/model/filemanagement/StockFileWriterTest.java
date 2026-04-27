@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.group16.filemanagement;
+package edu.ntnu.idatt2003.group16.model.filemanagement;
 
 import edu.ntnu.idatt2003.group16.model.filemanagement.StockFileWriter;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;

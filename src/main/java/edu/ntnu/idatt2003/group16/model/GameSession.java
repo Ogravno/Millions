@@ -25,9 +25,9 @@ public class GameSession implements GameObservable {
 
   public GameSession(String gameName, Player player, Exchange exchange,
                      TransactionFactory transactionFactory) {
-    this.gameName = null;
-    this.player = null;
-    this.exchange = null;
+    this.gameName = gameName;
+    this.player = player;
+    this.exchange = exchange;
     this.transactionFactory = transactionFactory;
     this.observers = new ArrayList<>();
   }

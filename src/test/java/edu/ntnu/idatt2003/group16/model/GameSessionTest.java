@@ -18,12 +18,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameSessionTest {
   private static List<Stock> stocks = new ArrayList<>();
-  private static Stock apple = new Stock("AAPL", "apple", new BigDecimal("100"));
-  private static Stock microsoft = new Stock("MSFT", "microsoft", new BigDecimal("50"));
+  private static Stock apple = new Stock("AAPL", "apple",
+      new BigDecimal("100"));
+  private static Stock microsoft = new Stock("MSFT", "microsoft",
+      new BigDecimal("50"));
+  private static String gameName = "Game";
   private static Player player = new Player("Player", new BigDecimal("10000"));
   private static TransactionFactory transactionFactory = new TransactionFactory();
   private static Exchange exchange = new Exchange("Exchange", List.of(apple, microsoft));
-  private static GameSession gameSession = new GameSession(player, exchange, transactionFactory);
+  private static GameSession gameSession = new GameSession(gameName, player, exchange,
+      transactionFactory);
 
 
   private static class TestObserver implements GameObserver {

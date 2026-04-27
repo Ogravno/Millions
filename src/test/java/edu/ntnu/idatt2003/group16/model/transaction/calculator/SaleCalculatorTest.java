@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.group16.transaction.calculator;
+package edu.ntnu.idatt2003.group16.model.transaction.calculator;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,18 +8,18 @@ import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import java.math.BigDecimal;
 
-import edu.ntnu.idatt2003.group16.model.transaction.calculator.PurchaseCalculator;
+import edu.ntnu.idatt2003.group16.model.transaction.calculator.SaleCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-class PurchaseCalculatorTest {
+class SaleCalculatorTest {
   private static Share share;
   private static BigDecimal expectedGrossValue;
   private static BigDecimal expectedCommission;
   private static BigDecimal expectedTax;
   private static BigDecimal expectedTotal;
-  private static PurchaseCalculator purchaseCalculator;
+  private static SaleCalculator saleCalculator;
 
   @BeforeEach
   void setUp() {
@@ -30,44 +30,47 @@ class PurchaseCalculatorTest {
     BigDecimal quantity = new BigDecimal("3");
     share = new Share(stock, quantity, purchasePrice);
 
-    purchaseCalculator = new PurchaseCalculator(share);
+    BigDecimal salesPrice = stock.getCurrentPrice();
 
-    expectedGrossValue = purchasePrice.multiply(quantity);
-    expectedCommission = expectedGrossValue.multiply(new BigDecimal("0.005"));
-    expectedTax = new BigDecimal("0");
-    expectedTotal = expectedGrossValue.add(expectedCommission).add(expectedTax);
+    expectedGrossValue = salesPrice.multiply(quantity);
+    expectedCommission = expectedGrossValue.multiply(new BigDecimal("0.01"));
+    expectedTax = expectedGrossValue.subtract(expectedCommission)
+        .subtract(salesPrice.multiply(quantity)).multiply(BigDecimal.valueOf(0.3));
+    expectedTotal = expectedGrossValue.subtract(expectedCommission).subtract(expectedTax);
+
+    saleCalculator = new SaleCalculator(share);
   }
 
   @Nested
-  class ConstructorTests {
+  class ConstructorClasses {
     @Test
     void constructorSuccessful() {
-      assertDoesNotThrow(() -> new PurchaseCalculator(share));
+      assertDoesNotThrow(() -> new SaleCalculator(share));
     }
 
     @Test
     void constructorParameterIsNull() {
-      assertThrows(IllegalArgumentException.class, () -> new PurchaseCalculator(null));
+      assertThrows(IllegalArgumentException.class, () -> new SaleCalculator(null));
     }
   }
 
   @Test
   void calculateGross() {
-    assertEquals(expectedGrossValue, purchaseCalculator.calculateGross());
+    assertEquals(expectedGrossValue, saleCalculator.calculateGross());
   }
 
   @Test
   void calculateCommission() {
-    assertEquals(expectedCommission, purchaseCalculator.calculateCommission());
+    assertEquals(expectedCommission, saleCalculator.calculateCommission());
   }
 
   @Test
   void calculateTax() {
-    assertEquals(expectedTax, purchaseCalculator.calculateTax());
+    assertEquals(expectedTax, saleCalculator.calculateTax());
   }
 
   @Test
   void calculateTotal() {
-    assertEquals(expectedTotal, purchaseCalculator.calculateTotal());
+    assertEquals(expectedTotal, saleCalculator.calculateTotal());
   }
 }
