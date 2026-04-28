@@ -209,10 +209,11 @@ public class Exchange {
     if (limit < 1) {
       throw new IllegalArgumentException("limit cannot be less than 1");
     }
-    return getAllStocks().stream()
-      .sorted(Comparator.comparing(Stock::getLatestPriceChange).reversed())
-      .limit(limit)
-      .toList();
+
+    return stockMap.values().stream()
+        .sorted(Comparator.comparing(Stock::getLatestPriceChange).reversed())
+        .limit(limit)
+        .toList();
    }
 
   /**
@@ -226,9 +227,10 @@ public class Exchange {
     if (limit < 1) {
       throw new IllegalArgumentException("limit cannot be less than 1");
     }
-    return getAllStocks().stream()
-      .sorted(Comparator.comparing(Stock::getLatestPriceChange))
-      .limit(limit)
-      .toList();
+
+    return stockMap.values().stream()
+        .sorted(Comparator.comparing(Stock::getLatestPriceChange))
+        .limit(limit)
+        .toList();
   }
 }
