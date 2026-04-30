@@ -79,7 +79,9 @@ public class Exchange {
    * @return List with copy of stockMap.values()
    */
   public List<Stock> getAllStocks() {
-    return List.copyOf(stockMap.values());
+    return stockMap.values().stream()
+        .sorted(Comparator.comparing(Stock::getSymbol))
+        .toList();
   }
 
   /**
@@ -108,16 +110,12 @@ public class Exchange {
     }
 
     String searchLower = searchTerm.toLowerCase();
-    List<Stock> result = new ArrayList<>();
 
-    for (Stock stock : stockMap.values()) {
-      String symbolLower = stock.getSymbol().toLowerCase();
-      String companyLower = stock.getCompany().toLowerCase();
-      if (symbolLower.contains(searchLower) || companyLower.contains(searchLower)){
-        result.add(stock);
-      }
-    }
-    return result;
+    return stockMap.values().stream()
+        .filter(stock -> stock.getSymbol().toLowerCase().contains(searchLower)
+            || stock.getCompany().toLowerCase().contains(searchLower))
+        .sorted(Comparator.comparing(Stock::getSymbol))
+        .toList();
   }
 
   /**
@@ -211,10 +209,11 @@ public class Exchange {
     if (limit < 1) {
       throw new IllegalArgumentException("limit cannot be less than 1");
     }
-    return getAllStocks().stream()
-      .sorted(Comparator.comparing(Stock::getLatestPriceChange).reversed())
-      .limit(limit)
-      .toList();
+
+    return stockMap.values().stream()
+        .sorted(Comparator.comparing(Stock::getLatestPriceChange).reversed())
+        .limit(limit)
+        .toList();
    }
 
   /**
@@ -228,9 +227,10 @@ public class Exchange {
     if (limit < 1) {
       throw new IllegalArgumentException("limit cannot be less than 1");
     }
-    return getAllStocks().stream()
-      .sorted(Comparator.comparing(Stock::getLatestPriceChange))
-      .limit(limit)
-      .toList();
+
+    return stockMap.values().stream()
+        .sorted(Comparator.comparing(Stock::getLatestPriceChange))
+        .limit(limit)
+        .toList();
   }
 }
