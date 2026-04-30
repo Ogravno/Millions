@@ -6,9 +6,12 @@ import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
+
+import java.util.List;
 
 /**
  * View for displaying exchange information.
@@ -22,6 +25,8 @@ public class ExchangeGameView {
   private final Label stockValueChangeInPercentLabel;
   private final Label stockValueLabel;
 
+  private final TextField stocksSearchField;
+
   private final Label winnersHeader;
   private final Label losersHeader;
 
@@ -29,7 +34,7 @@ public class ExchangeGameView {
   private final VBox winnersBox;
   private final VBox losersBox;
 
-  private final VBox root;
+  private final HBox root;
 
   /**
    * Creates the exchange view.
@@ -47,23 +52,61 @@ public class ExchangeGameView {
     this.gameSession = gameSession;
     this.gameController = gameController;
 
+    this.stocksSearchField = new TextField();
+    stocksSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+      updateStocks();
+    });
+
+    Button sortSymbol = new Button("Symbol");
+    Button sortName = new Button("Name");
+    Button sortValue = new Button("Stock value");
+
+    HBox sortButtons = new HBox();
+    sortButtons.getChildren().addAll(
+        sortSymbol,
+        sortName,
+        sortValue
+    );
+
+    Label sortLabel = new Label("Sort: ");
+
+    HBox sortContainer = new HBox();
+    sortContainer.getChildren().addAll(
+        sortLabel,
+        sortButtons
+    );
+
+    VBox stockFilters = new VBox(
+        stocksSearchField,
+        sortContainer
+    );
+
     this.stockNameLabel = new Label("Stock Name");
     this.stockValueChangeInPercentLabel = new Label("Change in %");
     this.stockValueLabel = new Label("Stock Value");
 
+    HBox stockHeaders = new HBox(20);
+    stockHeaders.getChildren().addAll(
+        stockNameLabel,
+        stockValueChangeInPercentLabel,
+        stockValueLabel
+    );
+
+    this.stocksBox = new VBox(10);
+    ScrollPane scrollPane = new ScrollPane(stocksBox);
+
+    VBox stocksContainer = new VBox(10);
+    stocksContainer.getChildren().addAll(
+        stockFilters,
+        stockHeaders,
+        scrollPane
+    );
+
     this.winnersHeader = new Label("Weekly Winners");
     this.losersHeader = new Label("Weekly Losers");
 
-    this.stocksBox = new VBox(10);
     this.winnersBox = new VBox(10);
     this.losersBox = new VBox(10);
-
-    HBox headerRow = new HBox(20);
-    headerRow.getChildren().addAll(
-      stockNameLabel,
-      stockValueChangeInPercentLabel,
-      stockValueLabel
-    );
 
     VBox winnersLosersBox = new VBox(20);
     winnersLosersBox.getChildren().addAll(
@@ -73,13 +116,9 @@ public class ExchangeGameView {
       losersBox
     );
 
-    HBox contentRow = new HBox(40);
-    ScrollPane scrollPane = new ScrollPane(stocksBox);
-    contentRow.getChildren().addAll(scrollPane, winnersLosersBox);
-
-    this.root = new VBox(20);
+    this.root = new HBox(20);
     root.setPadding(new Insets(10));
-    root.getChildren().addAll(headerRow, contentRow);
+    root.getChildren().addAll(stocksContainer, winnersLosersBox);
 
     updateView();
   }
@@ -89,7 +128,7 @@ public class ExchangeGameView {
    *
    * @return the root layout
    */
-  public VBox getView() {
+  public HBox getView() {
     return root;
   }
 
@@ -105,7 +144,15 @@ public class ExchangeGameView {
   private void updateStocks() {
     stocksBox.getChildren().clear();
 
-    for (Stock stock : gameSession.getExchange().getAllStocks()) {
+    List<Stock> stocks;
+
+    if (stocksSearchField.getText().isBlank()) {
+      stocks = gameSession.getExchange().getAllStocks();
+    } else {
+      stocks = gameSession.getExchange().findStocks(stocksSearchField.getText());
+    }
+
+    stocks.forEach(stock -> {
       Label stockLabel = new Label(
         stock.getSymbol()
           + " | "
@@ -124,7 +171,7 @@ public class ExchangeGameView {
       HBox stockBox = new HBox(10);
       stockBox.getChildren().addAll(buyButton, stockLabel);
       stocksBox.getChildren().add(stockBox);
-    }
+    });
   }
 
   private void updateWinners() {
