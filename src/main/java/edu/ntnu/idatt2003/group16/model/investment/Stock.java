@@ -124,6 +124,8 @@ public class Stock {
   /**
    * Gets the price change percentage from a certain number of weeks ago.
    *
+   * <p>Percentage is rounded to 4 decimals</p>
+   *
    * @param weeksAgo how many weeks to go back
    * @return the price change
    * @throws IllegalStateException if weeks is not greater than zero

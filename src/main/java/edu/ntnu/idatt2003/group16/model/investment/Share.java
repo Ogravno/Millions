@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.group16.model.investment;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.UUID;
 
 /**
@@ -90,5 +91,16 @@ public class Share {
 
   public BigDecimal getPurchasePrice() {
     return purchasePrice;
+  }
+
+  /**
+   * Gets the current return for the share
+   *
+   * @return the current return for the shar
+   */
+  public BigDecimal getReturn() {
+    return stock.getCurrentPrice()
+        .subtract(purchasePrice)
+        .multiply(quantity);
   }
 }

@@ -1,7 +1,5 @@
 package edu.ntnu.idatt2003.group16.model.investment;
 
-import edu.ntnu.idatt2003.group16.model.investment.Share;
-import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -75,6 +73,39 @@ class ShareTest {
     void shouldThrowIfPurchasePriceIsNegative() {
       assertThrows(IllegalArgumentException.class, () ->
         new Share(stock, quantity, new BigDecimal("-1")));
+    }
+  }
+
+  @Nested
+  class GetReturnTests {
+    @Test
+    void shouldReturnPositiveReturn() {
+      Share share = new Share(stock, quantity, price);
+      share.getStock().changeCurrentPrice(BigDecimal.valueOf(120));
+
+      BigDecimal expectedReturn = share.getStock().getCurrentPrice()
+          .subtract(price)
+          .multiply(quantity);
+
+      BigDecimal returnedValue = share.getReturn();
+
+      assertEquals(1, returnedValue.signum());
+      assertEquals(expectedReturn, share.getReturn());
+    }
+
+    @Test
+    void shouldReturnNegativeReturn() {
+      Share share = new Share(stock, quantity, price);
+      share.getStock().changeCurrentPrice(BigDecimal.valueOf(90));
+
+      BigDecimal expectedReturn = share.getStock().getCurrentPrice()
+          .subtract(price)
+          .multiply(quantity);
+
+      BigDecimal returnedValue = share.getReturn();
+
+      assertEquals(-1, returnedValue.signum());
+      assertEquals(expectedReturn, returnedValue);
     }
   }
 
