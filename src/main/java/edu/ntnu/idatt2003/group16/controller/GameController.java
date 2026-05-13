@@ -56,4 +56,8 @@ public class GameController {
   public BigDecimal getNetWorth() {
     return gameSession.getPlayer().getNetWorth();
   }
+
+  public GameSession getGameSession() {
+    return gameSession;
+  }
 }

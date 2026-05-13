@@ -1,8 +1,9 @@
 package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.controller.GameController;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
+import edu.ntnu.idatt2003.group16.model.GameSession;
+import javafx.application.Platform;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 public class EndDialog extends Dialog<Void> {
 
-  public EndDialog(GameController gameController) {
+  public EndDialog(GameController gameController, Runnable backToMainMenuAction) {
 
 
     setTitle("Game over");
@@ -37,6 +38,27 @@ public class EndDialog extends Dialog<Void> {
     );
 
     getDialogPane().setContent(content);
+
+    ButtonType closeGameButton =
+      new ButtonType("Close Game", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+    ButtonType backToMainMenuButton =
+      new ButtonType("Back to Main Menu", ButtonBar.ButtonData.OK_DONE);
+
+    getDialogPane().getButtonTypes().addAll(backToMainMenuButton, closeGameButton);
+
+    Button backButton = (Button) getDialogPane().lookupButton(backToMainMenuButton);
+    backButton.setOnAction(event -> {
+      close();
+      backToMainMenuAction.run();
+    });
+
+    Button closeButton = (Button) getDialogPane().lookupButton(closeGameButton);
+    closeButton.setOnAction(event -> {
+      Platform.exit();
+    });
+
+
 
   }
 

@@ -26,15 +26,22 @@ public class MainGameView implements GameObserver {
   private final BorderPane root;
   private final HBox header;
 
+  private final Runnable backToMainMenuAction;
+
   /**
    * Creates the main game view.
    *
    * @param gameController the controller for user actions.
    * @param gameSession the active game session.
    */
-  public MainGameView(GameController gameController, GameSession gameSession) {
+  public MainGameView(
+    GameController gameController,
+    GameSession gameSession,
+    Runnable backToMainMenuAction
+    ) {
     this.gameController = gameController;
     this.gameSession = gameSession;
+    this.backToMainMenuAction = backToMainMenuAction;
 
     this.homeView = new HomeView(gameController, gameSession);
     this.exchangeGameView = new ExchangeGameView(gameSession, gameController);
@@ -59,9 +66,9 @@ public class MainGameView implements GameObserver {
 
     Button endGame = new Button("End game");
     endGame.setOnAction(event -> {
-      EndDialog endDialog = new EndDialog(gameController);
+      EndDialog endDialog = new EndDialog(gameController, backToMainMenuAction);
       endDialog.showAndGetResult();
-      });
+    });
 
     header.getChildren().addAll(
       goToMainViewButton,
