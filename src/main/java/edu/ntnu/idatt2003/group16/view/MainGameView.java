@@ -57,12 +57,19 @@ public class MainGameView implements GameObserver {
     Button goToTransactionsViewButton = new Button("Transactions");
     goToTransactionsViewButton.setOnAction(event -> showTransactionsView());
 
+    Button endGame = new Button("End game");
+    endGame.setOnAction(event -> {
+      EndDialog endDialog = new EndDialog(gameController);
+      endDialog.showAndGetResult();
+      });
+
     header.getChildren().addAll(
       goToMainViewButton,
       goToExchangeViewButton,
       goToTransactionsViewButton,
       weekLabel,
-      advanceWeekButton
+      advanceWeekButton,
+      endGame
     );
 
     root.setTop(header);
