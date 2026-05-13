@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.controller.GameController;
-import edu.ntnu.idatt2003.group16.model.GameSession;
 import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;

@@ -46,11 +46,15 @@ public class AppView implements GameObserver {
     ) {
       gameController = new GameController(gameSession);
       mainGameView = new MainGameView(gameController, gameSession, () -> {
+        gameSession.removeObserver(mainGameView);
+
         mainGameView = null;
         gameController = null;
 
-        StartView newStartView = new StartView(gameSession);
-        scene.setRoot(newStartView.getView());
+        gameSession.resetSession();
+
+        startView.showStartMenuView();
+        scene.setRoot(startView.getView());
       });
 
       scene.setRoot(mainGameView.getView());
