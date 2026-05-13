@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import org.junit.jupiter.api.Nested;
@@ -135,5 +137,32 @@ class StockTest {
     Stock stock = new Stock("AAPL", "Apple", new BigDecimal("127.53"));
 
     assertEquals(new BigDecimal("0"), stock.getLatestPriceChange());
+  }
+
+  @Test
+  void shouldGetLatestPriceChangeFromWeeksAgo() {
+    Stock stock = new Stock("AAPL", "Apple", new BigDecimal("127.53"));
+    stock.changeCurrentPrice(new BigDecimal("137"));
+    stock.changeCurrentPrice(new BigDecimal("134"));
+    stock.changeCurrentPrice(new BigDecimal("140"));
+
+    BigDecimal expectedResult = stock.getCurrentPrice()
+        .subtract(stock.getHistoricalPrices().get(1))
+        .divide(stock.getHistoricalPrices().get(1), 4, RoundingMode.HALF_UP);
+
+    assertEquals(expectedResult, stock.getPriceChangePercentage(2));
+  }
+
+  @Test
+  void shouldGetHistoricalPriceChangeIfSpecifiedWeeksIsGreaterThanNumberOfPrices() {
+    Stock stock = new Stock("AAPL", "Apple", new BigDecimal("127.53"));
+    stock.changeCurrentPrice(new BigDecimal("137"));
+    stock.changeCurrentPrice(new BigDecimal("134"));
+
+    BigDecimal expectedResult = stock.getCurrentPrice()
+        .subtract(stock.getHistoricalPrices().getFirst())
+        .divide(stock.getHistoricalPrices().getFirst(), 4, RoundingMode.HALF_UP);
+
+    assertEquals(expectedResult, stock.getPriceChangePercentage(8));
   }
 }

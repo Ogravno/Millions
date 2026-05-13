@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.group16.model.investment;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -118,5 +119,28 @@ public class Stock {
     BigDecimal latestPrice = prices.getLast();
     BigDecimal secondLatestPrice = prices.get(prices.size() - 2);
     return latestPrice.subtract(secondLatestPrice);
+  }
+
+  /**
+   * Gets the price change percentage from a certain number of weeks ago.
+   *
+   * @param weeksAgo how many weeks to go back
+   * @return the price change
+   * @throws IllegalStateException if weeks is not greater than zero
+   */
+  public BigDecimal getPriceChangePercentage(int weeksAgo) {
+    if (weeksAgo <= 0) {
+      throw new IllegalArgumentException("Parameter weeksAgo must be greater than zero.");
+    }
+
+    if (weeksAgo >= prices.size()) {
+      weeksAgo = prices.size() - 1;
+    }
+
+    BigDecimal priceWeeksAgo = prices.get(prices.size() - (weeksAgo + 1));
+
+    return prices.getLast()
+        .subtract(priceWeeksAgo)
+        .divide(priceWeeksAgo, 4, RoundingMode.HALF_UP);
   }
 }
