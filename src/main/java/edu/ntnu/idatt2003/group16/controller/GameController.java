@@ -52,4 +52,8 @@ public class GameController {
   public Status getStatus() {
     return gameSession.getPlayer().getStatus();
   }
+
+  public BigDecimal getNetWorth() {
+    return gameSession.getPlayer().getNetWorth();
+  }
 }
