@@ -1,0 +1,9 @@
+.root {
+    -background-color: #000000;
+    -tile-color: #1E1E1E;
+    -tile-border-color: #575961;
+    -button-hover-color: #575961;
+    -regular-text-color: #FFFFFF;
+    -green-text-color: #00E676;
+    -red-text-color: #FF1744;
+}
