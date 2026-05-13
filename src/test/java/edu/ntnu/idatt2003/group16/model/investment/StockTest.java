@@ -146,9 +146,7 @@ class StockTest {
     stock.changeCurrentPrice(new BigDecimal("134"));
     stock.changeCurrentPrice(new BigDecimal("140"));
 
-    BigDecimal expectedResult = stock.getCurrentPrice()
-        .subtract(stock.getHistoricalPrices().get(1))
-        .divide(stock.getHistoricalPrices().get(1), 4, RoundingMode.HALF_UP);
+    BigDecimal expectedResult = BigDecimal.valueOf(0.0219);
 
     assertEquals(expectedResult, stock.getPriceChangePercentage(2));
   }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,12 +81,12 @@ class ShareTest {
   class GetReturnTests {
     @Test
     void shouldReturnPositiveReturn() {
+      price = BigDecimal.valueOf(100);
+      quantity = BigDecimal.valueOf(10);
       Share share = new Share(stock, quantity, price);
       share.getStock().changeCurrentPrice(BigDecimal.valueOf(120));
 
-      BigDecimal expectedReturn = share.getStock().getCurrentPrice()
-          .subtract(price)
-          .multiply(quantity);
+      BigDecimal expectedReturn = BigDecimal.valueOf(200);
 
       BigDecimal returnedValue = share.getReturn();
 
@@ -95,14 +96,43 @@ class ShareTest {
 
     @Test
     void shouldReturnNegativeReturn() {
+      price = BigDecimal.valueOf(100);
       Share share = new Share(stock, quantity, price);
       share.getStock().changeCurrentPrice(BigDecimal.valueOf(90));
 
-      BigDecimal expectedReturn = share.getStock().getCurrentPrice()
-          .subtract(price)
-          .multiply(quantity);
+      BigDecimal expectedReturn = BigDecimal.valueOf(-100);
 
       BigDecimal returnedValue = share.getReturn();
+
+      assertEquals(-1, returnedValue.signum());
+      assertEquals(expectedReturn, returnedValue);
+    }
+  }
+
+  @Nested
+  class GetReturnPercentageTests {
+    @Test
+    void shouldReturnPositivePercentage() {
+      price = BigDecimal.valueOf(100);
+      Share share = new Share(stock, quantity, price);
+      share.getStock().changeCurrentPrice(BigDecimal.valueOf(120));
+
+      BigDecimal expectedReturn = new BigDecimal("0.2000");
+
+      BigDecimal returnedValue = share.getReturnPercentage();
+
+      assertEquals(1, returnedValue.signum());
+      assertEquals(expectedReturn, returnedValue);
+    }
+
+    @Test
+    void shouldReturnNegativePercentage() {
+      Share share = new Share(stock, quantity, price);
+      share.getStock().changeCurrentPrice(BigDecimal.valueOf(90));
+
+      BigDecimal expectedReturn = new BigDecimal("-0.1000");
+
+      BigDecimal returnedValue = share.getReturnPercentage();
 
       assertEquals(-1, returnedValue.signum());
       assertEquals(expectedReturn, returnedValue);
