@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.group16.controller;
 
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
+import edu.ntnu.idatt2003.group16.model.player.Status;
 import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.model.transaction.Sale;
 
@@ -38,5 +39,17 @@ public class GameController {
 
   public BigDecimal getPlayerMoney() {
     return gameSession.getPlayer().getMoney();
+  }
+
+  public BigDecimal getPlayerStartMoney() {
+    return gameSession.getPlayer().getStartingMoney();
+  }
+
+  public int getWeek() {
+    return gameSession.getExchange().getWeek();
+  }
+
+  public Status getStatus() {
+    return gameSession.getPlayer().getStatus();
   }
 }
