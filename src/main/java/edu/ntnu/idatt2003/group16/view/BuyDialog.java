@@ -65,8 +65,8 @@ public class BuyDialog extends Dialog<Purchase> {
         BigDecimal commission = calculator.calculateCommission().setScale(2, RoundingMode.HALF_UP);
         BigDecimal total = calculator.calculateTotal().setScale(2, RoundingMode.HALF_UP);
 
-        totalPriceLabel.setText("Total: " + total);
-        grossPriceLabel.setText("Total stock price: " + gross);
+        totalPriceLabel.setText("Total price with fees: " + total);
+        grossPriceLabel.setText("Price: " + gross);
         feePriceLabel.setText("Fee: " + commission);
 
       } catch (Exception e) {
@@ -81,9 +81,9 @@ public class BuyDialog extends Dialog<Purchase> {
       priceLabel,
       playerBalance,
       quantityField,
-      totalPriceLabel,
       grossPriceLabel,
-      feePriceLabel
+      feePriceLabel,
+      totalPriceLabel
     );
 
     ButtonType buyButtonType = new ButtonType("Buy");
