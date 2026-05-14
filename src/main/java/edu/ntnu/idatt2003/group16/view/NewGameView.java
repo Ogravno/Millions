@@ -7,10 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Path;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.nio.file.Paths;
 
 /**
  * Creates the new game view.
@@ -63,6 +66,7 @@ public class NewGameView implements GameObserver {
 
     Label selectFileLabel = new Label("No file selected");
     Button selectFileButton = new Button("Select file");
+    Button selectStandardStocks = new Button("Select standard stocks");
     Label fileErrorLabel = new Label();
     fileErrorLabel.setStyle("-fx-text-fill: red;");
 
@@ -70,7 +74,28 @@ public class NewGameView implements GameObserver {
     fileSelection.getChildren().addAll(selectFileLabel, selectFileButton);
 
     VBox selectFile = new VBox();
-    selectFile.getChildren().addAll(fileSelection, fileErrorLabel);
+    selectFile.getChildren().addAll(selectStandardStocks, fileSelection, fileErrorLabel);
+
+    selectStandardStocks.setOnAction(event -> {
+      try {
+        URL resource = getClass().getResource("/stocks.csv");
+
+        if (resource == null) {
+          fileErrorLabel.setText("Default file not found.");
+          return;
+        }
+
+        File file = Paths.get(resource.toURI()).toFile();
+
+        newGameController.processStockFile(file);
+
+        selectFileLabel.setText(file.getName());
+        fileErrorLabel.setText("");
+
+      } catch (Exception e) {
+        fileErrorLabel.setText("Could not load default file.");
+      }
+    });
 
     selectFileButton.setOnAction(event -> {
       File selectedFile = stockFileChooser.showOpenDialog(null);
