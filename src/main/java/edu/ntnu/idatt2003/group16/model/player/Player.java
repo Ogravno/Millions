@@ -128,6 +128,16 @@ public class Player {
   }
 
   /**
+   * Rounds players net worth into two decimals for better view.
+   * Only used for view.
+   *
+   * @return player's net worth with 2 decimals.
+   */
+  public String getFormattedNetWorth() {
+    return getNetWorth().setScale(2, RoundingMode.HALF_UP).toString();
+  }
+
+  /**
    * Gets the status of the player.
    *
    * <P>{@code NOVICE} - Starting level for player. No qualification needed.
