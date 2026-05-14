@@ -11,6 +11,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Home view for displaying portfolio and shares.
@@ -31,6 +34,10 @@ public class HomeView {
 
   private final VBox sharesBox;
   private final HBox sharesHeader;
+
+  private Boolean ascending = true;
+  private Comparator<Share> currentSort =
+    Comparator.comparing(share -> share.getStock().getSymbol());
 
   public HomeView(GameController gameController, GameSession gameSession) {
     this.gameController = gameController;
@@ -83,14 +90,70 @@ public class HomeView {
 
   private void createSharesHeader() {
     Label sellShareHeaderLabel = new Label("Sell");
+
     Button symbolShareHeaderButton = new Button("Symbol");
+    symbolShareHeaderButton.setOnAction(event -> {
+      currentSort = Comparator.comparing(share -> share.getStock().getSymbol());
+      ascending = !ascending;
+      updateShares();
+    });
+
     Button companyShareHeaderButton = new Button("Company Name");
+    companyShareHeaderButton.setOnAction(event -> {
+      currentSort = Comparator.comparing(share -> share.getStock().getCompany());
+      ascending = !ascending;
+      updateShares();
+    });
+
     Button quantityShareHeaderButton = new Button("Quantity");
+    quantityShareHeaderButton.setOnAction(event -> {
+      currentSort = Comparator.comparing(Share::getQuantity);
+      ascending = !ascending;
+      updateShares();
+    });
+
     Button purchasePriceShareHeaderButton = new Button("Purchase Price");
+    purchasePriceShareHeaderButton.setOnAction(event -> {
+      currentSort = Comparator.comparing(Share::getPurchasePrice);
+      ascending = !ascending;
+      updateShares();
+    });
+
     Button currentPriceShareHeaderButton = new Button("Current Price");
+    currentPriceShareHeaderButton.setOnAction(event -> {
+      currentSort = Comparator.comparing(share -> share.getStock().getCurrentPrice());
+      ascending = !ascending;
+      updateShares();
+    });
+
     Button changeInPriceShareHeaderButton = new Button("Change in Price");
+    changeInPriceShareHeaderButton.setOnAction(event -> {
+      currentSort = Comparator.comparing(
+        share -> share.getStock().getCurrentPrice().subtract(share.getPurchasePrice())
+      );
+      ascending = !ascending;
+      updateShares();
+    });
+
     Button totalValueButton = new Button("Total Value");
+    totalValueButton.setOnAction(event -> {
+      currentSort = Comparator.comparing(
+        share -> share.getStock().getCurrentPrice().multiply(share.getQuantity())
+      );
+      ascending = !ascending;
+      updateShares();
+    });
+
     Button totalReturnValueButton = new Button("Total Return Value");
+    totalReturnValueButton.setOnAction(event -> {
+      currentSort = Comparator.comparing(share ->
+        share.getStock().getCurrentPrice()
+          .subtract(share.getPurchasePrice())
+          .multiply(share.getQuantity())
+      );
+      ascending = !ascending;
+      updateShares();
+    });
 
     sharesHeader.getChildren().addAll(
       sellShareHeaderLabel,
@@ -109,7 +172,15 @@ public class HomeView {
     sharesBox.getChildren().clear();
     sharesBox.getChildren().addAll(sharesLabel, sharesHeader);
 
-    for (Share share : gameSession.getPlayer().getPortfolio().getShares()) {
+    List<Share> shares = new ArrayList<>(
+      gameSession.getPlayer().getPortfolio().getShares()
+    );
+
+    if (currentSort != null) {
+      shares.sort(ascending ? currentSort : currentSort.reversed());
+    }
+
+    for (Share share : shares) {
       HBox shareBox = new HBox(10);
 
       BigDecimal quantity = share.getQuantity();
