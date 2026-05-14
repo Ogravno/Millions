@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.group16.model.player;
 import edu.ntnu.idatt2003.group16.model.investment.Portfolio;
 import edu.ntnu.idatt2003.group16.model.transaction.TransactionArchive;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Class representing a player.
@@ -46,6 +47,16 @@ public class Player {
 
   public BigDecimal getMoney() {
     return money;
+  }
+
+  /**
+   * Rounds players money into two decimals for better view.
+   * Only used for view.
+   *
+   * @return player's money with 2 decimals.
+   */
+  public String getFormattedMoney() {
+    return money.setScale(2, RoundingMode.HALF_UP).toString();
   }
 
   /**
@@ -114,6 +125,16 @@ public class Player {
    */
   public BigDecimal getNetWorth() {
     return money.add(portfolio.getNetWorth());
+  }
+
+  /**
+   * Rounds players net worth into two decimals for better view.
+   * Only used for view.
+   *
+   * @return player's net worth with 2 decimals.
+   */
+  public String getFormattedNetWorth() {
+    return getNetWorth().setScale(2, RoundingMode.HALF_UP).toString();
   }
 
   /**
