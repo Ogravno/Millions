@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+import java.net.URL;
+
 public class AppView implements GameObserver {
   private final AppController appController;
   private final GameSession gameSession;
@@ -26,8 +28,12 @@ public class AppView implements GameObserver {
 
     startView = new StartView(gameSession);
 
-    BorderPane root = startView.getView();
-    scene = new Scene(root, 600, 400);
+    scene = new Scene(startView.getView(), 1100, 700);
+
+    URL themeStyleSheet = getClass().getResource("/css/light-theme.css");
+    if (themeStyleSheet != null) {
+      scene.getStylesheets().add(themeStyleSheet.toExternalForm());
+    }
 
     gameSession.addObserver(this);
   }
