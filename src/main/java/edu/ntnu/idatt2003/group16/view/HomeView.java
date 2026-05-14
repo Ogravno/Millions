@@ -10,6 +10,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.math.BigDecimal;
+
 /**
  * Home view for displaying portfolio and shares.
  */
@@ -87,6 +89,8 @@ public class HomeView {
     Button purchasePriceShareHeaderButton = new Button("Purchase Price");
     Button currentPriceShareHeaderButton = new Button("Current Price");
     Button changeInPriceShareHeaderButton = new Button("Change in Price");
+    Button totalValueButton = new Button("Total Value");
+    Button totalReturnValueButton = new Button("Total Return Value");
 
     sharesHeader.getChildren().addAll(
       sellShareHeaderLabel,
@@ -95,7 +99,9 @@ public class HomeView {
       quantityShareHeaderButton,
       purchasePriceShareHeaderButton,
       currentPriceShareHeaderButton,
-      changeInPriceShareHeaderButton
+      changeInPriceShareHeaderButton,
+      totalValueButton,
+      totalReturnValueButton
     );
   }
 
@@ -104,19 +110,27 @@ public class HomeView {
     sharesBox.getChildren().addAll(sharesLabel, sharesHeader);
 
     for (Share share : gameSession.getPlayer().getPortfolio().getShares()) {
+      BigDecimal quantity = share.getQuantity();
+      BigDecimal purchasePrice = share.getPurchasePrice();
+      BigDecimal currentPrice = share.getStock().getCurrentPrice();
+
       Label shareLabel = new Label(
         share.getStock().getSymbol()
           + " | "
           + share.getStock().getCompany()
           + " | "
-          + share.getQuantity()
+          + quantity
           + " Shares"
           + " | "
-          + share.getPurchasePrice()
+          + purchasePrice
           + " | "
-          + share.getStock().getCurrentPrice()
+          + currentPrice
           + " | "
-          + share.getStock().getCurrentPrice().subtract(share.getPurchasePrice())
+          + currentPrice.subtract(purchasePrice)
+          + " | "
+          + currentPrice.multiply(quantity)
+          + " | "
+          + currentPrice.multiply(quantity).subtract(purchasePrice.multiply(quantity))
       );
 
       Button sellButton = new Button("Sell");
