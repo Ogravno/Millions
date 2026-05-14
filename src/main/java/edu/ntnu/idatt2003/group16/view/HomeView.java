@@ -110,28 +110,22 @@ public class HomeView {
     sharesBox.getChildren().addAll(sharesLabel, sharesHeader);
 
     for (Share share : gameSession.getPlayer().getPortfolio().getShares()) {
+      HBox shareBox = new HBox(10);
+
       BigDecimal quantity = share.getQuantity();
       BigDecimal purchasePrice = share.getPurchasePrice();
       BigDecimal currentPrice = share.getStock().getCurrentPrice();
 
-      Label shareLabel = new Label(
-        share.getStock().getSymbol()
-          + " | "
-          + share.getStock().getCompany()
-          + " | "
-          + quantity
-          + " Shares"
-          + " | "
-          + purchasePrice
-          + " | "
-          + currentPrice
-          + " | "
-          + currentPrice.subtract(purchasePrice)
-          + " | "
-          + currentPrice.multiply(quantity)
-          + " | "
-          + currentPrice.multiply(quantity).subtract(purchasePrice.multiply(quantity))
-      );
+      Label symbolLabel = new Label(share.getStock().getSymbol());
+      Label companyLabel = new Label(share.getStock().getCompany());
+      Label quantityLabel = new Label(quantity + " Share(s)");
+      Label purchasePriceLabel = new Label(purchasePrice.toString());
+      Label currentPriceLabel = new Label(currentPrice.toString());
+      Label changeInPriceLabel = new Label(currentPrice.subtract(purchasePrice).toString());
+      Label totalValueLabel = new Label(currentPrice.multiply(quantity).toString());
+      Label totalReturnValueLabel = new Label(currentPrice.multiply(quantity).subtract(purchasePrice.multiply(quantity)).toString());
+
+
 
       Button sellButton = new Button("Sell");
 
@@ -140,8 +134,17 @@ public class HomeView {
         sellDialog.showAndGetResult();
       });
 
-      HBox shareBox = new HBox(10);
-      shareBox.getChildren().addAll(sellButton, shareLabel);
+      shareBox.getChildren().addAll(
+        sellButton,
+        symbolLabel,
+        companyLabel,
+        quantityLabel,
+        purchasePriceLabel,
+        currentPriceLabel,
+        changeInPriceLabel,
+        totalValueLabel,
+        totalReturnValueLabel
+      );
 
       sharesBox.getChildren().add(shareBox);
     }
