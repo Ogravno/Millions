@@ -3,11 +3,16 @@ package edu.ntnu.idatt2003.group16.view;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import org.kordamp.ikonli.javafx.FontIcon;
+
+import java.net.URL;
 
 /**
  * Main view for the game.
@@ -24,7 +29,6 @@ public class MainGameView implements GameObserver {
   private final Label weekLabel;
 
   private final BorderPane root;
-  private final HBox header;
 
   /**
    * Creates the main game view.
@@ -43,34 +47,69 @@ public class MainGameView implements GameObserver {
     this.weekLabel = new Label();
 
     this.root = new BorderPane();
-    this.header = new HBox(10);
 
-    Button advanceWeekButton = new Button("Advance Week");
-    advanceWeekButton.setOnAction(event -> this.gameController.advanceWeek());
+    URL styleSheet = getClass().getResource("/css/main-game-view.css");
+    if (styleSheet != null) {
+      root.getStylesheets().add(styleSheet.toExternalForm());
+    }
 
-    Button goToMainViewButton = new Button("Home");
+    ToggleGroup navButtons = new ToggleGroup();
+    navButtons.selectedToggleProperty().addListener((obsVal, oldVal, newVal) -> {
+      if (newVal == null)
+        oldVal.setSelected(true);
+    });
+
+    ToggleButton goToMainViewButton = new ToggleButton("Home");
+    goToMainViewButton.setToggleGroup(navButtons);
+    goToMainViewButton.setSelected(true);
     goToMainViewButton.setOnAction(event -> showMainView());
 
-    Button goToExchangeViewButton = new Button("Exchange");
+    ToggleButton goToExchangeViewButton = new ToggleButton("Exchange");
+    goToExchangeViewButton.setToggleGroup(navButtons);
     goToExchangeViewButton.setOnAction(event -> showExchangeView());
 
-    Button goToTransactionsViewButton = new Button("Transactions");
+    ToggleButton goToTransactionsViewButton = new ToggleButton("Transactions");
+    goToTransactionsViewButton.setToggleGroup(navButtons);
     goToTransactionsViewButton.setOnAction(event -> showTransactionsView());
 
-    header.getChildren().addAll(
-      goToMainViewButton,
-      goToExchangeViewButton,
-      goToTransactionsViewButton,
-      weekLabel,
-      advanceWeekButton
+    VBox navigation = new VBox(
+        goToMainViewButton,
+        goToExchangeViewButton,
+        goToTransactionsViewButton
     );
+    navigation.getStyleClass().add("navigation");
 
-    root.setTop(header);
+    Label logo = new Label("StockSim");
+    logo.getStyleClass().add("logo");
+
+
+    Button advanceWeekButton = new Button("Advance");
+    advanceWeekButton.setOnAction(event -> this.gameController.advanceWeek());
+
+    HBox weekCounter = new HBox(
+        weekLabel,
+        advanceWeekButton
+    );
+    weekCounter.getStyleClass().add("week-counter");
+
+    FontIcon themSymbol = new FontIcon("mdi2b-brightness-2");
+    Button themeButton = new Button("", themSymbol);
+
+    VBox bottom = new VBox(
+        weekCounter,
+        themSymbol
+    );
+    bottom.getStyleClass().add("bottom-sidebar");
+
+    BorderPane header = new BorderPane();
+    header.getStyleClass().add("header");
+
+    header.setTop(logo);
+    header.setCenter(navigation);
+    header.setBottom(bottom);
+
+    root.setLeft(header);
     root.setCenter(homeView.getView());
-
-    root.setPadding(new Insets(20));
-    header.setPadding(new Insets(10));
-    header.setSpacing(20);
 
     gameSession.addObserver(this);
     updateView();
