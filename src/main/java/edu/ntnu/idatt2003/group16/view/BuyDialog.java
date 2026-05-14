@@ -34,7 +34,7 @@ public class BuyDialog extends Dialog<Purchase> {
     getDialogPane().setPrefSize(300, 225);
 
     Label priceLabel = new Label("Price: " + stock.getCurrentPrice());
-    Label playerBalance = new Label("Balance: " + gameController.getPlayerMoney());
+    Label playerBalance = new Label("Balance: " + gameController.getPlayerFormattedMoney());
     Label totalPriceLabel = new Label("Total: 0");
     Label grossPriceLabel = new Label();
     Label feePriceLabel = new Label();

@@ -41,6 +41,10 @@ public class GameController {
     return gameSession.getPlayer().getMoney();
   }
 
+  public String getPlayerFormattedMoney() {
+    return gameSession.getPlayer().getFormattedMoney();
+  }
+
   public BigDecimal getPlayerStartMoney() {
     return gameSession.getPlayer().getStartingMoney();
   }
