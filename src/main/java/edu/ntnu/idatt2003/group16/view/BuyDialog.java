@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 /**
@@ -60,9 +61,9 @@ public class BuyDialog extends Dialog<Purchase> {
 
         PurchaseCalculator calculator = new PurchaseCalculator(tempShare);
 
-        BigDecimal gross = calculator.calculateGross();
-        BigDecimal commission = calculator.calculateCommission();
-        BigDecimal total = calculator.calculateTotal();
+        BigDecimal gross = calculator.calculateGross().setScale(2, RoundingMode.HALF_UP);
+        BigDecimal commission = calculator.calculateCommission().setScale(2, RoundingMode.HALF_UP);
+        BigDecimal total = calculator.calculateTotal().setScale(2, RoundingMode.HALF_UP);
 
         totalPriceLabel.setText("Total: " + total);
         grossPriceLabel.setText("Total stock price: " + gross);
