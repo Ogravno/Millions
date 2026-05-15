@@ -168,8 +168,14 @@ public class ExchangeGameView {
         buyDialog.showAndGetResult();
       });
 
+      Button historicPrices = new Button("Historic Prices");
+      historicPrices.setOnAction(event -> {
+        StockDialog stockDialog = new StockDialog(stock, gameSession.getExchange());
+        stockDialog.showAndGetResult();
+      });
+
       HBox stockBox = new HBox(10);
-      stockBox.getChildren().addAll(buyButton, stockLabel);
+      stockBox.getChildren().addAll(buyButton, stockLabel, historicPrices);
       stocksBox.getChildren().add(stockBox);
     });
   }
