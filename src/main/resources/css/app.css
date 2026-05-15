@@ -1,0 +1,49 @@
+.headline {
+    -fx-text-fill: -regular-text-color;
+    -fx-font-size: 20;
+    -fx-padding: 5 10 5 10;
+}
+
+.sub-heading {
+    -fx-text-fill: -regular-text-color;
+    -fx-font-size: 14;
+}
+
+.standard-text {
+    -fx-text-fill: -regular-text-color;
+    -fx-font-size: 14;
+}
+
+.sub-text {
+    -fx-text-fill: -regular-text-color;
+    -fx-font-size: 12;
+}
+
+.green-text {
+    -fx-text-fill: -green-text-color;
+}
+
+.red-text {
+    -fx-text-fill: -red-text-color;
+}
+
+.standard-icon {
+    -fx-icon-color: -regular-text-color;
+    -fx-icon-size: 14;
+}
+
+.green-icon {
+    -fx-icon-color: -green-text-color;
+}
+
+.red-icon {
+    -fx-icon-color: -red-text-color;
+}
+
+.tile {
+    -fx-background-color: -tile-color;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-insets: 10 10 10 10;
+    -fx-background-insets: 10 10 10 10;
+}

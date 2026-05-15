@@ -78,7 +78,7 @@ public class NewGameView implements GameObserver {
 
     selectStandardStocks.setOnAction(event -> {
       try {
-        URL resource = getClass().getResource("/stocks.csv");
+        URL resource = getClass().getResource("/stockFiles/stocks.csv");
 
         if (resource == null) {
           fileErrorLabel.setText("Default file not found.");

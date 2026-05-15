@@ -3,14 +3,16 @@ package edu.ntnu.idatt2003.group16.view;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
-import javafx.geometry.Insets;
+import edu.ntnu.idatt2003.group16.view.components.Leaderboard;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -27,14 +29,12 @@ public class ExchangeGameView {
 
   private final TextField stocksSearchField;
 
-  private final Label winnersHeader;
-  private final Label losersHeader;
+  private final Leaderboard winnersLeaderboard;
+  private final Leaderboard losersLeaderboard;
 
   private final VBox stocksBox;
-  private final VBox winnersBox;
-  private final VBox losersBox;
 
-  private final HBox root;
+  private final BorderPane root;
 
   /**
    * Creates the exchange view.
@@ -56,6 +56,13 @@ public class ExchangeGameView {
     stocksSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
       updateStocks();
     });
+
+    this.root = new BorderPane();
+
+    URL styleSheet = getClass().getResource("/css/exchange-game-view.css");
+    if (styleSheet != null) {
+      root.getStylesheets().add(styleSheet.toExternalForm());
+    }
 
     Button sortSymbol = new Button("Symbol");
     Button sortName = new Button("Name");
@@ -102,23 +109,20 @@ public class ExchangeGameView {
         scrollPane
     );
 
-    this.winnersHeader = new Label("Weekly Winners");
-    this.losersHeader = new Label("Weekly Losers");
+    winnersLeaderboard = new Leaderboard("Winners");
+    winnersLeaderboard.getStyleClass().add("tile");
 
-    this.winnersBox = new VBox(10);
-    this.losersBox = new VBox(10);
+    losersLeaderboard = new Leaderboard("Losers");
+    losersLeaderboard.getStyleClass().add("tile");
 
-    VBox winnersLosersBox = new VBox(20);
-    winnersLosersBox.getChildren().addAll(
-      winnersHeader,
-      winnersBox,
-      losersHeader,
-      losersBox
+
+    VBox leaderboards = new VBox(
+        winnersLeaderboard,
+        losersLeaderboard
     );
 
-    this.root = new HBox(20);
-    root.setPadding(new Insets(10));
-    root.getChildren().addAll(stocksContainer, winnersLosersBox);
+    root.setCenter(stocksContainer);
+    root.setRight(leaderboards);
 
     updateView();
   }
@@ -128,7 +132,7 @@ public class ExchangeGameView {
    *
    * @return the root layout
    */
-  public HBox getView() {
+  public BorderPane getView() {
     return root;
   }
 
@@ -175,32 +179,10 @@ public class ExchangeGameView {
   }
 
   private void updateWinners() {
-    winnersBox.getChildren().clear();
-
-    for (Stock stock : gameSession.getExchange().getGainers(5)) {
-      Label stockLabel = new Label(
-        stock.getSymbol()
-          + " | "
-          + stock.getCurrentPrice()
-          + " | "
-          + stock.getLatestPriceChange()
-      );
-      winnersBox.getChildren().add(stockLabel);
-    }
+    winnersLeaderboard.setEntries(gameSession.getExchange().getGainers(5));
   }
 
   private void updateLosers() {
-    losersBox.getChildren().clear();
-
-    for (Stock stock : gameSession.getExchange().getLosers(5)) {
-      Label stockLabel = new Label(
-        stock.getSymbol()
-          + " | "
-          + stock.getCurrentPrice()
-          + " | "
-          + stock.getLatestPriceChange()
-      );
-      losersBox.getChildren().add(stockLabel);
-    }
+    losersLeaderboard.setEntries(gameSession.getExchange().getLosers(5));
   }
 }
