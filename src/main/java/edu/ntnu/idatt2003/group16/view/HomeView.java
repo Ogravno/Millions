@@ -89,7 +89,6 @@ public class HomeView {
   }
 
   private void createSharesHeader() {
-    Label sellShareHeaderLabel = new Label("Sell");
 
     Button symbolShareHeaderButton = new Button("Symbol");
     symbolShareHeaderButton.setOnAction(event -> {
@@ -156,7 +155,6 @@ public class HomeView {
     });
 
     sharesHeader.getChildren().addAll(
-      sellShareHeaderLabel,
       symbolShareHeaderButton,
       companyShareHeaderButton,
       quantityShareHeaderButton,
@@ -205,6 +203,12 @@ public class HomeView {
         sellDialog.showAndGetResult();
       });
 
+      Button historicPrices = new Button("Historic Prices");
+      historicPrices.setOnAction(event -> {
+        StockDialog stockDialog = new StockDialog(share.getStock(), gameSession.getExchange());
+        stockDialog.showAndGetResult();
+      });
+
       shareBox.getChildren().addAll(
         sellButton,
         symbolLabel,
@@ -214,7 +218,8 @@ public class HomeView {
         currentPriceLabel,
         changeInPriceLabel,
         totalValueLabel,
-        totalReturnValueLabel
+        totalReturnValueLabel,
+        historicPrices
       );
 
       sharesBox.getChildren().add(shareBox);
