@@ -5,10 +5,7 @@ import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.model.transaction.calculator.PurchaseCalculator;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
@@ -40,6 +37,14 @@ public class BuyDialog extends Dialog<Purchase> {
     Label feePriceLabel = new Label();
 
     TextField quantityField = new TextField();
+
+    quantityField.setTextFormatter(new TextFormatter<>(change -> {
+      if (change.getControlNewText().matches("\\d*")) {
+        return change;
+      }
+      return null;
+    }));
+
     quantityField.setPromptText("Quantity");
 
     quantityField.textProperty().addListener((observer, oldValue, newValue) -> {
