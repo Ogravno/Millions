@@ -44,6 +44,8 @@ public class BuyDialog extends Dialog<Purchase> {
     Label totalPriceLabel = new Label("Total: 0");
     Label grossPriceLabel = new Label();
     Label feePriceLabel = new Label();
+    Label tooLittleFunds = new Label("");
+    tooLittleFunds.setStyle("-fx-text-fill: red;");
 
     quantityField.textProperty().addListener((observer, oldValue, newValue) -> {
       try {
@@ -72,6 +74,12 @@ public class BuyDialog extends Dialog<Purchase> {
         grossPriceLabel.setText("Price: " + gross);
         feePriceLabel.setText("Fee: " + commission);
 
+        if (total.compareTo(gameController.getPlayerMoney()) > 0) {
+          tooLittleFunds.setText("Too little funds");
+        } else {
+          tooLittleFunds.setText("");
+        }
+
       } catch (Exception e) {
         totalPriceLabel.setText("Invalid quantity");
       }
@@ -84,6 +92,7 @@ public class BuyDialog extends Dialog<Purchase> {
         priceLabel,
         playerBalance,
         quantityField,
+        tooLittleFunds,
         grossPriceLabel,
         feePriceLabel,
         totalPriceLabel
