@@ -5,15 +5,11 @@ import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.model.transaction.calculator.PurchaseCalculator;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 /**
  * Dialog for buying stock.
@@ -30,8 +26,18 @@ public class BuyDialog extends Dialog<Purchase> {
 
     setTitle("Buy Stock");
     setHeaderText("Buy " + stock.getSymbol());
-
     getDialogPane().setPrefSize(300, 225);
+
+    TextField quantityField = new TextField();
+
+    quantityField.setTextFormatter(new TextFormatter<>(change -> {
+      if (change.getControlNewText().matches("\\d*")) {
+        return change;
+      }
+      return null;
+    }));
+
+    quantityField.setPromptText("Quantity");
 
     Label priceLabel = new Label("Price: " + stock.getCurrentPrice());
     Label playerBalance = new Label("Balance: " + gameController.getPlayerFormattedMoney());
@@ -39,24 +45,21 @@ public class BuyDialog extends Dialog<Purchase> {
     Label grossPriceLabel = new Label();
     Label feePriceLabel = new Label();
 
-    TextField quantityField = new TextField();
-    quantityField.setPromptText("Quantity");
-
     quantityField.textProperty().addListener((observer, oldValue, newValue) -> {
       try {
         if (newValue.isBlank()) {
           totalPriceLabel.setText("Total: 0");
           grossPriceLabel.setText("");
           feePriceLabel.setText("");
-        return;
+          return;
         }
 
         BigDecimal quantity = new BigDecimal(newValue);
 
         Share tempShare = new Share(
-          stock,
-          quantity,
-          stock.getCurrentPrice()
+            stock,
+            quantity,
+            stock.getCurrentPrice()
         );
 
         PurchaseCalculator calculator = new PurchaseCalculator(tempShare);
@@ -78,12 +81,12 @@ public class BuyDialog extends Dialog<Purchase> {
     VBox content = new VBox(10);
     content.getChildren().addAll(
       new Label("Stock: " + stock.getCompany()),
-      priceLabel,
-      playerBalance,
-      quantityField,
-      grossPriceLabel,
-      feePriceLabel,
-      totalPriceLabel
+        priceLabel,
+        playerBalance,
+        quantityField,
+        grossPriceLabel,
+        feePriceLabel,
+        totalPriceLabel
     );
 
     ButtonType buyButtonType = new ButtonType("Buy");
