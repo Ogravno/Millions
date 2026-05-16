@@ -2,11 +2,15 @@ package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
+import edu.ntnu.idatt2003.group16.model.transaction.TransactionArchive;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import java.util.List;
 
 /**
  * View for displaying transactions
@@ -14,15 +18,15 @@ import javafx.scene.layout.VBox;
 public class TransactionView {
   private final GameSession gameSession;
 
-  VBox root = new VBox(10); // Main Vbox
-  HBox header = new HBox(10); // Header 2
-  VBox transactions = new VBox(10); // Transactions list
+  VBox root = new VBox(10);
+  HBox header = new HBox(10);
+  VBox transactions = new VBox(10);
 
-  // Header 2 labels
   private final Label date;
   private final Label boughtSold;
   private final Label shares;
   private final Label amount;
+  private final TextField transactionSearchField;
 
 
   /**
@@ -36,10 +40,15 @@ public class TransactionView {
     }
     this.gameSession = gameSession;
 
-    this.date = new Label("Date");
-    this.boughtSold = new Label("Bought/Sold");
+    this.date = new Label("Week");
+    this.boughtSold = new Label("Type");
     this.shares = new Label("Shares");
     this.amount = new Label("Amount");
+
+    this.transactionSearchField = new TextField();
+    transactionSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+      updateTransactions();
+    });
 
 
     header.getChildren().addAll(
@@ -51,7 +60,7 @@ public class TransactionView {
 
     ScrollPane transactionsScrollPane = new ScrollPane(transactions);
 
-    root.getChildren().addAll(header, transactionsScrollPane);
+    root.getChildren().addAll(header, transactionSearchField, transactionsScrollPane);
     updateView();
   }
 
@@ -69,7 +78,15 @@ public class TransactionView {
   public void updateTransactions() {
     transactions.getChildren().clear();
 
-    for (Transaction transaction : gameSession.getPlayer().getTransactionArchive().getTransactions()) {
+    List<Transaction> transactionList;
+
+    if (transactionSearchField.getText().isBlank()) {
+      transactionList = gameSession.getPlayer().getTransactionArchive().getTransactions();
+    } else {
+      transactionList = gameSession.getPlayer().getTransactionArchive().findTransactions(transactionSearchField.getText());
+    }
+
+    for (Transaction transaction : transactionList) {
 
       HBox transactionsInRow = new HBox(10);
 
