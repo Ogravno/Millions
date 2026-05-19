@@ -3,16 +3,14 @@ package edu.ntnu.idatt2003.group16.view.components;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
-import edu.ntnu.idatt2003.group16.observer.GameObservable;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
-import edu.ntnu.idatt2003.group16.view.BuyDialog;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import java.util.List;
 
 public class ExchangeStocks extends VBox implements GameObserver {
@@ -28,72 +26,82 @@ public class ExchangeStocks extends VBox implements GameObserver {
 
     this.gameSession.addObserver(this);
 
+    Label headline = new Label("Purchase shares");
+    headline.getStyleClass().add("headline");
+
     this.stocksSearchField = new TextField();
+    this.stocksSearchField.setPromptText("Search...");
+    stocksSearchField.getStyleClass().add("searchBar");
     stocksSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
-      onGameStateChanged();
+      String searchTerm = stocksSearchField.getText();
+      List<Stock> foundStocks = gameSession.getExchange().findStocks(searchTerm);
+
+      drawStocks(foundStocks);
     });
 
-    Button sortSymbol = new Button("Symbol");
-    Button sortName = new Button("Name");
-    Button sortValue = new Button("Stock value");
-
-    HBox sortButtons = new HBox();
-    sortButtons.getChildren().addAll(
-        sortSymbol,
-        sortName,
-        sortValue
-    );
-
     Label sortLabel = new Label("Sort: ");
+    sortLabel.getStyleClass().add("standard-text");
+
+    ToggleGroup sortButtons = new ToggleGroup();
+    sortButtons.selectedToggleProperty().addListener((obsVal, oldVal, newVal) -> {
+      if (newVal == null)
+        oldVal.setSelected(true);
+    });
+
+    ToggleButton sortSymbol = new ToggleButton("Symbol");
+    sortSymbol.setToggleGroup(sortButtons);
+    sortSymbol.setSelected(true);
+
+    ToggleButton sortName = new ToggleButton("Name");
+    sortName.setToggleGroup(sortButtons);
+
+    ToggleButton sortValue = new ToggleButton("Stock value");
+    sortValue.setToggleGroup(sortButtons);
 
     HBox sortContainer = new HBox();
     sortContainer.getChildren().addAll(
         sortLabel,
-        sortButtons
+        sortSymbol,
+        sortName,
+        sortValue
     );
+    sortContainer.getStyleClass().addAll("sort-buttons");
 
     VBox stockFilters = new VBox(
         stocksSearchField,
         sortContainer
     );
+    stockFilters.getStyleClass().add("stock-filters");
 
-    Label stockNameLabel = new Label("Stock Name");
-    Label stockValueChangeInPercentLabel = new Label("Change in %");
-    Label stockValueLabel = new Label("Stock Value");
-
-    HBox stockHeaders = new HBox(20);
-    stockHeaders.getChildren().addAll(
-        stockNameLabel,
-        stockValueChangeInPercentLabel,
-        stockValueLabel
-    );
-
-    stocksBox = new VBox(10);
+    stocksBox = new VBox();
     ScrollPane scrollPane = new ScrollPane(stocksBox);
+    scrollPane.setFitToWidth(true);
+    scrollPane.getStyleClass().add("stocks-container");
 
     this.getChildren().addAll(
+        headline,
         stockFilters,
-        stockHeaders,
         scrollPane
     );
+
+    drawStocks(gameSession.getExchange().getAllStocks());
+
+    this.getStyleClass().add("tile");
+  }
+
+  private void drawStocks(List<Stock> stocks) {
+    stocksBox.getChildren().clear();
+
+    stocks.forEach(stock -> {
+      ExchangeStockCard stockCard = new ExchangeStockCard(stock, gameController);
+      stockCard.getStyleClass().add("stock-card");
+      stocksBox.getChildren().add(stockCard);
+    });
   }
 
   @Override
   public void onGameStateChanged() {
-    stocksBox.getChildren().clear();
-
-    List<Stock> stocks;
-
-    if (stocksSearchField.getText().isBlank()) {
-      stocks = gameSession.getExchange().getAllStocks();
-    } else {
-      stocks = gameSession.getExchange().findStocks(stocksSearchField.getText());
-    }
-
-    stocks.forEach(stock -> {
-      ExchangeStockCard stockCard = new ExchangeStockCard(stock, gameController);
-
-      stocksBox.getChildren().add(stockCard);
-    });
+    stocksSearchField.clear();
+    drawStocks(gameSession.getExchange().getAllStocks());
   }
 }

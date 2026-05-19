@@ -41,6 +41,7 @@ public class ExchangeGameView {
     this.gameController = gameController;
 
     this.root = new BorderPane();
+    this.root.getStyleClass().add("content-container");
 
     URL styleSheet = getClass().getResource("/css/exchange-game-view.css");
     if (styleSheet != null) {

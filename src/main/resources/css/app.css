@@ -6,7 +6,7 @@
 
 .sub-heading {
     -fx-text-fill: -regular-text-color;
-    -fx-font-size: 14;
+    -fx-font-size: 18;
 }
 
 .standard-text {
@@ -25,6 +25,14 @@
 
 .red-text {
     -fx-text-fill: -red-text-color;
+}
+
+.bold-text {
+    -fx-font-weight: 700;
+}
+
+.light-text {
+    -fx-font-weight: 100;
 }
 
 .standard-icon {
