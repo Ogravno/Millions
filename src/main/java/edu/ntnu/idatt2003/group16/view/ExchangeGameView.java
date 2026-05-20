@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
+import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import edu.ntnu.idatt2003.group16.view.components.ExchangeStocks;
 import edu.ntnu.idatt2003.group16.view.components.Leaderboard;
 import java.net.URL;
@@ -10,8 +11,10 @@ import javafx.scene.layout.VBox;
 
 /**
  * View for displaying exchange information.
+ *
+ * @author Robin Strand Prestmo
  */
-public class ExchangeGameView {
+public class ExchangeGameView implements GameObserver {
 
   private final GameSession gameSession;
   private final GameController gameController;
@@ -64,7 +67,8 @@ public class ExchangeGameView {
     root.setCenter(stocksContainer);
     root.setRight(leaderboards);
 
-    updateView();
+    updateWinners();
+    updateLosers();
   }
 
   /**
@@ -77,18 +81,22 @@ public class ExchangeGameView {
   }
 
   /**
-   * Updates the exchange view with current game data.
+   * Updates the winners table.
    */
-  public void updateView() {
-    updateWinners();
-    updateLosers();
-  }
-
   private void updateWinners() {
     winnersLeaderboard.setEntries(gameSession.getExchange().getGainers(5));
   }
 
+  /**
+   * Updates the losers table.
+   */
   private void updateLosers() {
     losersLeaderboard.setEntries(gameSession.getExchange().getLosers(5));
+  }
+
+  @Override
+  public void onGameStateChanged() {
+    updateWinners();
+    updateLosers();
   }
 }
