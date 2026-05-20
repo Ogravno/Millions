@@ -153,7 +153,6 @@ public class MainGameView implements GameObserver {
   private void updateView() {
     updateHeader();
     homeView.updateView();
-    transactionView.updateView();
   }
 
   private void updateHeader() {
