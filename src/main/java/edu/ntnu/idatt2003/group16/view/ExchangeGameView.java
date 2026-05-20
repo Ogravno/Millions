@@ -4,10 +4,9 @@ import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.view.components.ExchangeStocks;
 import edu.ntnu.idatt2003.group16.view.components.Leaderboard;
+import java.net.URL;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-
-import java.net.URL;
 
 /**
  * View for displaying exchange information.
@@ -84,7 +83,6 @@ public class ExchangeGameView {
     updateWinners();
     updateLosers();
   }
-
 
   private void updateWinners() {
     winnersLeaderboard.setEntries(gameSession.getExchange().getGainers(5));

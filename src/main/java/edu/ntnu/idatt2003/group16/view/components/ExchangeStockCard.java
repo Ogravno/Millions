@@ -1,14 +1,24 @@
 package edu.ntnu.idatt2003.group16.view.components;
 
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javafx.geometry.HPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
+/**
+ * View for displaying a stock card.
+ *
+ * @author Odin Grav
+ */
 public class ExchangeStockCard extends GridPane {
+  /**
+   * Draws a stock card for the exchange view.
+   *
+   * @param stock the stock to draw a card for
+   */
   public ExchangeStockCard(Stock stock) {
     Label companyLabel = new Label(stock.getCompany());
     companyLabel.getStyleClass().add("sub-heading");
@@ -38,7 +48,7 @@ public class ExchangeStockCard extends GridPane {
     this.add(priceLabel, 2, 0);
 
     for (int i = 0; i < 3; i++) {
-      BigDecimal changePercentage = stock.getPriceChangePercentage(i+1)
+      BigDecimal changePercentage = stock.getPriceChangePercentage(i + 1)
           .multiply(BigDecimal.valueOf(100))
           .setScale(2, RoundingMode.HALF_UP);
 
@@ -52,7 +62,7 @@ public class ExchangeStockCard extends GridPane {
       }
       changePercentLabel.getStyleClass().add("sub-text");
 
-      Label weekLabel = new Label((i+1) + " week(s) ago");
+      Label weekLabel = new Label((i + 1) + " week(s) ago");
       weekLabel.getStyleClass().addAll("sub-text", "light-text");
 
       this.add(changePercentLabel, i, 1);

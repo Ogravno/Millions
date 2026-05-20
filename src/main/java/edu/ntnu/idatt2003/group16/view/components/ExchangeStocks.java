@@ -5,6 +5,7 @@ import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import edu.ntnu.idatt2003.group16.view.BuyDialog;
+import java.util.List;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -13,8 +14,12 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import java.util.List;
 
+/**
+ * View for displaying stocks for the exchange page.
+ *
+ * @author Odin Grav
+ */
 public class ExchangeStocks extends VBox implements GameObserver {
   GameSession gameSession;
   GameController gameController;
@@ -22,6 +27,12 @@ public class ExchangeStocks extends VBox implements GameObserver {
   TextField stocksSearchField;
   VBox stocksBox;
 
+  /**
+   * Draws the stocks section of the exchange page.
+   *
+   * @param gameSession the current game session
+   * @param gameController the game controller
+   */
   public ExchangeStocks(GameSession gameSession, GameController gameController) {
     this.gameSession = gameSession;
     this.gameController = gameController;
@@ -46,8 +57,9 @@ public class ExchangeStocks extends VBox implements GameObserver {
 
     ToggleGroup sortButtons = new ToggleGroup();
     sortButtons.selectedToggleProperty().addListener((obsVal, oldVal, newVal) -> {
-      if (newVal == null)
+      if (newVal == null) {
         oldVal.setSelected(true);
+      }
     });
 
     ToggleButton sortSymbol = new ToggleButton("Symbol");
