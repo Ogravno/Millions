@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.group16.model.transaction.calculator;
 
 import edu.ntnu.idatt2003.group16.model.investment.Share;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Class for the calculator used for sale transactions.
@@ -43,6 +44,10 @@ public class SaleCalculator implements TransactionCalculator {
     return salesPrice.multiply(quantity);
   }
 
+  public String formattedGross() {
+    return calculateGross().setScale(2, RoundingMode.HALF_UP).toString();
+  }
+
   /**
    * Method to calculate the commission.
    *
@@ -53,6 +58,10 @@ public class SaleCalculator implements TransactionCalculator {
   @Override
   public BigDecimal calculateCommission() {
     return calculateGross().multiply(BigDecimal.valueOf(0.01));
+  }
+
+  public String formattedCommission() {
+    return calculateCommission().setScale(2, RoundingMode.HALF_UP).toString();
   }
 
   /**
@@ -73,6 +82,10 @@ public class SaleCalculator implements TransactionCalculator {
     return profit.multiply(BigDecimal.valueOf(0.3));
   }
 
+  public String formattedTax() {
+    return calculateTax().setScale(2, RoundingMode.HALF_UP).toString();
+  }
+
   /**
    * Method to calculate the total sale value.
    *
@@ -83,5 +96,9 @@ public class SaleCalculator implements TransactionCalculator {
   @Override
   public BigDecimal calculateTotal() {
     return calculateGross().subtract(calculateCommission()).subtract(calculateTax());
+  }
+
+  public String formattedTotal() {
+    return calculateTotal().setScale(2, RoundingMode.HALF_UP).toString();
   }
 }

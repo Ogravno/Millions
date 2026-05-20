@@ -124,6 +124,12 @@ public class GameSession implements GameObservable {
     return sale;
   }
 
+  public void resetSession() {
+    this.gameName = null;
+    this.player = null;
+    this.exchange = null;
+  }
+
   @Override
   public void addObserver(GameObserver observer) {
     observers.add(observer);

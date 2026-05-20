@@ -46,7 +46,7 @@ public class TransactionArchive {
   }
 
   public List<Transaction> getTransactions() {
-    return transactions;
+    return List.copyOf(transactions);
   }
 
   /**
@@ -120,5 +120,29 @@ public class TransactionArchive {
     if (week <= 0) {
       throw new IllegalArgumentException("week must be a positive integer");
     }
+  }
+
+  /**
+   * Find transactions through searching.
+   *
+   * <P>Player can search after week number, Purchase or Sale, or after Symbol name</P>
+   *
+   * @param searchTerm String to search after transaction with.
+   * @return list with matching transactions
+   * @throws IllegalArgumentException is searchTerm is null or blank.
+   */
+  public List<Transaction> findTransactions(String searchTerm) {
+    if (searchTerm == null || searchTerm.isBlank()) {
+      throw new IllegalArgumentException("SearchTerm cannot be null or blank.");
+    }
+
+    String searchLower = searchTerm.toLowerCase();
+
+    return transactions.stream()
+      .filter(transaction ->
+        String.valueOf(transaction.getWeek()).contains(searchLower)
+          || transaction.getClass().getSimpleName().toLowerCase().contains(searchLower)
+          || transaction.getShare().getStock().getSymbol().toLowerCase().contains(searchLower))
+        .toList();
   }
 }

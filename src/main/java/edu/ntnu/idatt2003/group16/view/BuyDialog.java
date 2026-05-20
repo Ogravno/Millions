@@ -5,14 +5,11 @@ import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.model.transaction.calculator.PurchaseCalculator;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 /**
  * Dialog for buying stock.
@@ -29,17 +26,26 @@ public class BuyDialog extends Dialog<Purchase> {
 
     setTitle("Buy Stock");
     setHeaderText("Buy " + stock.getSymbol());
-
     getDialogPane().setPrefSize(300, 225);
 
+    TextField quantityField = new TextField();
+
+    quantityField.setTextFormatter(new TextFormatter<>(change -> {
+      if (change.getControlNewText().matches("\\d*")) {
+        return change;
+      }
+      return null;
+    }));
+
+    quantityField.setPromptText("Quantity");
+
     Label priceLabel = new Label("Price: " + stock.getCurrentPrice());
-    Label playerBalance = new Label("Balance: " + gameController.getPlayerMoney());
+    Label playerBalance = new Label("Balance: " + gameController.getPlayerFormattedMoney());
     Label totalPriceLabel = new Label("Total: 0");
     Label grossPriceLabel = new Label();
     Label feePriceLabel = new Label();
-
-    TextField quantityField = new TextField();
-    quantityField.setPromptText("Quantity");
+    Label tooLittleFunds = new Label("");
+    tooLittleFunds.setStyle("-fx-text-fill: red;");
 
     quantityField.textProperty().addListener((observer, oldValue, newValue) -> {
       try {
@@ -47,26 +53,32 @@ public class BuyDialog extends Dialog<Purchase> {
           totalPriceLabel.setText("Total: 0");
           grossPriceLabel.setText("");
           feePriceLabel.setText("");
-        return;
+          return;
         }
 
         BigDecimal quantity = new BigDecimal(newValue);
 
         Share tempShare = new Share(
-          stock,
-          quantity,
-          stock.getCurrentPrice()
+            stock,
+            quantity,
+            stock.getCurrentPrice()
         );
 
         PurchaseCalculator calculator = new PurchaseCalculator(tempShare);
 
-        BigDecimal gross = calculator.calculateGross();
-        BigDecimal commission = calculator.calculateCommission();
-        BigDecimal total = calculator.calculateTotal();
+        BigDecimal gross = calculator.calculateGross().setScale(2, RoundingMode.HALF_UP);
+        BigDecimal commission = calculator.calculateCommission().setScale(2, RoundingMode.HALF_UP);
+        BigDecimal total = calculator.calculateTotal().setScale(2, RoundingMode.HALF_UP);
 
-        totalPriceLabel.setText("Total: " + total);
-        grossPriceLabel.setText("Total stock price: " + gross);
+        totalPriceLabel.setText("Total price with fees: " + total);
+        grossPriceLabel.setText("Price: " + gross);
         feePriceLabel.setText("Fee: " + commission);
+
+        if (total.compareTo(gameController.getPlayerMoney()) > 0) {
+          tooLittleFunds.setText("Too little funds");
+        } else {
+          tooLittleFunds.setText("");
+        }
 
       } catch (Exception e) {
         totalPriceLabel.setText("Invalid quantity");
@@ -77,12 +89,13 @@ public class BuyDialog extends Dialog<Purchase> {
     VBox content = new VBox(10);
     content.getChildren().addAll(
       new Label("Stock: " + stock.getCompany()),
-      priceLabel,
-      playerBalance,
-      quantityField,
-      totalPriceLabel,
-      grossPriceLabel,
-      feePriceLabel
+        priceLabel,
+        playerBalance,
+        quantityField,
+        tooLittleFunds,
+        grossPriceLabel,
+        feePriceLabel,
+        totalPriceLabel
     );
 
     ButtonType buyButtonType = new ButtonType("Buy");

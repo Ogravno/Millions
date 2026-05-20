@@ -65,4 +65,8 @@ public class StartView {
   public BorderPane getView() {
     return root;
   }
+
+  public void showStartMenuView() {
+    showStartMenu();
+  }
 }

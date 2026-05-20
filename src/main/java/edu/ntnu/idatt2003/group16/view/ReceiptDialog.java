@@ -9,6 +9,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+import java.math.RoundingMode;
 import java.util.Optional;
 
 public class ReceiptDialog extends Dialog<Void> {
@@ -27,9 +28,9 @@ public class ReceiptDialog extends Dialog<Void> {
     Label amountOfShares = new Label("Shares: " + share.getQuantity().toString());
     Label pricePerShare = new Label("Price per share: " + share.getPurchasePrice().toString());
     Label totalPrice = new Label("Total price for shares: " + transaction.getCalculator().calculateGross().toString());
-    Label totalFee = new Label("Fee: " + transaction.getCalculator().calculateCommission().toString());
-    Label tax = new Label("Tax: " + transaction.getCalculator().calculateTax().toString());
-    Label totalPriceWithFeeAndTax = new Label("Total price: " + transaction.getCalculator().calculateTotal().toString());
+    Label totalFee = new Label("Fee: " + transaction.getCalculator().calculateCommission().setScale(2, RoundingMode.HALF_UP));
+    Label tax = new Label("Tax: " + transaction.getCalculator().calculateTax().setScale(2, RoundingMode.HALF_UP));
+    Label totalPriceWithFeeAndTax = new Label("Total price: " + transaction.getCalculator().calculateTotal().setScale(2, RoundingMode.HALF_UP));
     Label week = new Label("Week: " + transaction.getWeek());
 
     VBox content = new VBox(10);
