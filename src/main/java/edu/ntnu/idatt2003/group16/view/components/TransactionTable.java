@@ -2,6 +2,9 @@ package edu.ntnu.idatt2003.group16.view.components;
 
 import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
 import java.util.List;
+
+import edu.ntnu.idatt2003.group16.view.ReceiptDialog;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -43,6 +46,7 @@ public class TransactionTable extends VBox {
     column5.setPercentWidth(20);
 
     GridPane headers = new GridPane();
+    headers.getStyleClass().add("transaction-table-header");
     headers.getColumnConstraints().addAll(column1, column2, column3, column4, column5);
 
     headers.add(weekLabel, 0, 0);
@@ -55,6 +59,7 @@ public class TransactionTable extends VBox {
 
     this.rows = new VBox();
     ScrollPane transactionsScrollPane = new ScrollPane(this.rows);
+    transactionsScrollPane.setFitToWidth(true);
 
     this.getChildren().add(transactionsScrollPane);
   }
@@ -64,6 +69,13 @@ public class TransactionTable extends VBox {
 
     transactions.forEach(transaction -> {
       TransactionTableRow row = new TransactionTableRow(transaction);
+      row.getStyleClass().add("transaction-table-row");
+      row.setCursor(Cursor.HAND);
+      row.setOnMouseClicked(event -> {
+        ReceiptDialog receiptDialog = new ReceiptDialog(transaction);
+        receiptDialog.showAndGetResult();
+      });
+
       rows.getChildren().add(row);
     });
   }
