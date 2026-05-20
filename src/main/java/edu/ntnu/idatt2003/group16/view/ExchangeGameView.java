@@ -2,39 +2,29 @@ package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
-import edu.ntnu.idatt2003.group16.model.investment.Stock;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
+import edu.ntnu.idatt2003.group16.observer.GameObserver;
+import edu.ntnu.idatt2003.group16.view.components.ExchangeStocks;
+import edu.ntnu.idatt2003.group16.view.components.Leaderboard;
+import java.net.URL;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
-
-import java.util.List;
 
 /**
  * View for displaying exchange information.
+ *
+ * @author Robin Strand Prestmo
  */
-public class ExchangeGameView {
+public class ExchangeGameView implements GameObserver {
 
   private final GameSession gameSession;
   private final GameController gameController;
 
-  private final Label stockNameLabel;
-  private final Label stockValueChangeInPercentLabel;
-  private final Label stockValueLabel;
+  private final ExchangeStocks stocksContainer;
 
-  private final TextField stocksSearchField;
+  private final Leaderboard winnersLeaderboard;
+  private final Leaderboard losersLeaderboard;
 
-  private final Label winnersHeader;
-  private final Label losersHeader;
-
-  private final VBox stocksBox;
-  private final VBox winnersBox;
-  private final VBox losersBox;
-
-  private final HBox root;
+  private final BorderPane root;
 
   /**
    * Creates the exchange view.
@@ -52,75 +42,33 @@ public class ExchangeGameView {
     this.gameSession = gameSession;
     this.gameController = gameController;
 
-    this.stocksSearchField = new TextField();
-    stocksSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
-      updateStocks();
-    });
+    this.root = new BorderPane();
+    this.root.getStyleClass().add("content-container");
 
-    Button sortSymbol = new Button("Symbol");
-    Button sortName = new Button("Name");
-    Button sortValue = new Button("Stock value");
+    URL styleSheet = getClass().getResource("/css/exchange-game-view.css");
+    if (styleSheet != null) {
+      root.getStylesheets().add(styleSheet.toExternalForm());
+    }
 
-    HBox sortButtons = new HBox();
-    sortButtons.getChildren().addAll(
-        sortSymbol,
-        sortName,
-        sortValue
+    stocksContainer = new ExchangeStocks(gameSession, gameController);
+
+    winnersLeaderboard = new Leaderboard("Winners");
+    winnersLeaderboard.getStyleClass().add("tile");
+
+    losersLeaderboard = new Leaderboard("Losers");
+    losersLeaderboard.getStyleClass().add("tile");
+
+
+    VBox leaderboards = new VBox(
+        winnersLeaderboard,
+        losersLeaderboard
     );
 
-    Label sortLabel = new Label("Sort: ");
+    root.setCenter(stocksContainer);
+    root.setRight(leaderboards);
 
-    HBox sortContainer = new HBox();
-    sortContainer.getChildren().addAll(
-        sortLabel,
-        sortButtons
-    );
-
-    VBox stockFilters = new VBox(
-        stocksSearchField,
-        sortContainer
-    );
-
-    this.stockNameLabel = new Label("Stock Name");
-    this.stockValueChangeInPercentLabel = new Label("Change in %");
-    this.stockValueLabel = new Label("Stock Value");
-
-    HBox stockHeaders = new HBox(20);
-    stockHeaders.getChildren().addAll(
-        stockNameLabel,
-        stockValueChangeInPercentLabel,
-        stockValueLabel
-    );
-
-    this.stocksBox = new VBox(10);
-    ScrollPane scrollPane = new ScrollPane(stocksBox);
-
-    VBox stocksContainer = new VBox(10);
-    stocksContainer.getChildren().addAll(
-        stockFilters,
-        stockHeaders,
-        scrollPane
-    );
-
-    this.winnersHeader = new Label("Weekly Winners");
-    this.losersHeader = new Label("Weekly Losers");
-
-    this.winnersBox = new VBox(10);
-    this.losersBox = new VBox(10);
-
-    VBox winnersLosersBox = new VBox(20);
-    winnersLosersBox.getChildren().addAll(
-      winnersHeader,
-      winnersBox,
-      losersHeader,
-      losersBox
-    );
-
-    this.root = new HBox(20);
-    root.setPadding(new Insets(10));
-    root.getChildren().addAll(stocksContainer, winnersLosersBox);
-
-    updateView();
+    updateWinners();
+    updateLosers();
   }
 
   /**
@@ -128,85 +76,27 @@ public class ExchangeGameView {
    *
    * @return the root layout
    */
-  public HBox getView() {
+  public BorderPane getView() {
     return root;
   }
 
   /**
-   * Updates the exchange view with current game data.
+   * Updates the winners table.
    */
-  public void updateView() {
-    updateStocks();
+  private void updateWinners() {
+    winnersLeaderboard.setEntries(gameSession.getExchange().getGainers(5));
+  }
+
+  /**
+   * Updates the losers table.
+   */
+  private void updateLosers() {
+    losersLeaderboard.setEntries(gameSession.getExchange().getLosers(5));
+  }
+
+  @Override
+  public void onGameStateChanged() {
     updateWinners();
     updateLosers();
-  }
-
-  private void updateStocks() {
-    stocksBox.getChildren().clear();
-
-    List<Stock> stocks;
-
-    if (stocksSearchField.getText().isBlank()) {
-      stocks = gameSession.getExchange().getAllStocks();
-    } else {
-      stocks = gameSession.getExchange().findStocks(stocksSearchField.getText());
-    }
-
-    stocks.forEach(stock -> {
-      Label stockLabel = new Label(
-        stock.getSymbol()
-          + " | "
-          + stock.getCompany()
-          + " | "
-          + stock.getCurrentPrice()
-      );
-
-      Button buyButton = new Button("Buy");
-
-      buyButton.setOnAction(event -> {
-        BuyDialog buyDialog = new BuyDialog(gameController, stock);
-        buyDialog.showAndGetResult();
-      });
-
-      Button historicPrices = new Button("Historic Prices");
-      historicPrices.setOnAction(event -> {
-        StockDialog stockDialog = new StockDialog(stock, gameSession.getExchange());
-        stockDialog.showAndGetResult();
-      });
-
-      HBox stockBox = new HBox(10);
-      stockBox.getChildren().addAll(buyButton, stockLabel, historicPrices);
-      stocksBox.getChildren().add(stockBox);
-    });
-  }
-
-  private void updateWinners() {
-    winnersBox.getChildren().clear();
-
-    for (Stock stock : gameSession.getExchange().getGainers(5)) {
-      Label stockLabel = new Label(
-        stock.getSymbol()
-          + " | "
-          + stock.getCurrentPrice()
-          + " | "
-          + stock.getLatestPriceChange()
-      );
-      winnersBox.getChildren().add(stockLabel);
-    }
-  }
-
-  private void updateLosers() {
-    losersBox.getChildren().clear();
-
-    for (Stock stock : gameSession.getExchange().getLosers(5)) {
-      Label stockLabel = new Label(
-        stock.getSymbol()
-          + " | "
-          + stock.getCurrentPrice()
-          + " | "
-          + stock.getLatestPriceChange()
-      );
-      losersBox.getChildren().add(stockLabel);
-    }
   }
 }

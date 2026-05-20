@@ -30,6 +30,11 @@ public class AppView implements GameObserver {
 
     scene = new Scene(startView.getView(), 1100, 700);
 
+    URL styleSheet = getClass().getResource("/css/app.css");
+    if (styleSheet != null) {
+      scene.getStylesheets().add(styleSheet.toExternalForm());
+    }
+
     URL themeStyleSheet = getClass().getResource("/css/light-theme.css");
     if (themeStyleSheet != null) {
       scene.getStylesheets().add(themeStyleSheet.toExternalForm());
