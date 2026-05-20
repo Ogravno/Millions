@@ -67,6 +67,8 @@ public class ExchangeGameView implements GameObserver {
     root.setCenter(stocksContainer);
     root.setRight(leaderboards);
 
+    this.gameSession.addObserver(this);
+
     updateWinners();
     updateLosers();
   }
