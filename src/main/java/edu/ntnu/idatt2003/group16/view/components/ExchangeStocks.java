@@ -4,6 +4,8 @@ import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
+import edu.ntnu.idatt2003.group16.view.BuyDialog;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -93,8 +95,14 @@ public class ExchangeStocks extends VBox implements GameObserver {
     stocksBox.getChildren().clear();
 
     stocks.forEach(stock -> {
-      ExchangeStockCard stockCard = new ExchangeStockCard(stock, gameController);
+      ExchangeStockCard stockCard = new ExchangeStockCard(stock);
       stockCard.getStyleClass().add("stock-card");
+      stockCard.setCursor(Cursor.HAND);
+      stockCard.setOnMouseClicked(event -> {
+        BuyDialog buyDialog = new BuyDialog(gameController, stock);
+        buyDialog.showAndGetResult();
+      });
+
       stocksBox.getChildren().add(stockCard);
     });
   }
