@@ -5,7 +5,8 @@ import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import java.io.File;
@@ -50,7 +51,7 @@ public class NewGameView implements GameObserver {
     playerNameInput.getStyleClass().add("menu-input-container");
 
     Label startingMoneyLabel = new Label("Starting money:");
-    TextField startingMoneyField = new TextField("1000.00");
+    TextField startingMoneyField = new TextField();
     startingMoneyField.setPromptText("Starting money");
 
     VBox startingMoneyInput = new VBox();
@@ -77,17 +78,21 @@ public class NewGameView implements GameObserver {
         selectFileLabel
     );
 
-    Label fileErrorLabel = new Label();
-    fileErrorLabel.getStyleClass().addAll("standard-text", "red-text");
+    Label defaultFileNotFoundErrorLabel = new Label("Default file not found.");
+    defaultFileNotFoundErrorLabel.getStyleClass().addAll("standard-text", "red-text");
+
+    Label defaultFileLoadErrorLabel = new Label("Could not load default file.");
+    defaultFileLoadErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
     selectStandardStocks.setOnAction(event -> {
       try {
         URL resource = getClass().getResource("/stockFiles/stocks.csv");
 
         if (resource == null) {
-          fileErrorLabel.setText("Default file not found.");
-          selectFile.getChildren().add(fileErrorLabel);
+          selectFile.getChildren().add(defaultFileNotFoundErrorLabel);
           return;
+        } else {
+          selectFile.getChildren().remove(defaultFileNotFoundErrorLabel);
         }
 
         File file = Paths.get(resource.toURI()).toFile();
@@ -95,12 +100,14 @@ public class NewGameView implements GameObserver {
         newGameController.processStockFile(file);
 
         selectFileLabel.setText("Selected file: " + file.getName());
-        fileErrorLabel.setText("");
-        selectFile.getChildren().remove(fileErrorLabel);
+        selectFile.getChildren().remove(defaultFileLoadErrorLabel);
       } catch (Exception e) {
-        fileErrorLabel.setText("Could not load default file.");
+        selectFile.getChildren().add(defaultFileLoadErrorLabel);
       }
     });
+
+    Label fileErrorLabel = new Label("Invalid file format.");
+    fileErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
     selectFileButton.setOnAction(event -> {
       File selectedFile = stockFileChooser.showOpenDialog(null);
@@ -120,8 +127,19 @@ public class NewGameView implements GameObserver {
     Button backButton = new Button("Go back");
     Button startButton = new Button("Start game");
 
-    HBox navigationButtons = new HBox();
-    navigationButtons.getChildren().addAll(backButton, startButton);
+    ColumnConstraints column1 = new ColumnConstraints();
+    column1.setPercentWidth(48);
+
+    ColumnConstraints column2 = new ColumnConstraints();
+    column2.setPercentWidth(4);
+
+    ColumnConstraints column3 = new ColumnConstraints();
+    column3.setPercentWidth(48);
+
+    GridPane navigationButtons = new GridPane();
+    navigationButtons.getColumnConstraints().addAll(column1, column2, column3);
+    navigationButtons.add(backButton, 0, 0);
+    navigationButtons.add(startButton, 2, 0);
     navigationButtons.getStyleClass().add("navigation-container");
 
     backButton.setOnAction(event -> {
@@ -134,8 +152,17 @@ public class NewGameView implements GameObserver {
     Label playerNameErrorLabel = new Label("Required field");
     playerNameErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
-    Label startingMoneyErrorLabel = new Label();
-    startingMoneyErrorLabel.getStyleClass().addAll("standard-text", "red-text");
+    Label startingMoneyRequiredFieldLabel = new Label("Required field");
+    startingMoneyRequiredFieldLabel.getStyleClass().addAll("standard-text", "red-text");
+
+    Label startingMoneyInvalidFormatLabel = new Label("Invalid format");
+    startingMoneyInvalidFormatLabel.getStyleClass().addAll("standard-text", "red-text");
+
+    Label startingMoneyAmountErrorLabel = new Label("Must be greater than 0");
+    startingMoneyAmountErrorLabel.getStyleClass().addAll("standard-text", "red-text");
+
+    Label missingFileErrorLabel = new Label("Must select a file");
+    missingFileErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
     startButton.setOnAction(event -> {
       String gameName = gameNameField.getText();
@@ -145,40 +172,62 @@ public class NewGameView implements GameObserver {
 
       boolean failed = false;
       if (gameName.isBlank()) {
-        gameNameInput.getChildren().add(gameNameErrorLabel);
+        if (!gameNameInput.getChildren().contains(gameNameErrorLabel)) {
+          gameNameInput.getChildren().add(gameNameErrorLabel);
+        }
+
         failed = true;
       } else {
         gameNameInput.getChildren().remove(gameNameErrorLabel);
       }
 
       if (playerName.isBlank()) {
-        playerNameInput.getChildren().add(playerNameErrorLabel);
+        if (!playerNameInput.getChildren().contains(playerNameErrorLabel)) {
+          playerNameInput.getChildren().add(playerNameErrorLabel);
+        }
+
         failed = true;
       } else {
         playerNameInput.getChildren().remove(playerNameErrorLabel);
       }
 
+      if (startingMoneyString.isBlank()) {
+        if (!startingMoneyInput.getChildren().contains(startingMoneyRequiredFieldLabel)) {
+          startingMoneyInput.getChildren().add(startingMoneyRequiredFieldLabel);
+        }
+
+        failed = true;
+      } else {
+        startingMoneyInput.getChildren().remove(startingMoneyRequiredFieldLabel);
+      }
+
       try {
         startingMoney = new BigDecimal(startingMoneyString);
-        startingMoneyInput.getChildren().remove(startingMoneyErrorLabel);
+        startingMoneyInput.getChildren().remove(startingMoneyInvalidFormatLabel);
       } catch (Exception e) {
-        startingMoneyErrorLabel.setText("Invalid format");
-        startingMoneyInput.getChildren().add(startingMoneyErrorLabel);
+        if (!startingMoneyInput.getChildren().contains(startingMoneyAmountErrorLabel)) {
+          startingMoneyInput.getChildren().add(startingMoneyInvalidFormatLabel);
+        }
+
         failed = true;
       }
 
-      if (startingMoney.signum() != 1 || startingMoneyString.isBlank()) {
-          startingMoneyErrorLabel.setText("Starting money must be greater than 0");
-          startingMoneyInput.getChildren().add(startingMoneyErrorLabel);
+      if (startingMoney.signum() != 1) {
+        if (!startingMoneyInput.getChildren().contains(startingMoneyAmountErrorLabel)) {
+          startingMoneyInput.getChildren().add(startingMoneyAmountErrorLabel);
+        }
       } else {
-        startingMoneyInput.getChildren().remove(startingMoneyErrorLabel);
+        startingMoneyInput.getChildren().remove(startingMoneyAmountErrorLabel);
       }
 
       if (newGameController.getStocks().isEmpty()) {
-        fileErrorLabel.setText("Must select a file");
+        if (!selectFile.getChildren().contains(missingFileErrorLabel)) {
+          selectFile.getChildren().add(missingFileErrorLabel);
+        }
+
         failed = true;
       } else {
-        fileErrorLabel.setText("");
+        selectFile.getChildren().remove(missingFileErrorLabel);
       }
 
       if (failed) {
