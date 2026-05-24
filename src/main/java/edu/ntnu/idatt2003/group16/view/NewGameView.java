@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
@@ -27,51 +28,60 @@ public class NewGameView implements GameObserver {
     this.newGameController = newGameController;
 
     this.root = new VBox();
+    root.getStyleClass().add("start-menu");
+
+    Label title = new Label("New Game");
+    title.getStyleClass().addAll("headline");
 
     Label gameNameLabel = new Label("New game name");
     TextField gameNameField = new TextField();
     gameNameField.setPromptText("Game name");
-    Label gameNameErrorLabel = new Label();
-    gameNameErrorLabel.setStyle("-fx-text-fill: red;");
 
     VBox gameNameInput = new VBox();
-    gameNameInput.getChildren().addAll(gameNameLabel, gameNameField, gameNameErrorLabel);
+    gameNameInput.getChildren().addAll(gameNameLabel, gameNameField);
+    gameNameInput.getStyleClass().add("menu-input-container");
 
     Label playerNameLabel = new Label("New player name");
     TextField playerNameField = new TextField();
     playerNameField.setPromptText("Player name");
-    Label playerNameErrorLabel = new Label();
-    playerNameErrorLabel.setStyle("-fx-text-fill: red;");
 
     VBox playerNameInput = new VBox();
-    playerNameInput.getChildren().addAll(playerNameLabel, playerNameField, playerNameErrorLabel);
+    playerNameInput.getChildren().addAll(playerNameLabel, playerNameField);
+    playerNameInput.getStyleClass().add("menu-input-container");
 
     Label startingMoneyLabel = new Label("Starting money:");
-    TextField startingMoneyField = new TextField("1000.00");
+    TextField startingMoneyField = new TextField();
     startingMoneyField.setPromptText("Starting money");
-    Label startingMoneyErrorLabel = new Label();
-    startingMoneyErrorLabel.setStyle("-fx-text-fill: red;");
 
     VBox startingMoneyInput = new VBox();
-    startingMoneyInput.getChildren().addAll(startingMoneyLabel, startingMoneyField,
-        startingMoneyErrorLabel);
+    startingMoneyInput.getChildren().addAll(startingMoneyLabel, startingMoneyField);
+    startingMoneyInput.getStyleClass().add("menu-input-container");
 
     FileChooser stockFileChooser = new FileChooser();
     stockFileChooser.getExtensionFilters().add(
         new FileChooser.ExtensionFilter("csv files", "*.csv")
     );
 
-    Label selectFileLabel = new Label("No file selected");
     Button selectFileButton = new Button("Select file");
+    selectFileButton.getStyleClass().add("menu-button");
+
     Button selectStandardStocks = new Button("Select standard stocks");
-    Label fileErrorLabel = new Label();
-    fileErrorLabel.setStyle("-fx-text-fill: red;");
+    selectStandardStocks.getStyleClass().add("menu-button");
 
-    HBox fileSelection = new HBox();
-    fileSelection.getChildren().addAll(selectFileLabel, selectFileButton);
+    Label selectFileLabel = new Label("No file selected");
+    selectFileLabel.getStyleClass().add("standard-text");
 
-    VBox selectFile = new VBox();
-    selectFile.getChildren().addAll(selectStandardStocks, fileSelection, fileErrorLabel);
+    VBox selectFile = new VBox(
+        selectFileButton,
+        selectStandardStocks,
+        selectFileLabel
+    );
+
+    Label defaultFileNotFoundErrorLabel = new Label("Default file not found.");
+    defaultFileNotFoundErrorLabel.getStyleClass().addAll("standard-text", "red-text");
+
+    Label defaultFileLoadErrorLabel = new Label("Could not load default file.");
+    defaultFileLoadErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
     selectStandardStocks.setOnAction(event -> {
       try {
@@ -80,7 +90,11 @@ public class NewGameView implements GameObserver {
 
         if (inputStream == null) {
           fileErrorLabel.setText("Default file not found.");
+        if (resource == null) {
+          selectFile.getChildren().add(defaultFileNotFoundErrorLabel);
           return;
+        } else {
+          selectFile.getChildren().remove(defaultFileNotFoundErrorLabel);
         }
 
         newGameController.processStockFile(inputStream);
@@ -88,10 +102,15 @@ public class NewGameView implements GameObserver {
         selectFileLabel.setText("stocks.csv");
         fileErrorLabel.setText("");
 
+        selectFileLabel.setText("Selected file: " + file.getName());
+        selectFile.getChildren().remove(defaultFileLoadErrorLabel);
       } catch (Exception e) {
-        fileErrorLabel.setText("Could not load default file.");
+        selectFile.getChildren().add(defaultFileLoadErrorLabel);
       }
     });
+
+    Label fileErrorLabel = new Label("Invalid file format.");
+    fileErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
     selectFileButton.setOnAction(event -> {
       File selectedFile = stockFileChooser.showOpenDialog(null);
@@ -100,8 +119,10 @@ public class NewGameView implements GameObserver {
           newGameController.processStockFile(selectedFile);
           selectFileLabel.setText(selectedFile.getName());
           fileErrorLabel.setText("");
+          selectFile.getChildren().remove(fileErrorLabel);
         } catch (Exception e) {
           fileErrorLabel.setText("Invalid file format.");
+          selectFile.getChildren().add(fileErrorLabel);
         }
       }
     });
@@ -109,12 +130,42 @@ public class NewGameView implements GameObserver {
     Button backButton = new Button("Go back");
     Button startButton = new Button("Start game");
 
-    HBox navigationButtons = new HBox();
-    navigationButtons.getChildren().addAll(backButton, startButton);
+    ColumnConstraints column1 = new ColumnConstraints();
+    column1.setPercentWidth(48);
+
+    ColumnConstraints column2 = new ColumnConstraints();
+    column2.setPercentWidth(4);
+
+    ColumnConstraints column3 = new ColumnConstraints();
+    column3.setPercentWidth(48);
+
+    GridPane navigationButtons = new GridPane();
+    navigationButtons.getColumnConstraints().addAll(column1, column2, column3);
+    navigationButtons.add(backButton, 0, 0);
+    navigationButtons.add(startButton, 2, 0);
+    navigationButtons.getStyleClass().add("navigation-container");
 
     backButton.setOnAction(event -> {
 
     });
+
+    Label gameNameErrorLabel = new Label("Required field");
+    gameNameErrorLabel.getStyleClass().addAll("standard-text", "red-text");
+
+    Label playerNameErrorLabel = new Label("Required field");
+    playerNameErrorLabel.getStyleClass().addAll("standard-text", "red-text");
+
+    Label startingMoneyRequiredFieldLabel = new Label("Required field");
+    startingMoneyRequiredFieldLabel.getStyleClass().addAll("standard-text", "red-text");
+
+    Label startingMoneyInvalidFormatLabel = new Label("Invalid format");
+    startingMoneyInvalidFormatLabel.getStyleClass().addAll("standard-text", "red-text");
+
+    Label startingMoneyAmountErrorLabel = new Label("Must be greater than 0");
+    startingMoneyAmountErrorLabel.getStyleClass().addAll("standard-text", "red-text");
+
+    Label missingFileErrorLabel = new Label("Must select a file");
+    missingFileErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
     startButton.setOnAction(event -> {
       String gameName = gameNameField.getText();
@@ -124,32 +175,62 @@ public class NewGameView implements GameObserver {
 
       boolean failed = false;
       if (gameName.isBlank()) {
-        gameNameErrorLabel.setText("Required field");
+        if (!gameNameInput.getChildren().contains(gameNameErrorLabel)) {
+          gameNameInput.getChildren().add(gameNameErrorLabel);
+        }
+
         failed = true;
       } else {
-        gameNameErrorLabel.setText("");
+        gameNameInput.getChildren().remove(gameNameErrorLabel);
       }
 
       if (playerName.isBlank()) {
-        playerNameErrorLabel.setText("Required field");
+        if (!playerNameInput.getChildren().contains(playerNameErrorLabel)) {
+          playerNameInput.getChildren().add(playerNameErrorLabel);
+        }
+
         failed = true;
       } else {
-        playerNameErrorLabel.setText("");
+        playerNameInput.getChildren().remove(playerNameErrorLabel);
+      }
+
+      if (startingMoneyString.isBlank()) {
+        if (!startingMoneyInput.getChildren().contains(startingMoneyRequiredFieldLabel)) {
+          startingMoneyInput.getChildren().add(startingMoneyRequiredFieldLabel);
+        }
+
+        failed = true;
+      } else {
+        startingMoneyInput.getChildren().remove(startingMoneyRequiredFieldLabel);
       }
 
       try {
         startingMoney = new BigDecimal(startingMoneyString);
-        startingMoneyErrorLabel.setText("");
+        startingMoneyInput.getChildren().remove(startingMoneyInvalidFormatLabel);
       } catch (Exception e) {
-        startingMoneyErrorLabel.setText("Incorrect formatting");
+        if (!startingMoneyInput.getChildren().contains(startingMoneyAmountErrorLabel)) {
+          startingMoneyInput.getChildren().add(startingMoneyInvalidFormatLabel);
+        }
+
         failed = true;
       }
 
+      if (startingMoney.signum() != 1) {
+        if (!startingMoneyInput.getChildren().contains(startingMoneyAmountErrorLabel)) {
+          startingMoneyInput.getChildren().add(startingMoneyAmountErrorLabel);
+        }
+      } else {
+        startingMoneyInput.getChildren().remove(startingMoneyAmountErrorLabel);
+      }
+
       if (newGameController.getStocks().isEmpty()) {
-        fileErrorLabel.setText("Must select a file");
+        if (!selectFile.getChildren().contains(missingFileErrorLabel)) {
+          selectFile.getChildren().add(missingFileErrorLabel);
+        }
+
         failed = true;
       } else {
-        fileErrorLabel.setText("");
+        selectFile.getChildren().remove(missingFileErrorLabel);
       }
 
       if (failed) {
@@ -163,12 +244,18 @@ public class NewGameView implements GameObserver {
       newGameController.startGame();
     });
 
-    root.getChildren().addAll(
+    VBox newGameMenuOptions = new VBox(
         gameNameInput,
         playerNameInput,
         startingMoneyInput,
         selectFile,
         navigationButtons
+    );
+    newGameMenuOptions.getStyleClass().add("menu-option-container");
+
+    root.getChildren().addAll(
+        title,
+        newGameMenuOptions
     );
   }
 
