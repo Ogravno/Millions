@@ -2,6 +2,9 @@ package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.controller.NewGameController;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
+import java.io.File;
+import java.io.InputStream;
+import java.math.BigDecimal;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -9,10 +12,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import java.io.File;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.nio.file.Paths;
 
 /**
  * Creates the new game view.
@@ -86,21 +85,21 @@ public class NewGameView implements GameObserver {
 
     selectStandardStocks.setOnAction(event -> {
       try {
-        URL resource = getClass().getResource("/stockFiles/stocks.csv");
+        InputStream inputStream =
+          getClass().getResourceAsStream("/stockFiles/stocks.csv");
 
-        if (resource == null) {
+        if (inputStream == null) {
           selectFile.getChildren().add(defaultFileNotFoundErrorLabel);
           return;
         } else {
           selectFile.getChildren().remove(defaultFileNotFoundErrorLabel);
         }
 
-        File file = Paths.get(resource.toURI()).toFile();
+        newGameController.processStockFile(inputStream);
 
-        newGameController.processStockFile(file);
-
-        selectFileLabel.setText("Selected file: " + file.getName());
+        selectFileLabel.setText("Selected file: stocks.csv");
         selectFile.getChildren().remove(defaultFileLoadErrorLabel);
+
       } catch (Exception e) {
         selectFile.getChildren().add(defaultFileLoadErrorLabel);
       }

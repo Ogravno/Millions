@@ -37,3 +37,15 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Packaged application output
+Millions/
+
+# Maven build output
+target/
+
+# Test/coverage output
+*.exec
+
+# My files
+Diverse/
