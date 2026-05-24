@@ -138,7 +138,8 @@ public class Player {
   }
 
   /**
-   * Gets the status of the player.
+   * Gets the current status of the player based on the current game week
+   * and the player's net worth.
    *
    * <P>{@code NOVICE} - Starting level for player. No qualification needed.
    * </P>
@@ -151,17 +152,17 @@ public class Player {
    *    *   and have at least doubled his investments.
    * </P>
    *
+   * @param currentWeek the current week of the game.
    * @return the current status the player are in.
    */
-  public Status getStatus() {
+  public Status getStatus(int currentWeek) {
     BigDecimal twentyPercentThreshold = startingMoney.multiply(new BigDecimal("1.2"));
     BigDecimal doubleThreshold = startingMoney.multiply(new BigDecimal("2"));
-    int weeks = transactionArchive.countDistinctWeeks();
     BigDecimal netWorth = getNetWorth();
 
-    if (weeks >= 20 && netWorth.compareTo(doubleThreshold) >= 0) {
+    if (currentWeek >= 20 && netWorth.compareTo(doubleThreshold) >= 0) {
       return Status.SPECULATOR;
-    } else if (weeks >= 10 && netWorth.compareTo(twentyPercentThreshold) >= 0) {
+    } else if (currentWeek >= 10 && netWorth.compareTo(twentyPercentThreshold) >= 0) {
       return Status.INVESTOR;
     } else {
       return Status.NOVICE;

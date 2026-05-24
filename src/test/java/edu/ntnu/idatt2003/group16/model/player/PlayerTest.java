@@ -157,7 +157,7 @@ class PlayerTest {
 
     @Test
     void shouldReturnNOVICE() {
-      Status status = player.getStatus();
+      Status status = player.getStatus(0);
 
       assertEquals(Status.NOVICE, status);
     }
@@ -173,7 +173,7 @@ class PlayerTest {
       }
 
       appleStock.changeCurrentPrice(new BigDecimal("5000"));
-      assertEquals(Status.NOVICE, player1.getStatus());
+      assertEquals(Status.NOVICE, player1.getStatus(9));
     }
 
     @Test
@@ -186,7 +186,7 @@ class PlayerTest {
         appleStock.changeCurrentPrice(new BigDecimal("250"));
       }
 
-      assertEquals(Status.NOVICE, player1.getStatus());
+      assertEquals(Status.NOVICE, player1.getStatus(50));
     }
 
     @Test
@@ -200,7 +200,7 @@ class PlayerTest {
       }
 
       appleStock.changeCurrentPrice(new BigDecimal("5000"));
-      assertEquals(Status.INVESTOR, player1.getStatus());
+      assertEquals(Status.INVESTOR, player1.getStatus(15));
     }
 
     @Test
@@ -214,7 +214,7 @@ class PlayerTest {
       }
 
       appleStock.changeCurrentPrice(new BigDecimal("5000"));
-      assertEquals(Status.INVESTOR, player1.getStatus());
+      assertEquals(Status.INVESTOR, player1.getStatus(19));
     }
 
     @Test
@@ -228,7 +228,7 @@ class PlayerTest {
       }
 
       appleStock.changeCurrentPrice(new BigDecimal("400"));
-      assertEquals(Status.INVESTOR, player1.getStatus());
+      assertEquals(Status.INVESTOR, player1.getStatus(30));
     }
 
     @Test
@@ -242,7 +242,7 @@ class PlayerTest {
       }
 
       appleStock.changeCurrentPrice(new BigDecimal("5000"));
-      assertEquals(Status.SPECULATOR, player1.getStatus());
+      assertEquals(Status.SPECULATOR, player1.getStatus(25));
     }
   }
 }

@@ -85,7 +85,7 @@ public class HomeView {
   private void updatePortfolio() {
     money.setText("Your money: " + gameSession.getPlayer().getFormattedMoney());
     netWorth.setText("Your net worth: " + gameSession.getPlayer().getFormattedNetWorth());
-    status.setText("Status: " + gameSession.getPlayer().getStatus());
+    status.setText("Status: " + gameSession.getPlayer().getStatus(gameSession.getExchange().getWeek()));
   }
 
   private void createSharesHeader() {
