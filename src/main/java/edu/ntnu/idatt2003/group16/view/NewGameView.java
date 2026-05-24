@@ -7,9 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Path;
 import javafx.stage.FileChooser;
-
 import java.io.File;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -30,51 +28,65 @@ public class NewGameView implements GameObserver {
     this.newGameController = newGameController;
 
     this.root = new VBox();
+    root.getStyleClass().add("start-menu");
+
+    Label title = new Label("New Game");
+    title.getStyleClass().addAll("headline");
 
     Label gameNameLabel = new Label("New game name");
     TextField gameNameField = new TextField();
     gameNameField.setPromptText("Game name");
     Label gameNameErrorLabel = new Label();
-    gameNameErrorLabel.setStyle("-fx-text-fill: red;");
+    gameNameErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
     VBox gameNameInput = new VBox();
     gameNameInput.getChildren().addAll(gameNameLabel, gameNameField, gameNameErrorLabel);
+    gameNameInput.getStyleClass().add("menu-input-container");
 
     Label playerNameLabel = new Label("New player name");
     TextField playerNameField = new TextField();
     playerNameField.setPromptText("Player name");
     Label playerNameErrorLabel = new Label();
-    playerNameErrorLabel.setStyle("-fx-text-fill: red;");
+    playerNameErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
     VBox playerNameInput = new VBox();
     playerNameInput.getChildren().addAll(playerNameLabel, playerNameField, playerNameErrorLabel);
+    playerNameInput.getStyleClass().add("menu-input-container");
 
     Label startingMoneyLabel = new Label("Starting money:");
     TextField startingMoneyField = new TextField("1000.00");
     startingMoneyField.setPromptText("Starting money");
     Label startingMoneyErrorLabel = new Label();
-    startingMoneyErrorLabel.setStyle("-fx-text-fill: red;");
+    startingMoneyErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
     VBox startingMoneyInput = new VBox();
     startingMoneyInput.getChildren().addAll(startingMoneyLabel, startingMoneyField,
         startingMoneyErrorLabel);
+    startingMoneyInput.getStyleClass().add("menu-input-container");
 
     FileChooser stockFileChooser = new FileChooser();
     stockFileChooser.getExtensionFilters().add(
         new FileChooser.ExtensionFilter("csv files", "*.csv")
     );
 
-    Label selectFileLabel = new Label("No file selected");
     Button selectFileButton = new Button("Select file");
+    selectFileButton.getStyleClass().add("menu-button");
+
     Button selectStandardStocks = new Button("Select standard stocks");
+    selectStandardStocks.getStyleClass().add("menu-button");
+
+    Label selectFileLabel = new Label("No file selected");
+    selectFileLabel.getStyleClass().add("standard-text");
+
     Label fileErrorLabel = new Label();
-    fileErrorLabel.setStyle("-fx-text-fill: red;");
+    fileErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
-    HBox fileSelection = new HBox();
-    fileSelection.getChildren().addAll(selectFileLabel, selectFileButton);
-
-    VBox selectFile = new VBox();
-    selectFile.getChildren().addAll(selectStandardStocks, fileSelection, fileErrorLabel);
+    VBox selectFile = new VBox(
+        selectFileButton,
+        selectStandardStocks,
+        selectFileLabel,
+        fileErrorLabel
+    );
 
     selectStandardStocks.setOnAction(event -> {
       try {
@@ -89,7 +101,7 @@ public class NewGameView implements GameObserver {
 
         newGameController.processStockFile(file);
 
-        selectFileLabel.setText(file.getName());
+        selectFileLabel.setText("Selected file: " + file.getName());
         fileErrorLabel.setText("");
 
       } catch (Exception e) {
@@ -115,6 +127,7 @@ public class NewGameView implements GameObserver {
 
     HBox navigationButtons = new HBox();
     navigationButtons.getChildren().addAll(backButton, startButton);
+    navigationButtons.getStyleClass().add("navigation-container");
 
     backButton.setOnAction(event -> {
 
@@ -167,12 +180,18 @@ public class NewGameView implements GameObserver {
       newGameController.startGame();
     });
 
-    root.getChildren().addAll(
+    VBox newGameMenuOptions = new VBox(
         gameNameInput,
         playerNameInput,
         startingMoneyInput,
         selectFile,
         navigationButtons
+    );
+    newGameMenuOptions.getStyleClass().add("menu-option-container");
+
+    root.getChildren().addAll(
+        title,
+        newGameMenuOptions
     );
   }
 

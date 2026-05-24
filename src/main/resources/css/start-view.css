@@ -23,23 +23,42 @@
 
 .menu-option-container {
     -fx-max-width: 450;
-    -fx-spacing: 25;
+    -fx-spacing: 15;
 }
 
-.menu-button {
+.menu-button,
+.navigation-container > .button {
     -fx-max-width: 1000;
-    -fx-padding: 10 0 10 0;
+    -fx-padding: 8 8 8 8;
     -fx-background-color: -tile-color;
     -fx-border-width: 1 1 1 1;
     -fx-border-color: -border-color;
 }
 
-.menu-button:hover {
+.menu-button:hover,
+.navigation-container > .button:hover {
     -fx-border-color: -main-color;
     -fx-text-fill: -main-color;
     -fx-background-color: -tile-color;
 }
 
-.menu-button:pressed {
+.menu-button:pressed,
+.navigation-container > .button:pressed {
     -fx-background-color: -button-hover-color;
+}
+
+.menu-input-container > .text-field {
+    -fx-background-color: -tile-color;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: -border-color;
+    -fx-text-fill: -regular-text-color;
+    -fx-padding: 8 5 8 5;
+}
+
+.menu-input-container > .text-field:focused {
+    -fx-border-color: -main-color;
+}
+
+.navigation-container {
+    -fx-spacing: 20;
 }
