@@ -62,3 +62,7 @@
 .navigation-container {
     -fx-spacing: 20;
 }
+
+.collapsed {
+    -fx-max-height: 0;
+}
