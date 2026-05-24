@@ -46,3 +46,6 @@ target/
 
 # Test/coverage output
 *.exec
+
+# My files
+Diverse/
