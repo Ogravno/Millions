@@ -1,0 +1,68 @@
+.start-menu {
+    -fx-alignment: TOP_CENTER;
+    -fx-background-color: -background-color;
+    -fx-padding: 100 0 0 0;
+}
+
+.logo-container {
+    -fx-padding: 0 0 25 0;
+    -fx-alignment: TOP_CENTER;
+}
+
+.logo {
+    -fx-text-fill: -regular-text-color;
+    -fx-font-size: 96px;
+    -fx-font-weight: 600;
+}
+
+.logo-highlight {
+    -fx-text-fill: -main-color;
+    -fx-font-size: 96px;
+    -fx-font-weight: 600;
+}
+
+.menu-option-container {
+    -fx-max-width: 450;
+    -fx-spacing: 15;
+}
+
+.menu-button,
+.navigation-container > .button {
+    -fx-max-width: 1000;
+    -fx-padding: 8 8 8 8;
+    -fx-background-color: -tile-color;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: -border-color;
+}
+
+.menu-button:hover,
+.navigation-container > .button:hover {
+    -fx-border-color: -main-color;
+    -fx-text-fill: -main-color;
+    -fx-background-color: -tile-color;
+}
+
+.menu-button:pressed,
+.navigation-container > .button:pressed {
+    -fx-background-color: -button-hover-color;
+}
+
+.menu-input-container > .text-field {
+    -fx-background-color: -tile-color;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: -border-color;
+    -fx-text-fill: -regular-text-color;
+    -fx-padding: 8 5 8 5;
+}
+
+.menu-input-container > .text-field:focused {
+    -fx-border-color: -main-color;
+}
+
+.navigation-container {
+    -fx-spacing: 20;
+}
+
+.collapsed {
+    -fx-max-height: 0;
+}
