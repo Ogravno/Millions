@@ -86,11 +86,9 @@ public class NewGameView implements GameObserver {
     selectStandardStocks.setOnAction(event -> {
       try {
         InputStream inputStream =
-            getClass().getResourceAsStream("/stockFiles/stocks.csv");
+          getClass().getResourceAsStream("/stockFiles/stocks.csv");
 
         if (inputStream == null) {
-          fileErrorLabel.setText("Default file not found.");
-        if (resource == null) {
           selectFile.getChildren().add(defaultFileNotFoundErrorLabel);
           return;
         } else {
@@ -99,11 +97,9 @@ public class NewGameView implements GameObserver {
 
         newGameController.processStockFile(inputStream);
 
-        selectFileLabel.setText("stocks.csv");
-        fileErrorLabel.setText("");
-
-        selectFileLabel.setText("Selected file: " + file.getName());
+        selectFileLabel.setText("Selected file: stocks.csv");
         selectFile.getChildren().remove(defaultFileLoadErrorLabel);
+
       } catch (Exception e) {
         selectFile.getChildren().add(defaultFileLoadErrorLabel);
       }
