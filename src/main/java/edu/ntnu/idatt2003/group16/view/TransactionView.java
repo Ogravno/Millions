@@ -2,32 +2,25 @@ package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
-import edu.ntnu.idatt2003.group16.model.transaction.TransactionArchive;
-import javafx.scene.control.Button;
+import edu.ntnu.idatt2003.group16.observer.GameObserver;
+import edu.ntnu.idatt2003.group16.view.components.TransactionTable;
+import java.net.URL;
+import java.util.List;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import java.util.List;
 
 /**
  * View for displaying transactions
  */
-public class TransactionView {
+public class TransactionView implements GameObserver {
   private final GameSession gameSession;
 
-  VBox root = new VBox(10);
-  HBox header = new HBox(10);
-  VBox transactions = new VBox(10);
-
-  private final Label date;
-  private final Label boughtSold;
-  private final Label shares;
-  private final Label amount;
-  private final TextField transactionSearchField;
-
+  private final VBox root;
+  private final TransactionTable transactionTable;
 
   /**
    * Creates the transaction view.
@@ -38,82 +31,92 @@ public class TransactionView {
     if (gameSession == null) {
       throw new IllegalArgumentException("GamesSession cannot be null");
     }
+
     this.gameSession = gameSession;
 
-    this.date = new Label("Week");
-    this.boughtSold = new Label("Type");
-    this.shares = new Label("Shares");
-    this.amount = new Label("Amount");
+    this.root = new VBox(10);
+    this.root.getStyleClass().add("content-container");
 
-    this.transactionSearchField = new TextField();
+    URL styleSheet = getClass().getResource("/css/transaction-view.css");
+    if (styleSheet != null) {
+      root.getStylesheets().add(styleSheet.toExternalForm());
+    }
+
+    Label headline = new Label("Transactions");
+    headline.getStyleClass().add("headline");
+
+    TextField transactionSearchField = new TextField();
+    transactionSearchField.setPromptText("Search...");
     transactionSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
-      updateTransactions();
+      drawTransactions(gameSession.getPlayer().getTransactionArchive().findTransactions(newValue));
+    });
+    transactionSearchField.getStyleClass().add("searchbar");
+
+    Label sortLabel = new Label("Sort: ");
+    sortLabel.getStyleClass().add("standard-text");
+
+    ToggleGroup sortButtons = new ToggleGroup();
+    sortButtons.selectedToggleProperty().addListener((obsVal, oldVal, newVal) -> {
+      if (newVal == null) {
+        oldVal.setSelected(true);
+      }
     });
 
+    ToggleButton sortWeek = new ToggleButton("Symbol");
+    sortWeek.setToggleGroup(sortButtons);
+    sortWeek.setSelected(true);
 
-    header.getChildren().addAll(
-      date,
-      boughtSold,
-      shares,
-      amount
+    ToggleButton sortType = new ToggleButton("Name");
+    sortType.setToggleGroup(sortButtons);
+
+    ToggleButton sortSymbol = new ToggleButton("Stock value");
+    sortSymbol.setToggleGroup(sortButtons);
+
+    ToggleButton sortStocks = new ToggleButton("Stock value");
+    sortStocks.setToggleGroup(sortButtons);
+
+    ToggleButton sortAmount = new ToggleButton("Stock value");
+    sortAmount.setToggleGroup(sortButtons);
+
+    HBox sortContainer = new HBox();
+    sortContainer.getChildren().addAll(
+        sortLabel,
+        sortWeek,
+        sortType,
+        sortSymbol,
+        sortStocks,
+        sortAmount
     );
+    sortContainer.getStyleClass().addAll("sort-buttons");
 
-    ScrollPane transactionsScrollPane = new ScrollPane(transactions);
+    transactionTable = new TransactionTable();
+    transactionTable.getStyleClass().add("transaction-table");
 
-    root.getChildren().addAll(header, transactionSearchField, transactionsScrollPane);
-    updateView();
+    VBox transactionContainer = new VBox(
+        headline,
+        transactionSearchField,
+        sortContainer,
+        transactionTable
+    );
+    transactionContainer.getStyleClass().add("tile");
+
+    gameSession.addObserver(this);
+
+    root.getChildren().addAll(
+        transactionContainer
+    );
   }
 
   public VBox getView() {
     return root;
   }
 
-  /**
-   * Updates the transactionView
-   */
-  public void updateView() {
-    updateTransactions();
+  private void drawTransactions(List<Transaction> transactions) {
+    transactionTable.setEntries(transactions);
   }
 
-  public void updateTransactions() {
-    transactions.getChildren().clear();
-
-    List<Transaction> transactionList;
-
-    if (transactionSearchField.getText().isBlank()) {
-      transactionList = gameSession.getPlayer().getTransactionArchive().getTransactions();
-    } else {
-      transactionList = gameSession.getPlayer().getTransactionArchive().findTransactions(transactionSearchField.getText());
-    }
-
-    for (Transaction transaction : transactionList) {
-
-      HBox transactionsInRow = new HBox(10);
-
-      int transactionDate = transaction.getWeek();
-      String transactionBoughtSold = transaction.getClass().getSimpleName();
-      String transactionShare = transaction.getShare().getStock().getSymbol();
-      String transactionAmount = transaction.getShare().getPurchasePrice().toString();
-
-      Button button = new Button(
-        transactionDate + " | "
-          + transactionBoughtSold + " | "
-          + transactionShare + " | "
-          + transactionAmount
-        );
-
-      button.setOnAction(event -> {
-        ReceiptDialog receiptDialog = new ReceiptDialog(transaction);
-        receiptDialog.showAndGetResult();
-      });
-
-
-      transactionsInRow.getChildren().addAll(
-        button
-      );
-
-      transactions.getChildren().add(transactionsInRow);
-    }
-
+  @Override
+  public void onGameStateChanged() {
+    transactionTable.setEntries(gameSession.getPlayer().getTransactionArchive().getTransactions());
   }
 }

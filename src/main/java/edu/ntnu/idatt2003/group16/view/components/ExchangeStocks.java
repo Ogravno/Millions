@@ -44,7 +44,7 @@ public class ExchangeStocks extends VBox implements GameObserver {
 
     this.stocksSearchField = new TextField();
     this.stocksSearchField.setPromptText("Search...");
-    stocksSearchField.getStyleClass().add("searchBar");
+    stocksSearchField.getStyleClass().add("searchbar");
     stocksSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
       String searchTerm = stocksSearchField.getText();
       List<Stock> foundStocks = gameSession.getExchange().findStocks(searchTerm);
@@ -90,7 +90,6 @@ public class ExchangeStocks extends VBox implements GameObserver {
     stocksBox = new VBox();
     ScrollPane scrollPane = new ScrollPane(stocksBox);
     scrollPane.setFitToWidth(true);
-    scrollPane.getStyleClass().add("stocks-container");
 
     this.getChildren().addAll(
         headline,
