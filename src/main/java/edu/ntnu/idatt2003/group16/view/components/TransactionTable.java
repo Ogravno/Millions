@@ -24,7 +24,7 @@ public class TransactionTable extends VBox {
     Label symbolLabel = new Label("Symbol");
     symbolLabel.getStyleClass().addAll("standard-text", "bold-text");
 
-    Label stocksLabel = new Label("Stocks");
+    Label stocksLabel = new Label("Shares");
     stocksLabel.getStyleClass().addAll("standard-text", "bold-text");
 
     Label amountLabel = new Label("Amount");
