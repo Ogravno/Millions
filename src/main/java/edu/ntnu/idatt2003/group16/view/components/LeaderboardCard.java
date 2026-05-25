@@ -47,7 +47,7 @@ public class LeaderboardCard extends BorderPane {
         .setScale(2, RoundingMode.HALF_UP)
         .toString();
 
-    Label changeLabel = new Label(changePrecentageString);
+    Label changeLabel = new Label(changePrecentageString + "%");
     FontIcon changeArrow;
 
     if (changePercentage.signum() == 1) {
