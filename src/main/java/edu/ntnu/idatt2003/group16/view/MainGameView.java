@@ -67,15 +67,21 @@ public class MainGameView implements GameObserver {
     });
 
     ToggleButton goToMainViewButton = new ToggleButton("Home");
+    FontIcon portfolioIcon = new FontIcon("mdi2f-finance");
+    goToMainViewButton.setGraphic(portfolioIcon);
     goToMainViewButton.setToggleGroup(navButtons);
     goToMainViewButton.setSelected(true);
     goToMainViewButton.setOnAction(event -> showMainView());
 
     ToggleButton goToExchangeViewButton = new ToggleButton("Exchange");
+    FontIcon exchangeIcon = new FontIcon("mdi2b-bank");
+    goToExchangeViewButton.setGraphic(exchangeIcon);
     goToExchangeViewButton.setToggleGroup(navButtons);
     goToExchangeViewButton.setOnAction(event -> showExchangeView());
 
     ToggleButton goToTransactionsViewButton = new ToggleButton("Transactions");
+    FontIcon transactionIcon = new FontIcon("mdi2i-invoice-list-outline");
+    goToTransactionsViewButton.setGraphic(transactionIcon);
     goToTransactionsViewButton.setToggleGroup(navButtons);
     goToTransactionsViewButton.setOnAction(event -> showTransactionsView());
 

@@ -29,13 +29,31 @@
     -fx-alignment: CENTER_LEFT;
 }
 
+.navigation > .toggle-button > .ikonli-font-icon {
+    -fx-icon-color: -regular-text-color;
+    -fx-icon-size: 14;
+}
+
 .navigation > .toggle-button:hover {
-    -fx-background-color: -button-hover-color;
+    fx-border-color: transparent transparent transparent -main-color;
+    -fx-text-fill: -main-color;
+}
+
+.navigation > .toggle-button:hover > .ikonli-font-icon {
+    -fx-icon-color: -main-color;
 }
 
 .navigation > .toggle-button:selected {
     -fx-border-color: transparent transparent transparent -main-color;
     -fx-text-fill: -main-color;
+}
+
+.navigation > .toggle-button:selected > .ikonli-font-icon {
+    -fx-icon-color: -main-color;
+}
+
+.navigation > .toggle-button:pressed {
+    -fx-background-color: -button-hover-color;
 }
 
 .bottom-sidebar {
