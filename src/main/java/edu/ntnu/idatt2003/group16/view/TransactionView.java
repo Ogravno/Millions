@@ -23,6 +23,9 @@ public class TransactionView implements GameObserver {
   private final VBox root;
   private final TransactionTable transactionTable;
 
+  private boolean ascending = true;
+  private String currentSortName = "";
+
   /**
    * Creates the transaction view.
    *
@@ -65,29 +68,41 @@ public class TransactionView implements GameObserver {
 
     ToggleButton sortWeek = new ToggleButton("Week");
     sortWeek.setToggleGroup(sortButtons);
-    sortWeek.setOnAction(event -> sortAndDraw(Comparator.comparing(Transaction :: getWeek)));
+    sortWeek.setOnAction(event ->
+      sortAndDraw("week", Comparator.comparing(Transaction::getWeek))
+    );
     sortWeek.setSelected(true);
 
     ToggleButton sortType = new ToggleButton("Type");
     sortType.setToggleGroup(sortButtons);
     sortType.setOnAction(event ->
-      sortAndDraw(Comparator.comparing(transaction -> transaction.getClass().getSimpleName())));
+      sortAndDraw("type", Comparator.comparing(
+        transaction -> transaction.getClass().getSimpleName()
+      ))
+    );
 
     ToggleButton sortSymbol = new ToggleButton("Symbol");
     sortSymbol.setToggleGroup(sortButtons);
     sortSymbol.setOnAction(event ->
-      sortAndDraw(Comparator.comparing(transaction -> transaction.getShare().getStock().getSymbol())));
+      sortAndDraw("symbol", Comparator.comparing(
+        transaction -> transaction.getShare().getStock().getSymbol()
+      ))
+    );
 
     ToggleButton sortStocks = new ToggleButton("Stock name");
     sortStocks.setToggleGroup(sortButtons);
     sortStocks.setOnAction(event ->
-      sortAndDraw(Comparator.comparing(transaction -> transaction.getShare().getStock().getCompany())));
+      sortAndDraw("stock", Comparator.comparing(
+        transaction -> transaction.getShare().getStock().getCompany()
+      ))
+    );
 
     ToggleButton sortAmount = new ToggleButton("Stock value");
     sortAmount.setToggleGroup(sortButtons);
     sortAmount.setOnAction(event ->
-      sortAndDraw(Comparator.comparing(transaction -> transaction.getCalculator().calculateTotal()))
-    );
+        sortAndDraw("amount", Comparator.comparing(
+          transaction -> transaction.getCalculator().calculateTotal()
+        )));
 
     HBox sortContainer = new HBox();
     sortContainer.getChildren().addAll(
@@ -126,12 +141,19 @@ public class TransactionView implements GameObserver {
     transactionTable.setEntries(transactions);
   }
 
-  private void sortAndDraw(Comparator<Transaction> comparator) {
+  private void sortAndDraw(String sortName, Comparator<Transaction> comparator) {
+    if (currentSortName.equals(sortName)) {
+      ascending = !ascending;
+    } else {
+      currentSortName = sortName;
+      ascending = true;
+    }
+
     List<Transaction> sortedTransactions = gameSession.getPlayer()
       .getTransactionArchive()
       .getTransactions()
       .stream()
-      .sorted(comparator)
+      .sorted(ascending ? comparator : comparator.reversed())
       .toList();
 
     drawTransactions(sortedTransactions);
