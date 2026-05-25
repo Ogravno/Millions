@@ -20,7 +20,7 @@ public class EndDialog extends Dialog<Void> {
     getDialogPane().setPrefSize(300, 225);
 
     Label startMoneyLabel = new Label("Starting money: " + gameController.getPlayerStartMoney().toString());
-    Label endMoneyLabel = new Label("Ending money: " + gameController.getNetWorth());
+    Label endMoneyLabel = new Label("Ending money: " + gameController.getFormattedNetWorth());
     Label profitLossLabel = new Label("Profit or loss: " + profitOrLossCalculator(gameController));
     Label prosentChangeLabel = new Label("Profit/loss in %: " + profitInPercent(gameController));
     Label weeksPlayedLabel = new Label("Weeks played: " + gameController.getWeek());
@@ -62,9 +62,10 @@ public class EndDialog extends Dialog<Void> {
   }
 
   private String profitOrLossCalculator(GameController gameController) {
-    return gameController.getNetWorth()
-      .subtract(gameController.getPlayerStartMoney())
-      .toString();
+     BigDecimal profitLoss = gameController.getNetWorth()
+      .subtract(gameController.getPlayerStartMoney());
+
+     return profitLoss.setScale(2,RoundingMode.HALF_UP).toString();
   }
 
   private String profitInPercent(GameController gameController) {
