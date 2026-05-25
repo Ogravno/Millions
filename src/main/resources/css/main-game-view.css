@@ -86,7 +86,8 @@
     -fx-alignment: CENTER_LEFT;
 }
 
-.sort-buttons > .toggle-button {
+.sort-buttons > .toggle-button,
+.share-table-button {
     -fx-text-fill: -regular-text-color;
     -fx-background-color: transparent;
     -fx-border-color: -border-color;
@@ -95,13 +96,20 @@
     -fx-alignment: CENTER_LEFT;
 }
 
-.sort-buttons > .toggle-button:hover {
-    -fx-background-color: -button-hover-color;
+.sort-buttons > .toggle-button:hover,
+.share-table-button:hover {
+    -fx-border-color: -main-color;
+    -fx-text-fill: -main-color;
 }
 
 .sort-buttons > .toggle-button:selected {
     -fx-border-color: -main-color;
     -fx-text-fill: -main-color;
+}
+
+.sort-buttons > .toggle-button:pressed,
+.share-table-button:pressed {
+    -fx-background-color: -button-hover-color;
 }
 
 .stock-card {
@@ -135,4 +143,18 @@
     -fx-padding: 0;
     -fx-pref-height: 0;
     -fx-pref-width: 0;
+}
+
+.share-table-header > .button {
+    -fx-padding: 0 0 0 0;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 0;
+    -fx-text-fill: -regular-text-color;
+}
+
+.share-table-row {
+    -fx-padding: 2 0 2 0;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-color: -border-color;
 }

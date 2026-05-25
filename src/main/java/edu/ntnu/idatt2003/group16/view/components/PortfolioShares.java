@@ -6,13 +6,13 @@ import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import edu.ntnu.idatt2003.group16.view.SellDialog;
 import edu.ntnu.idatt2003.group16.view.StockDialog;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,8 +23,8 @@ public class PortfolioShares extends VBox implements GameObserver {
   private GameSession gameSession;
   private GameController gameController;
 
-  private TableView<Share> sharesTable;
-  private VBox sharesBox;
+  private final GridPane sharesHeader;
+  private final VBox sharesBox;
 
   private Boolean ascending = true;
   private Comparator<Share> currentSort =
@@ -34,7 +34,36 @@ public class PortfolioShares extends VBox implements GameObserver {
     this.gameSession = gameSession;
     this.gameController = gameController;
 
+    this.gameSession.addObserver(this);
+
+    this.sharesHeader = new GridPane();
+    this.sharesHeader.getStyleClass().add("share-table-header");
+    for(int i = 0; i < 6; i++) {
+      ColumnConstraints columnConstraints = new ColumnConstraints();
+      if (i < 5) {
+        columnConstraints.setPercentWidth(16);
+      } else {
+        columnConstraints.setPercentWidth(20);
+      }
+      columnConstraints.setHalignment(HPos.LEFT);
+      sharesHeader.getColumnConstraints().add(columnConstraints);
+    }
+
+    this.sharesBox = new VBox();
+    ScrollPane scrollPane = new ScrollPane(sharesBox);
+    scrollPane.setFitToWidth(true);
+
+    this.getChildren().addAll(
+        sharesHeader,
+        scrollPane
+    );
+
+    createSharesHeader();
+  }
+
+  private void createSharesHeader() {
     Button symbolShareHeaderButton = new Button("Symbol");
+    symbolShareHeaderButton.getStyleClass().addAll("standard-text", "bold-text");
     symbolShareHeaderButton.setOnAction(event -> {
       currentSort = Comparator.comparing(share -> share.getStock().getSymbol());
       ascending = !ascending;
@@ -42,6 +71,7 @@ public class PortfolioShares extends VBox implements GameObserver {
     });
 
     Button companyShareHeaderButton = new Button("Company Name");
+    companyShareHeaderButton.getStyleClass().addAll("standard-text", "bold-text");
     companyShareHeaderButton.setOnAction(event -> {
       currentSort = Comparator.comparing(share -> share.getStock().getCompany());
       ascending = !ascending;
@@ -49,37 +79,15 @@ public class PortfolioShares extends VBox implements GameObserver {
     });
 
     Button quantityShareHeaderButton = new Button("Quantity");
+    quantityShareHeaderButton.getStyleClass().addAll("standard-text", "bold-text");
     quantityShareHeaderButton.setOnAction(event -> {
       currentSort = Comparator.comparing(Share::getQuantity);
       ascending = !ascending;
       updateShares();
     });
 
-    Button purchasePriceShareHeaderButton = new Button("Purchase Price");
-    purchasePriceShareHeaderButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(Share::getPurchasePrice);
-      ascending = !ascending;
-      updateShares();
-    });
-
-    Button currentPriceShareHeaderButton = new Button("Current Price");
-    currentPriceShareHeaderButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(share -> share.getStock().getCurrentPrice());
-      ascending = !ascending;
-      updateShares();
-    });
-
-    Button changeInPriceShareHeaderButton = new Button("Change in Price");
-    changeInPriceShareHeaderButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(
-          share -> share.getStock().getCurrentPrice().subtract(share.getPurchasePrice())
-      );
-      ascending = !ascending;
-      updateShares();
-    });
-
     Button totalValueButton = new Button("Total Value");
-    ;
+    totalValueButton.getStyleClass().addAll("standard-text", "bold-text");
     totalValueButton.setOnAction(event -> {
       currentSort = Comparator.comparing(
           share -> share.getStock().getCurrentPrice().multiply(share.getQuantity())
@@ -88,42 +96,26 @@ public class PortfolioShares extends VBox implements GameObserver {
       updateShares();
     });
 
-    Button totalReturnValueButton = new Button("Total Return Value");
-    totalReturnValueButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(share ->
-          share.getStock().getCurrentPrice()
-              .subtract(share.getPurchasePrice())
-              .multiply(share.getQuantity())
+    Button changeInPriceShareHeaderButton = new Button("Change in Price");
+    changeInPriceShareHeaderButton.getStyleClass().addAll("standard-text", "bold-text");
+    changeInPriceShareHeaderButton.setOnAction(event -> {
+      currentSort = Comparator.comparing(
+          share -> share.getStock().getCurrentPrice().subtract(share.getPurchasePrice())
       );
       ascending = !ascending;
       updateShares();
     });
 
-    sharesTable = new TableView<Share>();
-
-    TableColumn<Share, String> symbolColumn = new TableColumn<>("Symbol");
-    symbolColumn.setCellValueFactory(data ->
-        new SimpleStringProperty(data.getValue().getStock().getSymbol()));
-
-    sharesTable.getColumns().add(symbolColumn);
-
-    this.getChildren().add(sharesTable);
-
-    updateShares();
-
-    /* sharesTable.add(symbolShareHeaderButton, 0, 0);
-    sharesTable.add(companyShareHeaderButton, 1, 0);
-    sharesTable.add(quantityShareHeaderButton, 2, 0);
-    sharesTable.add(purchasePriceShareHeaderButton, 3, 0);
-    sharesTable.add(currentPriceShareHeaderButton, 4, 0);
-    sharesTable.add(changeInPriceShareHeaderButton, 5, 0);
-    sharesTable.add(totalValueButton, 6, 0);
-    sharesTable.add(totalReturnValueButton, 7, 0); */
+    sharesHeader.add(symbolShareHeaderButton, 0, 0);
+    sharesHeader.add(companyShareHeaderButton, 1, 0);
+    sharesHeader.add(quantityShareHeaderButton, 2, 0);
+    sharesHeader.add(totalValueButton, 3, 0);
+    sharesHeader.add(changeInPriceShareHeaderButton, 4, 0);
   }
 
   private void updateShares() {
-    // sharesBox.getChildren().clear();
-    sharesTable.getItems().clear();
+    sharesBox.getChildren().clear();
+
     List<Share> shares = new ArrayList<>(
         gameSession.getPlayer().getPortfolio().getShares()
     );
@@ -132,57 +124,73 @@ public class PortfolioShares extends VBox implements GameObserver {
       shares.sort(ascending ? currentSort : currentSort.reversed());
     }
 
-    sharesTable.getItems().addAll(shares);
-
-    /*
     for (Share share : shares) {
-      HBox shareBox = new HBox(10);
+      GridPane shareBox = new GridPane();
+      shareBox.getStyleClass().add("share-table-row");
+
+      for(int i = 0; i < 6; i++) {
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        if (i < 5) {
+          columnConstraints.setPercentWidth(16);
+        } else {
+          columnConstraints.setPercentWidth(20);
+        }
+        columnConstraints.setHalignment(HPos.LEFT);
+        shareBox.getColumnConstraints().add(columnConstraints);
+      }
 
       BigDecimal quantity = share.getQuantity();
       BigDecimal purchasePrice = share.getPurchasePrice();
       BigDecimal currentPrice = share.getStock().getCurrentPrice();
 
       Label symbolLabel = new Label(share.getStock().getSymbol());
+      symbolLabel.getStyleClass().add("standard-text");
+
       Label companyLabel = new Label(share.getStock().getCompany());
+      companyLabel.getStyleClass().add("standard-text");
+
       Label quantityLabel = new Label(quantity + " Share(s)");
-      Label purchasePriceLabel = new Label(purchasePrice.toString());
-      Label currentPriceLabel = new Label(currentPrice.toString());
-      Label changeInPriceLabel = new Label(currentPrice.subtract(purchasePrice).toString());
-      Label totalValueLabel = new Label(currentPrice.multiply(quantity).toString());
-      Label totalReturnValueLabel = new Label(currentPrice.multiply(quantity).subtract(purchasePrice.multiply(quantity)).toString());
+      quantityLabel.getStyleClass().add("standard-text");
 
+      Label totalValueLabel = new Label("$" + currentPrice.multiply(quantity).toString());
+      totalValueLabel.getStyleClass().add("standard-text");
 
-
-      Button sellButton = new Button("Sell");
-
-      sellButton.setOnAction(event -> {
-        SellDialog sellDialog = new SellDialog(gameController, share);
-        sellDialog.showAndGetResult();
-      });
+      Label changeInPriceLabel = new Label("$" + currentPrice.subtract(purchasePrice).toString());
+      changeInPriceLabel.getStyleClass().add("standard-text");
+      if (currentPrice.subtract(purchasePrice).signum() == 1) {
+        changeInPriceLabel.getStyleClass().add("green-text");
+      } else if (currentPrice.subtract(purchasePrice).signum() == -1) {
+        changeInPriceLabel.getStyleClass().add("red-text");
+      }
 
       Button historicPrices = new Button("Historic Prices");
+      historicPrices.getStyleClass().add("share-table-button");
       historicPrices.setOnAction(event -> {
         StockDialog stockDialog = new StockDialog(share.getStock(), gameSession.getExchange());
         stockDialog.showAndGetResult();
       });
 
-      shareBox.getChildren().addAll(
-          sellButton,
-          symbolLabel,
-          companyLabel,
-          quantityLabel,
-          purchasePriceLabel,
-          currentPriceLabel,
-          changeInPriceLabel,
-          totalValueLabel,
-          totalReturnValueLabel,
-          historicPrices
-      );
+      Button sellButton = new Button("Sell");
+      sellButton.getStyleClass().add("share-table-button");
+      sellButton.setOnAction(event -> {
+        SellDialog sellDialog = new SellDialog(gameController, share);
+        sellDialog.showAndGetResult();
+      });
+
+      BorderPane buttons = new BorderPane();
+      buttons.setLeft(historicPrices);
+      buttons.setRight(sellButton);
+
+
+      shareBox.add(symbolLabel, 0, 0);
+      shareBox.add(companyLabel, 1, 0);
+      shareBox.add(quantityLabel, 2, 0);
+      shareBox.add(totalValueLabel, 3, 0);
+      shareBox.add(changeInPriceLabel, 4, 0);
+      shareBox.add(buttons, 5, 0);
 
       sharesBox.getChildren().add(shareBox);
     }
-
-     */
   }
 
   @Override
