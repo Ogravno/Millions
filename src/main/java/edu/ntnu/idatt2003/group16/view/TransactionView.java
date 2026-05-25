@@ -5,6 +5,7 @@ import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import edu.ntnu.idatt2003.group16.view.components.TransactionTable;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -62,21 +63,31 @@ public class TransactionView implements GameObserver {
       }
     });
 
-    ToggleButton sortWeek = new ToggleButton("Symbol");
+    ToggleButton sortWeek = new ToggleButton("Week");
     sortWeek.setToggleGroup(sortButtons);
+    sortWeek.setOnAction(event -> sortAndDraw(Comparator.comparing(Transaction :: getWeek)));
     sortWeek.setSelected(true);
 
-    ToggleButton sortType = new ToggleButton("Name");
+    ToggleButton sortType = new ToggleButton("Type");
     sortType.setToggleGroup(sortButtons);
+    sortType.setOnAction(event ->
+      sortAndDraw(Comparator.comparing(transaction -> transaction.getClass().getSimpleName())));
 
-    ToggleButton sortSymbol = new ToggleButton("Stock value");
+    ToggleButton sortSymbol = new ToggleButton("Symbol");
     sortSymbol.setToggleGroup(sortButtons);
+    sortSymbol.setOnAction(event ->
+      sortAndDraw(Comparator.comparing(transaction -> transaction.getShare().getStock().getSymbol())));
 
-    ToggleButton sortStocks = new ToggleButton("Stock value");
+    ToggleButton sortStocks = new ToggleButton("Stock name");
     sortStocks.setToggleGroup(sortButtons);
+    sortStocks.setOnAction(event ->
+      sortAndDraw(Comparator.comparing(transaction -> transaction.getShare().getStock().getCompany())));
 
     ToggleButton sortAmount = new ToggleButton("Stock value");
     sortAmount.setToggleGroup(sortButtons);
+    sortAmount.setOnAction(event ->
+      sortAndDraw(Comparator.comparing(transaction -> transaction.getCalculator().calculateTotal()))
+    );
 
     HBox sortContainer = new HBox();
     sortContainer.getChildren().addAll(
@@ -113,6 +124,17 @@ public class TransactionView implements GameObserver {
 
   private void drawTransactions(List<Transaction> transactions) {
     transactionTable.setEntries(transactions);
+  }
+
+  private void sortAndDraw(Comparator<Transaction> comparator) {
+    List<Transaction> sortedTransactions = gameSession.getPlayer()
+      .getTransactionArchive()
+      .getTransactions()
+      .stream()
+      .sorted(comparator)
+      .toList();
+
+    drawTransactions(sortedTransactions);
   }
 
   @Override
