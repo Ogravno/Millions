@@ -205,8 +205,8 @@ public class HomeView {
 
       Button historicPrices = new Button("Historic Prices");
       historicPrices.setOnAction(event -> {
-        StockDialog stockDialog = new StockDialog(share.getStock(), gameSession.getExchange());
-        stockDialog.showAndGetResult();
+        HistoricalPricesDialog historicalPricesDialog = new HistoricalPricesDialog(share.getStock(), gameSession.getExchange());
+        historicalPricesDialog.showAndGetResult();
       });
 
       shareBox.getChildren().addAll(
