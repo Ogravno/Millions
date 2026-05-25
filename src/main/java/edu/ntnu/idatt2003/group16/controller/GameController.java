@@ -61,6 +61,10 @@ public class GameController {
     return gameSession.getPlayer().getNetWorth();
   }
 
+  public String getFormattedNetWorth() {
+    return gameSession.getPlayer().getFormattedNetWorth();
+  }
+
   public GameSession getGameSession() {
     return gameSession;
   }
