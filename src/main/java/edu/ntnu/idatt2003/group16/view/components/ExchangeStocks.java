@@ -5,6 +5,8 @@ import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import edu.ntnu.idatt2003.group16.view.BuyDialog;
+
+import java.util.Comparator;
 import java.util.List;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
@@ -26,6 +28,9 @@ public class ExchangeStocks extends VBox implements GameObserver {
 
   TextField stocksSearchField;
   VBox stocksBox;
+
+  private boolean ascending = true;
+  private String currentSortName = "";
 
   /**
    * Draws the stocks section of the exchange page.
@@ -65,18 +70,24 @@ public class ExchangeStocks extends VBox implements GameObserver {
     ToggleButton sortSymbol = new ToggleButton("Symbol");
     sortSymbol.setToggleGroup(sortButtons);
     sortSymbol.setSelected(true);
+    sortSymbol.setOnAction(event ->
+      sortAndDraw("Symbol", Comparator.comparing(Stock::getSymbol)));
 
     ToggleButton sortName = new ToggleButton("Name");
     sortName.setToggleGroup(sortButtons);
+    sortName.setOnAction(event ->
+      sortAndDraw("Name", Comparator.comparing(Stock::getCompany)));
 
     ToggleButton sortValue = new ToggleButton("Stock value");
     sortValue.setToggleGroup(sortButtons);
+    sortValue.setOnAction(event ->
+      sortAndDraw("Current value", Comparator.comparing(Stock::getCurrentPrice)));
 
     HBox sortContainer = new HBox();
     sortContainer.getChildren().addAll(
         sortLabel,
-        sortSymbol,
         sortName,
+        sortSymbol,
         sortValue
     );
     sortContainer.getStyleClass().addAll("sort-buttons");
@@ -116,6 +127,23 @@ public class ExchangeStocks extends VBox implements GameObserver {
 
       stocksBox.getChildren().add(stockCard);
     });
+  }
+
+  private void sortAndDraw(String sortName, Comparator<Stock> comparator) {
+    if (currentSortName.equals(sortName)) {
+      ascending = !ascending;
+    } else {
+      currentSortName = sortName;
+      ascending = true;
+    }
+
+    List<Stock> sortedStocks = gameSession.getExchange()
+      .getAllStocks()
+      .stream()
+      .sorted(ascending ? comparator : comparator.reversed())
+      .toList();
+
+    drawStocks(sortedStocks);
   }
 
   @Override
