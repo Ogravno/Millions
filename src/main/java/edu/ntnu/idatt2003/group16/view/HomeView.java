@@ -3,11 +3,16 @@ package edu.ntnu.idatt2003.group16.view;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
+import edu.ntnu.idatt2003.group16.view.components.PortfolioOverview;
+import edu.ntnu.idatt2003.group16.view.components.PortfolioShares;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
@@ -23,206 +28,48 @@ public class HomeView {
   private final GameController gameController;
   private final GameSession gameSession;
 
-  private final VBox root;
-  private final Label graphPanel;
-  private final Label portfolioLabel;
-  private final Label sharesLabel;
-
-  private final Label money;
-  private final Label netWorth;
-  private final Label status;
-
-  private final VBox sharesBox;
-  private final HBox sharesHeader;
-
-  private Boolean ascending = true;
-  private Comparator<Share> currentSort =
-    Comparator.comparing(share -> share.getStock().getSymbol());
+  private final GridPane root;
 
   public HomeView(GameController gameController, GameSession gameSession) {
     this.gameController = gameController;
     this.gameSession = gameSession;
 
-    this.root = new VBox(10);
-    this.graphPanel = new Label("Future graph");
-    this.portfolioLabel = new Label("Portfolio");
-    this.sharesLabel = new Label("Your Shares");
+    Label graphPanel = new Label("Future graph");
+    graphPanel.getStyleClass().add("standard-text");
 
-    this.money = new Label();
-    this.netWorth = new Label();
-    this.status = new Label();
+    VBox graphContainer = new VBox(graphPanel);
+    graphContainer.getStyleClass().add("tile");
 
-    this.sharesBox = new VBox(10);
-    this.sharesHeader = new HBox(10);
+    PortfolioOverview portfolio = new PortfolioOverview(gameSession);
+    portfolio.getStyleClass().add("tile");
 
-    HBox mainCenterBox = new HBox(10);
+    PortfolioShares shares = new PortfolioShares(gameSession, gameController);
+    shares.getStyleClass().add("tile");
 
-    VBox portfolio = new VBox(10);
-    portfolio.getChildren().addAll(portfolioLabel, money, netWorth, status);
+    root = new GridPane();
+    root.getStyleClass().add("content-container");
 
-    mainCenterBox.getChildren().addAll(graphPanel, portfolio);
+    ColumnConstraints column1 = new ColumnConstraints();
+    column1.setPercentWidth(33);
 
-    createSharesHeader();
+    ColumnConstraints column2 = new ColumnConstraints();
+    column2.setPercentWidth(34);
 
-    ScrollPane scrollPane = new ScrollPane(sharesBox);
+    ColumnConstraints column3 = new ColumnConstraints();
+    column3.setPercentWidth(33);
 
-    root.getChildren().addAll(mainCenterBox, scrollPane);
-    root.setPadding(new Insets(10));
-    mainCenterBox.setSpacing(20);
+    root.getColumnConstraints().addAll(column1, column2, column3);
 
-    updateView();
+    RowConstraints row1 = new RowConstraints(250);
+
+    root.getRowConstraints().add(row1);
+
+    root.add(portfolio, 2, 0, 1, 1);
+    root.add(graphContainer, 0, 0, 2, 1);
+    root.add(shares, 0, 2, 3, 1);
   }
 
-  public VBox getView() {
+  public GridPane getView() {
     return root;
-  }
-
-  public void updateView() {
-    updatePortfolio();
-    updateShares();
-  }
-
-  private void updatePortfolio() {
-    money.setText("Your money: " + gameSession.getPlayer().getFormattedMoney());
-    netWorth.setText("Your net worth: " + gameSession.getPlayer().getFormattedNetWorth());
-    status.setText("Status: " + gameSession.getPlayer().getStatus(gameSession.getExchange().getWeek()));
-  }
-
-  private void createSharesHeader() {
-
-    Button symbolShareHeaderButton = new Button("Symbol");
-    symbolShareHeaderButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(share -> share.getStock().getSymbol());
-      ascending = !ascending;
-      updateShares();
-    });
-
-    Button companyShareHeaderButton = new Button("Company Name");
-    companyShareHeaderButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(share -> share.getStock().getCompany());
-      ascending = !ascending;
-      updateShares();
-    });
-
-    Button quantityShareHeaderButton = new Button("Quantity");
-    quantityShareHeaderButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(Share::getQuantity);
-      ascending = !ascending;
-      updateShares();
-    });
-
-    Button purchasePriceShareHeaderButton = new Button("Purchase Price");
-    purchasePriceShareHeaderButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(Share::getPurchasePrice);
-      ascending = !ascending;
-      updateShares();
-    });
-
-    Button currentPriceShareHeaderButton = new Button("Current Price");
-    currentPriceShareHeaderButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(share -> share.getStock().getCurrentPrice());
-      ascending = !ascending;
-      updateShares();
-    });
-
-    Button changeInPriceShareHeaderButton = new Button("Change in Price");
-    changeInPriceShareHeaderButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(
-        share -> share.getStock().getCurrentPrice().subtract(share.getPurchasePrice())
-      );
-      ascending = !ascending;
-      updateShares();
-    });
-
-    Button totalValueButton = new Button("Total Value");
-    totalValueButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(
-        share -> share.getStock().getCurrentPrice().multiply(share.getQuantity())
-      );
-      ascending = !ascending;
-      updateShares();
-    });
-
-    Button totalReturnValueButton = new Button("Total Return Value");
-    totalReturnValueButton.setOnAction(event -> {
-      currentSort = Comparator.comparing(share ->
-        share.getStock().getCurrentPrice()
-          .subtract(share.getPurchasePrice())
-          .multiply(share.getQuantity())
-      );
-      ascending = !ascending;
-      updateShares();
-    });
-
-    sharesHeader.getChildren().addAll(
-      symbolShareHeaderButton,
-      companyShareHeaderButton,
-      quantityShareHeaderButton,
-      purchasePriceShareHeaderButton,
-      currentPriceShareHeaderButton,
-      changeInPriceShareHeaderButton,
-      totalValueButton,
-      totalReturnValueButton
-    );
-  }
-
-  private void updateShares() {
-    sharesBox.getChildren().clear();
-    sharesBox.getChildren().addAll(sharesLabel, sharesHeader);
-
-    List<Share> shares = new ArrayList<>(
-      gameSession.getPlayer().getPortfolio().getShares()
-    );
-
-    if (currentSort != null) {
-      shares.sort(ascending ? currentSort : currentSort.reversed());
-    }
-
-    for (Share share : shares) {
-      HBox shareBox = new HBox(10);
-
-      BigDecimal quantity = share.getQuantity();
-      BigDecimal purchasePrice = share.getPurchasePrice();
-      BigDecimal currentPrice = share.getStock().getCurrentPrice();
-
-      Label symbolLabel = new Label(share.getStock().getSymbol());
-      Label companyLabel = new Label(share.getStock().getCompany());
-      Label quantityLabel = new Label(quantity + " Share(s)");
-      Label purchasePriceLabel = new Label(purchasePrice.toString());
-      Label currentPriceLabel = new Label(currentPrice.toString());
-      Label changeInPriceLabel = new Label(currentPrice.subtract(purchasePrice).toString());
-      Label totalValueLabel = new Label(currentPrice.multiply(quantity).toString());
-      Label totalReturnValueLabel = new Label(currentPrice.multiply(quantity).subtract(purchasePrice.multiply(quantity)).toString());
-
-
-
-      Button sellButton = new Button("Sell");
-
-      sellButton.setOnAction(event -> {
-        SellDialog sellDialog = new SellDialog(gameController, share);
-        sellDialog.showAndGetResult();
-      });
-
-      Button historicPrices = new Button("Historic Prices");
-      historicPrices.setOnAction(event -> {
-        HistoricalPricesDialog historicalPricesDialog = new HistoricalPricesDialog(share.getStock(), gameSession.getExchange());
-        historicalPricesDialog.showAndGetResult();
-      });
-
-      shareBox.getChildren().addAll(
-        sellButton,
-        symbolLabel,
-        companyLabel,
-        quantityLabel,
-        purchasePriceLabel,
-        currentPriceLabel,
-        changeInPriceLabel,
-        totalValueLabel,
-        totalReturnValueLabel,
-        historicPrices
-      );
-
-      sharesBox.getChildren().add(shareBox);
-    }
   }
 }

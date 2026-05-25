@@ -1,7 +1,3 @@
-.transaction-table {
-    -fx-padding: 0 10 0 10;
-}
-
 .transaction-table-header,
 .transaction-table-row {
     -fx-border-width: 0 0 1 0;

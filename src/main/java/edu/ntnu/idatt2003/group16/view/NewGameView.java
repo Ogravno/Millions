@@ -34,24 +34,30 @@ public class NewGameView implements GameObserver {
     title.getStyleClass().addAll("headline");
 
     Label gameNameLabel = new Label("New game name");
+    gameNameLabel.getStyleClass().add("standard-text");
     TextField gameNameField = new TextField();
     gameNameField.setPromptText("Game name");
+    gameNameField.getStyleClass().add("standard-text");
 
     VBox gameNameInput = new VBox();
     gameNameInput.getChildren().addAll(gameNameLabel, gameNameField);
     gameNameInput.getStyleClass().add("menu-input-container");
 
     Label playerNameLabel = new Label("New player name");
+    playerNameLabel.getStyleClass().add("standard-text");
     TextField playerNameField = new TextField();
     playerNameField.setPromptText("Player name");
+    playerNameField.getStyleClass().add("standard-text");
 
     VBox playerNameInput = new VBox();
     playerNameInput.getChildren().addAll(playerNameLabel, playerNameField);
     playerNameInput.getStyleClass().add("menu-input-container");
 
     Label startingMoneyLabel = new Label("Starting money:");
+    startingMoneyLabel.getStyleClass().add("standard-text");
     TextField startingMoneyField = new TextField();
     startingMoneyField.setPromptText("Starting money");
+    startingMoneyField.getStyleClass().add("standard-text");
 
     VBox startingMoneyInput = new VBox();
     startingMoneyInput.getChildren().addAll(startingMoneyLabel, startingMoneyField);
@@ -64,9 +70,11 @@ public class NewGameView implements GameObserver {
 
     Button selectFileButton = new Button("Select file");
     selectFileButton.getStyleClass().add("menu-button");
+    selectFileButton.getStyleClass().add("standard-text");
 
     Button selectStandardStocks = new Button("Select standard stocks");
     selectStandardStocks.getStyleClass().add("menu-button");
+    selectStandardStocks.getStyleClass().add("standard-text");
 
     Label selectFileLabel = new Label("No file selected");
     selectFileLabel.getStyleClass().add("standard-text");
@@ -124,7 +132,10 @@ public class NewGameView implements GameObserver {
     });
 
     Button backButton = new Button("Go back");
+    backButton.getStyleClass().add("standard-text");
+
     Button startButton = new Button("Start game");
+    startButton.getStyleClass().add("standard-text");
 
     ColumnConstraints column1 = new ColumnConstraints();
     column1.setPercentWidth(48);

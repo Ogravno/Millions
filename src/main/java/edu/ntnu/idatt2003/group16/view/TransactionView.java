@@ -90,7 +90,6 @@ public class TransactionView implements GameObserver {
     sortContainer.getStyleClass().addAll("sort-buttons");
 
     transactionTable = new TransactionTable();
-    transactionTable.getStyleClass().add("transaction-table");
 
     VBox transactionContainer = new VBox(
         headline,
