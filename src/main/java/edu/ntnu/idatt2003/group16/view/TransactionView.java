@@ -89,11 +89,11 @@ public class TransactionView implements GameObserver {
       ))
     );
 
-    ToggleButton sortStocks = new ToggleButton("Stock name");
+    ToggleButton sortStocks = new ToggleButton("Amount of shares");
     sortStocks.setToggleGroup(sortButtons);
     sortStocks.setOnAction(event ->
-      sortAndDraw("stock", Comparator.comparing(
-        transaction -> transaction.getShare().getStock().getCompany()
+      sortAndDraw("shares", Comparator.comparing(
+        transaction -> transaction.getShare().getQuantity()
       ))
     );
 
