@@ -62,7 +62,7 @@ public class PortfolioOverview extends HBox implements GameObserver {
   }
 
   private void setValues() {
-    switch (gameSession.getPlayer().getStatus()) {
+    switch (gameSession.getPlayer().getStatus(gameSession.getExchange().getWeek())) {
       case NOVICE -> statusLabel.setText("Novice");
       case INVESTOR -> statusLabel.setText("Investor");
       case SPECULATOR -> statusLabel.setText("Speculator");

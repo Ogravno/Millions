@@ -25,6 +25,7 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>6.0.1</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -89,6 +90,20 @@
            </execution>
         </executions>
       </plugin>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.4.1</version>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>edu.ntnu.idatt2003.group16.Main</mainClass>
+                    </manifest>
+                </archive>
+            </configuration>
+        </plugin>
+
 
     </plugins>
   </build>

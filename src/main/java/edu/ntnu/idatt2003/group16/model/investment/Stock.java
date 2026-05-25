@@ -128,7 +128,7 @@ public class Stock {
    *
    * @param weeksAgo how many weeks to go back
    * @return the price change
-   * @throws IllegalStateException if weeks is not greater than zero
+   * @throws IllegalArgumentException if weeks is not greater than zero
    */
   public BigDecimal getPriceChangePercentage(int weeksAgo) {
     if (weeksAgo <= 0) {

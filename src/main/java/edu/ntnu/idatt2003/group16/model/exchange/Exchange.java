@@ -199,11 +199,12 @@ public class Exchange {
    }
 
   /**
-   * Get a list of stocks with the most gain since last week.
+   * Get a list of stocks with the most gain in percent since last week.
    * The amount of stocks depends on the parameter.
    *
    * @param limit the amount of stocks to show
    * @return list with the limit amount of stocks
+   * @throws IllegalArgumentException if limit is less than 1
    */
    public List<Stock> getGainers(int limit) {
     if (limit < 1) {
@@ -211,17 +212,19 @@ public class Exchange {
     }
 
     return stockMap.values().stream()
-        .sorted(Comparator.comparing(Stock::getLatestPriceChange).reversed())
-        .limit(limit)
-        .toList();
+        .sorted(Comparator.comparing((Stock stock) -> stock.getPriceChangePercentage(1))
+          .reversed())
+          .limit(limit)
+          .toList();
    }
 
   /**
-   * Get a list of stocks with the biggest loss since last week.
+   * Get a list of stocks with the biggest loss in percent since last week.
    * The amount of stocks depends on the parameter.
    *
    * @param limit the amount of stocks to show
    * @return list with the limit amount of stocks
+   * @throws IllegalArgumentException if limit is less than 1
    */
   public List<Stock> getLosers(int limit) {
     if (limit < 1) {
@@ -229,8 +232,8 @@ public class Exchange {
     }
 
     return stockMap.values().stream()
-        .sorted(Comparator.comparing(Stock::getLatestPriceChange))
-        .limit(limit)
-        .toList();
+      .sorted(Comparator.comparing((Stock stock) -> stock.getPriceChangePercentage(1)))
+      .limit(limit)
+      .toList();
   }
 }

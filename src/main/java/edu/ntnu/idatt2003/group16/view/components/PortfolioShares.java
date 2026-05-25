@@ -4,8 +4,8 @@ import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
+import edu.ntnu.idatt2003.group16.view.HistoricalPricesDialog;
 import edu.ntnu.idatt2003.group16.view.SellDialog;
-import edu.ntnu.idatt2003.group16.view.StockDialog;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -166,8 +166,8 @@ public class PortfolioShares extends VBox implements GameObserver {
       Button historicPrices = new Button("Historic Prices");
       historicPrices.getStyleClass().add("share-table-button");
       historicPrices.setOnAction(event -> {
-        StockDialog stockDialog = new StockDialog(share.getStock(), gameSession.getExchange());
-        stockDialog.showAndGetResult();
+        HistoricalPricesDialog historicalPricesDialog = new HistoricalPricesDialog(share.getStock(), gameSession.getExchange());
+        historicalPricesDialog.showAndGetResult();
       });
 
       Button sellButton = new Button("Sell");
