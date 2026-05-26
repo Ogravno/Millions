@@ -16,7 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
- * View for displaying transactions
+ * View for displaying transactions.
  */
 public class TransactionView implements GameObserver {
   private final AppController appController;
@@ -31,7 +31,8 @@ public class TransactionView implements GameObserver {
   /**
    * Creates the transaction view.
    *
-   * @param gameSession the active game session.
+   * @param appController the application controller
+   * @param gameSession the active game session
    */
   public TransactionView(AppController appController, GameSession gameSession) {
     if (appController == null) {
@@ -39,7 +40,7 @@ public class TransactionView implements GameObserver {
     }
 
     if (gameSession == null) {
-      throw new IllegalArgumentException("GamesSession cannot be null");
+      throw new IllegalArgumentException("GameSession cannot be null");
     }
 
     this.appController = appController;
@@ -71,39 +72,39 @@ public class TransactionView implements GameObserver {
     ToggleButton sortWeek = new ToggleButton("Week");
     sortWeek.setToggleGroup(sortButtons);
     sortWeek.setOnAction(event ->
-      sortAndDraw("week", Comparator.comparing(Transaction::getWeek))
+        sortAndDraw("week", Comparator.comparing(Transaction::getWeek))
     );
     sortWeek.setSelected(true);
 
     ToggleButton sortType = new ToggleButton("Type");
     sortType.setToggleGroup(sortButtons);
     sortType.setOnAction(event ->
-      sortAndDraw("type", Comparator.comparing(
-        transaction -> transaction.getClass().getSimpleName()
+        sortAndDraw("type", Comparator.comparing(
+          transaction -> transaction.getClass().getSimpleName()
       ))
     );
 
     ToggleButton sortSymbol = new ToggleButton("Symbol");
     sortSymbol.setToggleGroup(sortButtons);
     sortSymbol.setOnAction(event ->
-      sortAndDraw("symbol", Comparator.comparing(
-        transaction -> transaction.getShare().getStock().getSymbol()
+        sortAndDraw("symbol", Comparator.comparing(
+          transaction -> transaction.getShare().getStock().getSymbol()
       ))
     );
 
     ToggleButton sortStocks = new ToggleButton("Amount of shares");
     sortStocks.setToggleGroup(sortButtons);
     sortStocks.setOnAction(event ->
-      sortAndDraw("shares", Comparator.comparing(
-        transaction -> transaction.getShare().getQuantity()
+        sortAndDraw("shares", Comparator.comparing(
+          transaction -> transaction.getShare().getQuantity()
       ))
     );
 
     ToggleButton sortAmount = new ToggleButton("Stock value");
     sortAmount.setToggleGroup(sortButtons);
     sortAmount.setOnAction(event ->
-        sortAndDraw("amount", Comparator.comparing(
-          transaction -> transaction.getCalculator().calculateTotal()
+          sortAndDraw("amount", Comparator.comparing(
+            transaction -> transaction.getCalculator().calculateTotal()
         )));
 
     HBox sortContainer = new HBox();
@@ -151,11 +152,11 @@ public class TransactionView implements GameObserver {
     }
 
     List<Transaction> sortedTransactions = gameSession.getPlayer()
-      .getTransactionArchive()
-      .getTransactions()
-      .stream()
-      .sorted(ascending ? comparator : comparator.reversed())
-      .toList();
+        .getTransactionArchive()
+        .getTransactions()
+        .stream()
+        .sorted(ascending ? comparator : comparator.reversed())
+        .toList();
 
     drawTransactions(sortedTransactions);
   }
