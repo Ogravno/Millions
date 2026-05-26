@@ -31,6 +31,11 @@ public class EndDialog extends Dialog<Void> {
       getDialogPane().getStylesheets().add(themeStyleSheet.toExternalForm());
     }
 
+    URL styleSheet = getClass().getResource("/css/dialog.css");
+    if (styleSheet != null) {
+      getDialogPane().getStylesheets().add(styleSheet.toExternalForm());
+    }
+
     Label startMoneyLabel = new Label("Starting money: " + gameController.getPlayerStartMoney().toString());
     Label endMoneyLabel = new Label("Ending money: " + gameController.getFormattedNetWorth());
     Label profitLossLabel = new Label("Profit or loss: " + profitOrLossCalculator(gameController));
