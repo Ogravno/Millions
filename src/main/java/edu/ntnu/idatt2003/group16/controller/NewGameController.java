@@ -70,8 +70,6 @@ public class NewGameController {
   }
 
   public void startGame() {
-    gameSession.setGameName(gameName);
-    gameSession.setPlayer(player);
-    gameSession.setExchange(exchange);
+    gameSession.initialGame(gameName, player, exchange);
   }
 }
