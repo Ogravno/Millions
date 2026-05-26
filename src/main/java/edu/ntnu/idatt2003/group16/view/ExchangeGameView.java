@@ -45,11 +45,6 @@ public class ExchangeGameView implements GameObserver {
     this.root = new BorderPane();
     this.root.getStyleClass().add("content-container");
 
-    URL styleSheet = getClass().getResource("/css/exchange-game-view.css");
-    if (styleSheet != null) {
-      root.getStylesheets().add(styleSheet.toExternalForm());
-    }
-
     stocksContainer = new ExchangeStocks(gameSession, gameController);
 
     winnersLeaderboard = new Leaderboard("Winners");

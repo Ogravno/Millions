@@ -37,11 +37,6 @@ public class TransactionView implements GameObserver {
     this.root = new VBox(10);
     this.root.getStyleClass().add("content-container");
 
-    URL styleSheet = getClass().getResource("/css/transaction-view.css");
-    if (styleSheet != null) {
-      root.getStylesheets().add(styleSheet.toExternalForm());
-    }
-
     Label headline = new Label("Transactions");
     headline.getStyleClass().add("headline");
 

@@ -24,11 +24,6 @@ public class StartView {
 
     root = new BorderPane();
 
-    URL styleSheet = getClass().getResource("/css/start-view.css");
-    if (styleSheet != null) {
-      root.getStylesheets().add(styleSheet.toExternalForm());
-    }
-
     showStartMenu();
   }
 

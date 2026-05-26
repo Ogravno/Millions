@@ -7,7 +7,7 @@
     -fx-alignment: CENTER_CENTER;
 }
 
-.logo {
+.sidebar-logo {
     -fx-text-fill: -regular-text-color;
     -fx-font-size: 32px;
     -fx-font-weight: 600;
@@ -57,25 +57,38 @@
 }
 
 .bottom-sidebar {
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 0 0 20 16;
+    -fx-alignment: CENTER;
+    -fx-padding: 0 0 20 0;
+    -fx-spacing: 10;
 }
 
 .week-counter {
-    -fx-alignment: CENTER_LEFT;
+    -fx-alignment: CENTER;
+    -fx-spacing: 5;
 }
 
 .week-counter > .label {
     -fx-text-fill: -regular-text-color;
 }
 
-.week-counter > .button {
-    -fx-text-fill: -regular-text-color;
+.theme-button {
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 0;
+    -fx-padding: 0 0 0 0;
     -fx-background-color: transparent;
-    -fx-border-color: -border-color;
-    -fx-border-width: 1;
-    -fx-padding: 5 5 5 5;
-    -fx-alignment: CENTER_LEFT;
+}
+
+.theme-button > .ikonli-font-icon {
+    -fx-icon-color: -regular-text-color;
+    -fx-icon-size: 20;
+}
+
+.theme-button:hover > .ikonli-font-icon {
+    -fx-icon-color: -main-color;
+}
+
+.theme-button:pressed > .ikonli-font-icon {
+    -fx-icon-color: -hover-color;
 }
 
 .content-container {
@@ -105,7 +118,8 @@
 }
 
 .sort-buttons > .toggle-button,
-.share-table-button {
+.share-table-button,
+.sidebar-button {
     -fx-text-fill: -regular-text-color;
     -fx-background-color: transparent;
     -fx-border-color: -border-color;
@@ -115,7 +129,8 @@
 }
 
 .sort-buttons > .toggle-button:hover,
-.share-table-button:hover {
+.share-table-button:hover,
+.sidebar-button:hover {
     -fx-border-color: -main-color;
     -fx-text-fill: -main-color;
 }
@@ -126,7 +141,8 @@
 }
 
 .sort-buttons > .toggle-button:pressed,
-.share-table-button:pressed {
+.share-table-button:pressed,
+.sidebar-button:pressed {
     -fx-background-color: -button-hover-color;
 }
 

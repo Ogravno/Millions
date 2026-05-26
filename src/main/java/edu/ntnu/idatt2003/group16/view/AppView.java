@@ -30,15 +30,12 @@ public class AppView implements GameObserver {
 
     scene = new Scene(startView.getView(), 1100, 700);
 
-    URL styleSheet = getClass().getResource("/css/app.css");
-    if (styleSheet != null) {
-      scene.getStylesheets().add(styleSheet.toExternalForm());
-    }
-
     URL themeStyleSheet = getClass().getResource("/css/light-theme.css");
     if (themeStyleSheet != null) {
       scene.getStylesheets().add(themeStyleSheet.toExternalForm());
     }
+
+    appController.loadStylesheets(scene);
 
     gameSession.addObserver(this);
   }
@@ -56,7 +53,7 @@ public class AppView implements GameObserver {
         && gameSession.getExchange() != null
     ) {
       gameController = new GameController(gameSession);
-      mainGameView = new MainGameView(gameController, gameSession, () -> {
+      mainGameView = new MainGameView(appController, gameController, gameSession, () -> {
         gameSession.removeObserver(mainGameView);
 
         mainGameView = null;

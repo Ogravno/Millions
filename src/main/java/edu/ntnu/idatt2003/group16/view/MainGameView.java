@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.view;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
@@ -38,11 +39,8 @@ public class MainGameView implements GameObserver {
    * @param gameController the controller for user actions.
    * @param gameSession the active game session.
    */
-  public MainGameView(
-    GameController gameController,
-    GameSession gameSession,
-    Runnable backToMainMenuAction
-    ) {
+  public MainGameView(AppController appController, GameController gameController,
+                      GameSession gameSession, Runnable backToMainMenuAction) {
     this.gameController = gameController;
     this.gameSession = gameSession;
     this.backToMainMenuAction = backToMainMenuAction;
@@ -54,11 +52,6 @@ public class MainGameView implements GameObserver {
     this.weekLabel = new Label();
 
     this.root = new BorderPane();
-
-    URL styleSheet = getClass().getResource("/css/main-game-view.css");
-    if (styleSheet != null) {
-      root.getStylesheets().add(styleSheet.toExternalForm());
-    }
 
     ToggleGroup navButtons = new ToggleGroup();
     navButtons.selectedToggleProperty().addListener((obsVal, oldVal, newVal) -> {
@@ -86,6 +79,7 @@ public class MainGameView implements GameObserver {
     goToTransactionsViewButton.setOnAction(event -> showTransactionsView());
 
     Button endGame = new Button("End game");
+    endGame.getStyleClass().add("sidebar-button");
     endGame.setOnAction(event -> {
       EndDialog endDialog = new EndDialog(gameController, backToMainMenuAction);
       endDialog.showAndGetResult();
@@ -99,24 +93,28 @@ public class MainGameView implements GameObserver {
     navigation.getStyleClass().add("navigation");
 
     Label logo = new Label("StockSim");
-    logo.getStyleClass().add("logo");
-
+    logo.getStyleClass().add("sidebar-logo");
 
     Button advanceWeekButton = new Button("Advance");
+    advanceWeekButton.getStyleClass().add("sidebar-button");
     advanceWeekButton.setOnAction(event -> this.gameController.advanceWeek());
 
-    HBox weekCounter = new HBox(
+    VBox weekCounter = new VBox(
         weekLabel,
         advanceWeekButton
     );
     weekCounter.getStyleClass().add("week-counter");
 
-    FontIcon themSymbol = new FontIcon("mdi2b-brightness-2");
+    FontIcon themSymbol = new FontIcon("mdi2t-theme-light-dark");
     Button themeButton = new Button("", themSymbol);
+    themeButton.getStyleClass().addAll("theme-button", "standard-text");
+    themeButton.setOnAction(actionEvent -> {
+      appController.changeTheme(this.getView().getScene());
+    });
 
     VBox bottom = new VBox(
         weekCounter,
-        themSymbol,
+        themeButton,
         endGame
     );
     bottom.getStyleClass().add("bottom-sidebar");
