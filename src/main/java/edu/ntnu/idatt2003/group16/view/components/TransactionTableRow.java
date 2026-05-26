@@ -2,14 +2,22 @@ package edu.ntnu.idatt2003.group16.view.components;
 
 import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
+/**
+ * View component representing a single row in the transaction table.
+ */
 public class TransactionTableRow extends GridPane {
+
+  /**
+   * Creates a transaction table row.
+   *
+   * @param transaction the transaction to display
+   */
   public TransactionTableRow(Transaction transaction) {
     Label weekLabel = new Label(Integer.toString(transaction.getWeek()));
     weekLabel.getStyleClass().addAll("standard-text");
@@ -23,7 +31,8 @@ public class TransactionTableRow extends GridPane {
     Label stocksLabel = new Label(transaction.getShare().getQuantity().toString());
     stocksLabel.getStyleClass().addAll("standard-text");
 
-    BigDecimal amount = transaction.getCalculator().calculateTotal().setScale(2, RoundingMode.HALF_UP);
+    BigDecimal amount =
+        transaction.getCalculator().calculateTotal().setScale(2, RoundingMode.HALF_UP);
     Label amountLabel = new Label("$" + amount.toString());
     amountLabel.getStyleClass().addAll("standard-text");
 
