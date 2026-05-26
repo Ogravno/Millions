@@ -12,14 +12,17 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class SaveWriter {
+  private static ObjectMapper objectMapper = new ObjectMapper();
+
   public static void saveGame(GameSessionDto gameSession) {
     ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
     objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
     objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
     try {
       Files.createDirectories(Paths.get( "target/save-files"));
-      objectMapper.writeValue(new File("target/save-files/" + gameSession.gameName() + ".json"),
+      objectMapper.writeValue(new File("target/save-files/save.json"),
           gameSession);
     } catch (IOException e) {
       throw new RuntimeException(e);

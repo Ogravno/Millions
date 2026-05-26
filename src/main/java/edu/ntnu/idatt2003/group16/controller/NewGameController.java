@@ -57,6 +57,14 @@ public class NewGameController {
     this.gameName = gameName;
   }
 
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
+
+  public void setExchange(Exchange exchange) {
+    this.exchange = exchange;
+  }
+
   public void createPlayer(String name, BigDecimal startingMoney) {
     player = new Player(name, startingMoney);
   }
