@@ -32,6 +32,14 @@ public class GameSession implements GameObservable {
     this.observers = new ArrayList<>();
   }
 
+  public void initialGame(String gameName, Player player, Exchange exchange) {
+    this.gameName = gameName;
+    this.player = player;
+    this.exchange = exchange;
+
+    notifyObservers();
+  }
+
   public String getGameName() {
     return gameName;
   }
@@ -42,7 +50,6 @@ public class GameSession implements GameObservable {
     }
 
     this.gameName = gameName;
-    notifyObservers();
   }
 
   public Player getPlayer() {
@@ -51,7 +58,6 @@ public class GameSession implements GameObservable {
 
   public void setPlayer(Player player) {
     this.player = player;
-    notifyObservers();
   }
 
   public Exchange getExchange() {
@@ -60,7 +66,6 @@ public class GameSession implements GameObservable {
 
   public void setExchange(Exchange exchange) {
     this.exchange = exchange;
-    notifyObservers();
   }
 
   /**
@@ -142,7 +147,9 @@ public class GameSession implements GameObservable {
 
   @Override
   public void notifyObservers() {
-    for (GameObserver observer : observers) {
+    List<GameObserver> observerCopy = new ArrayList<>(observers);
+
+    for (GameObserver observer : observerCopy) {
       observer.onGameStateChanged();
     }
   }
