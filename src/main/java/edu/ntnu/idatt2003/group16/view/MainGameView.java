@@ -33,8 +33,10 @@ public class MainGameView implements GameObserver {
   /**
    * Creates the main game view.
    *
-   * @param gameController the controller for user actions.
-   * @param gameSession the active game session.
+   * @param appController the application controller
+   * @param gameController the controller for user actions
+   * @param gameSession the active game session
+   * @param backToMainMenuAction action used to return to the main menu
    */
   public MainGameView(AppController appController, GameController gameController,
                       GameSession gameSession, Runnable backToMainMenuAction) {
@@ -52,8 +54,9 @@ public class MainGameView implements GameObserver {
 
     ToggleGroup navButtons = new ToggleGroup();
     navButtons.selectedToggleProperty().addListener((obsVal, oldVal, newVal) -> {
-      if (newVal == null)
+      if (newVal == null) {
         oldVal.setSelected(true);
+      }
     });
 
     ToggleButton goToMainViewButton = new ToggleButton("Home");
@@ -131,9 +134,9 @@ public class MainGameView implements GameObserver {
   }
 
   /**
-   * Returns the scene for this view.
+   * Returns the root layout for this view.
    *
-   * @return the scene
+   * @return the root layout
    */
   public BorderPane getView() {
     return root;
