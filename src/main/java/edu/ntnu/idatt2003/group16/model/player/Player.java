@@ -21,7 +21,7 @@ public class Player {
    * @param name the name of the player
    * @param startingMoney the money the player will start with
    * @throws IllegalArgumentException when {@code name} is null or blank
-   * @throws IllegalArgumentException when {@code startingMoney} null, negative or zero
+   * @throws IllegalArgumentException when {@code startingMoney} is null, negative or zero
    */
   public Player(String name, BigDecimal startingMoney) {
     if (name == null || name.isBlank()) {
@@ -50,10 +50,11 @@ public class Player {
   }
 
   /**
-   * Rounds players money into two decimals for better view.
-   * Only used for view.
+   * Gets the player's money formatted to 2 decimals.
    *
-   * @return player's money with 2 decimals.
+   * <p>Used for GUI display only.</p>
+   *
+   * @return the player's money formatted to 2 decimals
    */
   public String getFormattedMoney() {
     return money.setScale(2, RoundingMode.HALF_UP).toString();
@@ -128,10 +129,11 @@ public class Player {
   }
 
   /**
-   * Rounds players net worth into two decimals for better view.
-   * Only used for view.
+   * Gets the player's net worth formatted to 2 decimals.
    *
-   * @return player's net worth with 2 decimals.
+   * <p>Used for GUI display only.</p>
+   *
+   * @return the player's net worth formatted to 2 decimals
    */
   public String getFormattedNetWorth() {
     return getNetWorth().setScale(2, RoundingMode.HALF_UP).toString();
@@ -144,16 +146,16 @@ public class Player {
    * <P>{@code NOVICE} - Starting level for player. No qualification needed.
    * </P>
    *
-   * <P>{@code INVESTOR} - Player reaches INVESTOR if player have played for minimum 10 weeks
+   * <P>{@code INVESTOR} - Player reaches INVESTOR if the player has played for minimum 10 weeks
    *   and have at least 20% profit.
    * </P>
    *
-   * <P>{@code SPECULATOR} - Player reaches INVESTOR if player have played for minimum 20 weeks
+   * <P>{@code SPECULATOR} - Player reaches SPECULATOR if the player has played for minimum 20 weeks
    *    *   and have at least doubled his investments.
    * </P>
    *
    * @param currentWeek the current week of the game.
-   * @return the current status the player are in.
+   * @return the player's current status
    */
   public Status getStatus(int currentWeek) {
     BigDecimal twentyPercentThreshold = startingMoney.multiply(new BigDecimal("1.2"));
