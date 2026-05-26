@@ -21,7 +21,16 @@ public class PortfolioView {
 
   private final GridPane root;
 
-  public PortfolioView(AppController appController, GameController gameController, GameSession gameSession) {
+  /**
+   * Creates the portfolio view.
+   *
+   * @param appController the application controller
+   * @param gameController the game controller
+   * @param gameSession the active game session
+   */
+  public PortfolioView(AppController appController,
+                       GameController gameController,
+                       GameSession gameSession) {
     this.gameController = gameController;
     this.gameSession = gameSession;
 
