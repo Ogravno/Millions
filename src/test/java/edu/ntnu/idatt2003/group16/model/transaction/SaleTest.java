@@ -88,4 +88,36 @@ class SaleTest {
       assertTrue(player.getTransactionArchive().getSales(week).contains(sale));
     }
   }
+
+  @Nested
+  class FormattedCalculatorTests {
+
+    @Test
+    void formattedGrossShouldReturnGrossWithTwoDecimals() {
+      SaleCalculator calculator = new SaleCalculator(share);
+
+      assertEquals("9.45", calculator.formattedGross());
+    }
+
+    @Test
+    void formattedCommissionShouldReturnCommissionWithTwoDecimals() {
+      SaleCalculator calculator = new SaleCalculator(share);
+
+      assertEquals("0.09", calculator.formattedCommission());
+    }
+
+    @Test
+    void formattedTaxShouldReturnTaxWithTwoDecimals() {
+      SaleCalculator calculator = new SaleCalculator(share);
+
+      assertEquals("-0.03", calculator.formattedTax());
+    }
+
+    @Test
+    void formattedTotalShouldReturnTotalWithTwoDecimals() {
+      SaleCalculator calculator = new SaleCalculator(share);
+
+      assertEquals("9.38", calculator.formattedTotal());
+    }
+  }
 }
