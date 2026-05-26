@@ -57,6 +57,10 @@ public class StartView {
       newGameController.setPlayer(gameSessionDto.player());
       newGameController.setExchange(gameSessionDto.exchange());
 
+      gameSessionDto.player().getPortfolio().getShares().forEach(share -> {
+        share.setStock(gameSessionDto.exchange().getStock(share.getStock().getSymbol()));
+      });
+
       newGameController.startGame();
     });
     loadGameButton.getStyleClass().addAll("menu-button", "standard-text");

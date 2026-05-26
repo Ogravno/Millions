@@ -45,6 +45,14 @@ public class Share {
     this.purchasePrice = purchasePrice;
   }
 
+  public void setStock(Stock stock) {
+    if (stock == null) {
+      throw new IllegalArgumentException("Stock cannot be null.");
+    }
+
+    this.stock = stock;
+  }
+
   public Share() {
   }
 
