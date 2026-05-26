@@ -96,7 +96,7 @@ public class Share {
   /**
    * Gets the current return for the share.
    *
-   * @return the current return for the shar
+   * @return the current return for the share
    */
   public BigDecimal getReturn() {
     return stock.getCurrentPrice()
@@ -107,9 +107,9 @@ public class Share {
   /**
    * Gets the current return for the share as a percentage.
    *
-   * <p>Percentage is rounded to 4 decimals</p>
+   * <p>The percentage is rounded to 4 decimals.</p>
    *
-   * @return the current return for the shar
+   * @return the current return percentage for the share
    */
   public BigDecimal getReturnPercentage() {
     return stock.getCurrentPrice()
