@@ -78,16 +78,24 @@ https://github.com/Ogravno/Millions
 
 ## How to run the project
 
+Requirements:
+- JDK version 25
+- Maven version 3.9.x
 
+Run ```mvn clean javafx:run``` to run the application.
 
 ## How to run the tests
 
 The test are written using JUint5.
 
-Using Intellij:  
+Run ```mvn clean install``` to run the tests.
+
+Alternatively, using Intellij:  
 - Open src folder
 - Open test folder
 - Right-click on java folder → Run tests
+
+An HTML test coverage report is generated when the sests are run. The report can be found under ```target/site/jacoco```.
 
 ## References
 
