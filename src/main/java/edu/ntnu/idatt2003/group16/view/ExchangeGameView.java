@@ -30,9 +30,13 @@ public class ExchangeGameView implements GameObserver {
   /**
    * Creates the exchange view.
    *
+   * @param appController the application controller
    * @param gameSession the active game session
+   * @param gameController the game controller
    */
-  public ExchangeGameView(AppController appController, GameSession gameSession, GameController gameController) {
+  public ExchangeGameView(AppController appController,
+                          GameSession gameSession,
+                          GameController gameController) {
     if (appController == null) {
       throw new IllegalArgumentException("AppController cannot be null.");
     }
