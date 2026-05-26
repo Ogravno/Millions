@@ -183,4 +183,64 @@ class TransactionArchiveTest {
 
     assertEquals(3, transactionArchive.countDistinctWeeks());
   }
+
+  @Nested
+  class FindTransactionsTests {
+    @Test
+    void findTransactionsSearchTermIsNull() {
+      assertThrows(IllegalArgumentException.class, () ->
+        transactionArchive.findTransactions(null));
+    }
+
+    @Test
+    void findTransactionsSearchTermIsBlank() {
+      assertThrows(IllegalArgumentException.class, () ->
+        transactionArchive.findTransactions(" "));
+    }
+
+    @Test
+    void findTransactionsReturnsTransactionsByWeek() {
+      purchases.forEach(purchase -> transactionArchive.add(purchase));
+      sales.forEach(sale -> transactionArchive.add(sale));
+
+      List<Transaction> result = transactionArchive.findTransactions("1");
+
+      assertTrue(result.contains(purchases.get(0)));
+      assertTrue(result.contains(purchases.get(2)));
+      assertEquals(2, result.size());
+    }
+
+    @Test
+    void findTransactionsReturnsTransactionsByType() {
+      purchases.forEach(purchase -> transactionArchive.add(purchase));
+      sales.forEach(sale -> transactionArchive.add(sale));
+
+      List<Transaction> result = transactionArchive.findTransactions("sale");
+
+      assertTrue(result.containsAll(sales));
+      assertEquals(sales.size(), result.size());
+    }
+
+    @Test
+    void findTransactionsReturnsTransactionsBySymbol() {
+      purchases.forEach(purchase -> transactionArchive.add(purchase));
+      sales.forEach(sale -> transactionArchive.add(sale));
+
+      List<Transaction> result = transactionArchive.findTransactions("goog");
+
+      assertTrue(result.containsAll(purchases));
+      assertTrue(result.containsAll(sales));
+      assertEquals(6, result.size());
+    }
+
+    @Test
+    void findTransactionsReturnsEmptyListWhenNoMatch() {
+      purchases.forEach(purchase -> transactionArchive.add(purchase));
+      sales.forEach(sale -> transactionArchive.add(sale));
+
+      List<Transaction> result = transactionArchive.findTransactions("aapl");
+
+      assertTrue(result.isEmpty());
+    }
+  }
 }

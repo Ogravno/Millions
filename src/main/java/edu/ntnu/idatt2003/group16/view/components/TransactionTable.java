@@ -2,9 +2,8 @@ package edu.ntnu.idatt2003.group16.view.components;
 
 import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
-import java.util.List;
-
 import edu.ntnu.idatt2003.group16.view.ReceiptDialog;
+import java.util.List;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -12,11 +11,19 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * View component for displaying transactions in a table.
+ */
 public class TransactionTable extends VBox {
   private final AppController appController;
 
   private final VBox rows;
 
+  /**
+   * Creates the transaction table.
+   *
+   * @param appController the application controller
+   */
   public TransactionTable(AppController appController) {
     this.appController = appController;
 
@@ -69,6 +76,11 @@ public class TransactionTable extends VBox {
     this.getChildren().add(transactionsScrollPane);
   }
 
+  /**
+   * Sets the transactions displayed in the table.
+   *
+   * @param transactions the transactions to display
+   */
   public void setEntries(List<Transaction> transactions) {
     rows.getChildren().clear();
 

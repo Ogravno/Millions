@@ -9,11 +9,13 @@ import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.model.transaction.Sale;
 import edu.ntnu.idatt2003.group16.observer.GameObservable;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the active game session.
+ */
 public class GameSession implements GameObservable {
 
   private String gameName;
@@ -23,6 +25,14 @@ public class GameSession implements GameObservable {
 
   private final List<GameObserver> observers;
 
+  /**
+   * Creates a new game session.
+   *
+   * @param gameName the name of the game
+   * @param player the player in the game
+   * @param exchange the exchange used in the game
+   * @param transactionFactory the factory used to create transactions
+   */
   public GameSession(String gameName, Player player, Exchange exchange,
                      TransactionFactory transactionFactory) {
     this.gameName = gameName;
@@ -32,6 +42,15 @@ public class GameSession implements GameObservable {
     this.observers = new ArrayList<>();
   }
 
+  /**
+   * Initializes the game session with a game name, player and exchange.
+   *
+   * <p>Observers are notified after the game session had been initialized</p>
+   *
+   * @param gameName the name of the game
+   * @param player the player in the game
+   * @param exchange the exchange uses in the game
+   */
   public void initialGame(String gameName, Player player, Exchange exchange) {
     this.gameName = gameName;
     this.player = player;
@@ -44,6 +63,11 @@ public class GameSession implements GameObservable {
     return gameName;
   }
 
+  /**
+   * Set game name.
+   *
+   * @param gameName the game's name
+   */
   public void setGameName(String gameName) {
     if (gameName == null || gameName.isBlank()) {
       throw new IllegalArgumentException("Parameter gameNane cannot be null or blank");
@@ -118,7 +142,7 @@ public class GameSession implements GameObservable {
       throw new IllegalArgumentException("Share cannot be null.");
     }
 
-    if(!player.getPortfolio().getShares().contains(share)) {
+    if (!player.getPortfolio().getShares().contains(share)) {
       throw new IllegalArgumentException("Share is not in portfolio: " + share);
     }
 
@@ -130,6 +154,9 @@ public class GameSession implements GameObservable {
     return sale;
   }
 
+  /**
+   * Resets the game session by removing the current game name, player and exchange.
+   */
   public void resetSession() {
     this.gameName = null;
     this.player = null;
