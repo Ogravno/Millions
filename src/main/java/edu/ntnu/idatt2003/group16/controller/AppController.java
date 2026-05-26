@@ -27,7 +27,7 @@ public class AppController {
 
     this.gameSession = gameSession;
 
-    darkTheme = false;
+    darkTheme = true;
   }
 
   /**
