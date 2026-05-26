@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.view.components;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
@@ -20,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class PortfolioShares extends VBox implements GameObserver {
+  private AppController appController;
   private GameSession gameSession;
   private GameController gameController;
 
@@ -30,7 +32,8 @@ public class PortfolioShares extends VBox implements GameObserver {
   private Comparator<Share> currentSort =
       Comparator.comparing(share -> share.getStock().getSymbol());
 
-  public PortfolioShares(GameSession gameSession, GameController gameController) {
+  public PortfolioShares(AppController appController, GameSession gameSession, GameController gameController) {
+    this.appController = appController;
     this.gameSession = gameSession;
     this.gameController = gameController;
 
@@ -166,14 +169,14 @@ public class PortfolioShares extends VBox implements GameObserver {
       Button historicPrices = new Button("Historic Prices");
       historicPrices.getStyleClass().add("share-table-button");
       historicPrices.setOnAction(event -> {
-        HistoricalPricesDialog historicalPricesDialog = new HistoricalPricesDialog(share.getStock(), gameSession.getExchange());
+        HistoricalPricesDialog historicalPricesDialog = new HistoricalPricesDialog(appController, share.getStock(), gameSession.getExchange());
         historicalPricesDialog.showAndGetResult();
       });
 
       Button sellButton = new Button("Sell");
       sellButton.getStyleClass().add("share-table-button");
       sellButton.setOnAction(event -> {
-        SellDialog sellDialog = new SellDialog(gameController, share);
+        SellDialog sellDialog = new SellDialog(appController, gameController, share);
         sellDialog.showAndGetResult();
       });
 

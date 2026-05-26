@@ -1,0 +1,36 @@
+.dialog-pane {
+    -fx-background-color: -background-color;
+}
+
+.dialog-pane > .header-panel {
+    -fx-background-color: -background-color;
+}
+
+.label {
+    -fx-text-fill: -regular-text-color;
+    -fx-font-size: 14;
+}
+
+.button {
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: -border-color;
+    -fx-background-color: -tile-color;
+    -fx-text-fill: -regular-text-color;
+}
+
+.button:hover {
+    -fx-border-color: -main-color;
+    -fx-text-fill: -main-color;
+}
+
+.button:pressed {
+    -fx-background-color: -button-hover-color;
+}
+
+.text-field {
+    -fx-background-color: -tile-color;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: -border-color;
+    -fx-text-fill: -regular-text-color;
+    -fx-padding: 5 3 5 3;
+}

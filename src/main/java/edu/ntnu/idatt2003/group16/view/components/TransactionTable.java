@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.view.components;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
 import java.util.List;
 
@@ -12,9 +13,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 public class TransactionTable extends VBox {
+  private final AppController appController;
+
   private final VBox rows;
 
-  public TransactionTable() {
+  public TransactionTable(AppController appController) {
+    this.appController = appController;
+
     Label weekLabel = new Label("Week");
     weekLabel.getStyleClass().addAll("standard-text", "bold-text");
 
@@ -72,7 +77,7 @@ public class TransactionTable extends VBox {
       row.getStyleClass().add("transaction-table-row");
       row.setCursor(Cursor.HAND);
       row.setOnMouseClicked(event -> {
-        ReceiptDialog receiptDialog = new ReceiptDialog(transaction);
+        ReceiptDialog receiptDialog = new ReceiptDialog(appController, transaction);
         receiptDialog.showAndGetResult();
       });
 

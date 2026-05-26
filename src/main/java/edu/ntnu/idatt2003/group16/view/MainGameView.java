@@ -45,9 +45,9 @@ public class MainGameView implements GameObserver {
     this.gameSession = gameSession;
     this.backToMainMenuAction = backToMainMenuAction;
 
-    this.homeView = new HomeView(gameController, gameSession);
-    this.exchangeGameView = new ExchangeGameView(gameSession, gameController);
-    this.transactionView = new TransactionView(gameSession);
+    this.homeView = new HomeView(appController, gameController, gameSession);
+    this.exchangeGameView = new ExchangeGameView(appController, gameSession, gameController);
+    this.transactionView = new TransactionView(appController, gameSession);
 
     this.weekLabel = new Label();
 
@@ -81,7 +81,7 @@ public class MainGameView implements GameObserver {
     Button endGame = new Button("End game");
     endGame.getStyleClass().add("sidebar-button");
     endGame.setOnAction(event -> {
-      EndDialog endDialog = new EndDialog(gameController, backToMainMenuAction);
+      EndDialog endDialog = new EndDialog(appController, gameController, backToMainMenuAction);
       endDialog.showAndGetResult();
     });
 

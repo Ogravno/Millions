@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.view.components;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
@@ -21,6 +22,7 @@ import javafx.scene.layout.VBox;
  * @author Odin Grav
  */
 public class ExchangeStocks extends VBox implements GameObserver {
+  AppController appController;
   GameSession gameSession;
   GameController gameController;
 
@@ -33,7 +35,8 @@ public class ExchangeStocks extends VBox implements GameObserver {
    * @param gameSession the current game session
    * @param gameController the game controller
    */
-  public ExchangeStocks(GameSession gameSession, GameController gameController) {
+  public ExchangeStocks(AppController appController, GameSession gameSession, GameController gameController) {
+    this.appController = appController;
     this.gameSession = gameSession;
     this.gameController = gameController;
 
@@ -110,7 +113,7 @@ public class ExchangeStocks extends VBox implements GameObserver {
       stockCard.getStyleClass().add("stock-card");
       stockCard.setCursor(Cursor.HAND);
       stockCard.setOnMouseClicked(event -> {
-        BuyDialog buyDialog = new BuyDialog(gameController, stock);
+        BuyDialog buyDialog = new BuyDialog(appController, gameController, stock);
         buyDialog.showAndGetResult();
       });
 

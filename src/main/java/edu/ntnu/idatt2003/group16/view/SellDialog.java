@@ -1,10 +1,12 @@
 package edu.ntnu.idatt2003.group16.view;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.transaction.Sale;
 
 import java.math.RoundingMode;
+import java.net.URL;
 import java.util.Optional;
 
 import edu.ntnu.idatt2003.group16.model.transaction.calculator.SaleCalculator;
@@ -18,7 +20,10 @@ import javafx.scene.layout.VBox;
  */
 public class SellDialog extends Dialog<Sale> {
 
-  public SellDialog(GameController gameController, Share share) {
+  public SellDialog(AppController appController, GameController gameController, Share share) {
+    if (appController == null) {
+      throw new IllegalArgumentException("AppController cannot be null");
+    }
     if (gameController == null) {
       throw new IllegalArgumentException("GameController cannot be null");
     }
@@ -55,6 +60,21 @@ public class SellDialog extends Dialog<Sale> {
 
     getDialogPane().setContent(content);
     getDialogPane().getButtonTypes().addAll(sellButtonType, ButtonType.CANCEL);
+
+    URL themeStyleSheet;
+    if (appController.isDarkTheme()) {
+      themeStyleSheet = getClass().getResource("/css/dark-theme.css");
+    } else {
+      themeStyleSheet = getClass().getResource("/css/light-theme.css");
+    }
+    if (themeStyleSheet != null) {
+      getDialogPane().getStylesheets().add(themeStyleSheet.toExternalForm());
+    }
+
+    URL styleSheet = getClass().getResource("/css/dialog.css");
+    if (styleSheet != null) {
+      getDialogPane().getStylesheets().add(styleSheet.toExternalForm());
+    }
 
     setResultConverter(button -> {
       if (button == sellButtonType) {
