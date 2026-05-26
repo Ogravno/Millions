@@ -11,9 +11,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Class used for writing game data to json files.
+ *
+ * @author Odin Grav
+ */
 public class SaveWriter {
-  private static ObjectMapper objectMapper = new ObjectMapper();
-
+  /**
+   * Saves the game data to a json file.
+   *
+   * @param gameSession the game session to be saved
+   * @throws RuntimeException if an IO error occurs while writing to file.
+   */
   public static void saveGame(GameSessionDto gameSession) {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);

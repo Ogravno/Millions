@@ -5,13 +5,21 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.ntnu.idatt2003.group16.model.dto.GameSessionDto;
-
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
+/**
+ * Class used for reading game data from json files.
+ *
+ * @author Odin Grav
+ */
 public class SaveReader {
+  /**
+   * Loads game data from a json file.
+   *
+   * @param fileName the name of the file to load game data from
+   * @throws RuntimeException if an IO error occurs while reading from file.
+   */
   public static GameSessionDto loadGame(String fileName) {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
