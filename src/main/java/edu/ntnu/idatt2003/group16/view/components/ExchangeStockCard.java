@@ -16,8 +16,13 @@ public class ExchangeStockCard extends VBox {
    * Draws a stock card for the exchange view.
    *
    * @param stock the stock to draw a card for
+   * @throws IllegalArgumentException if stock is null
    */
   public ExchangeStockCard(Stock stock) {
+    if (stock == null) {
+      throw new IllegalArgumentException("Stock cannot be null");
+    }
+
     Label companyLabel = new Label(stock.getCompany());
     companyLabel.getStyleClass().add("sub-heading");
 

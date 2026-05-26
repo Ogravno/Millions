@@ -47,6 +47,13 @@ public class SaleCalculator implements TransactionCalculator {
     return salesPrice.multiply(quantity);
   }
 
+  /**
+   * Shows the gross value as a string, formatted to 2 decimals.
+   *
+   * <p>For use in GUI only</p>
+   *
+   * @return the gross value as a string with 2 decimals
+   */
   public String formattedGross() {
     return calculateGross().setScale(2, RoundingMode.HALF_UP).toString();
   }
@@ -63,6 +70,13 @@ public class SaleCalculator implements TransactionCalculator {
     return calculateGross().multiply(BigDecimal.valueOf(0.01));
   }
 
+  /**
+   * Shows the commission value as a string, formatted to 2 decimals.
+   *
+   * <p>For use in GUI only</p>
+   *
+   * @return the commission value as a string with 2 decimals
+   */
   public String formattedCommission() {
     return calculateCommission().setScale(2, RoundingMode.HALF_UP).toString();
   }
@@ -85,6 +99,13 @@ public class SaleCalculator implements TransactionCalculator {
     return profit.multiply(BigDecimal.valueOf(0.3));
   }
 
+  /**
+   * Shows the tax value as a string, formatted to 2 decimals.
+   *
+   * <p>For use in GUI only</p>
+   *
+   * @return the tax value as a string with 2 decimals
+   */
   public String formattedTax() {
     return calculateTax().setScale(2, RoundingMode.HALF_UP).toString();
   }
@@ -101,6 +122,13 @@ public class SaleCalculator implements TransactionCalculator {
     return calculateGross().subtract(calculateCommission()).subtract(calculateTax());
   }
 
+  /**
+   * Shows the total value as a string, formatted to 2 decimals.
+   *
+   * <p>For use in GUI only</p>
+   *
+   * @return the total value as a string with 2 decimals
+   */
   public String formattedTotal() {
     return calculateTotal().setScale(2, RoundingMode.HALF_UP).toString();
   }

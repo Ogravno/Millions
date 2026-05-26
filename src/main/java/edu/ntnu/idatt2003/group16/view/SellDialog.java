@@ -4,12 +4,9 @@ import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.transaction.Sale;
-
-import java.math.RoundingMode;
+import edu.ntnu.idatt2003.group16.model.transaction.calculator.SaleCalculator;
 import java.net.URL;
 import java.util.Optional;
-
-import edu.ntnu.idatt2003.group16.model.transaction.calculator.SaleCalculator;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -20,6 +17,15 @@ import javafx.scene.layout.VBox;
  */
 public class SellDialog extends Dialog<Sale> {
 
+  /**
+   * Creates a dialog for selling a share.
+   *
+   * @param appController the application controller
+   * @param gameController the game controller used to complete the sale
+   * @param share the share to sell
+   * @throws IllegalArgumentException if appController, gameController
+   *         or share is null
+   */
   public SellDialog(AppController appController, GameController gameController, Share share) {
     if (appController == null) {
       throw new IllegalArgumentException("AppController cannot be null");

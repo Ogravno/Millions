@@ -6,7 +6,6 @@ import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import edu.ntnu.idatt2003.group16.view.BuyDialog;
-
 import java.util.Comparator;
 import java.util.List;
 import javafx.scene.Cursor;
@@ -37,10 +36,12 @@ public class ExchangeStocks extends VBox implements GameObserver {
   /**
    * Draws the stocks section of the exchange page.
    *
+   * @param appController the application controller
    * @param gameSession the current game session
    * @param gameController the game controller
    */
-  public ExchangeStocks(AppController appController, GameSession gameSession, GameController gameController) {
+  public ExchangeStocks(AppController appController, GameSession gameSession,
+                        GameController gameController) {
     this.appController = appController;
     this.gameSession = gameSession;
     this.gameController = gameController;
@@ -74,17 +75,17 @@ public class ExchangeStocks extends VBox implements GameObserver {
     sortSymbol.setToggleGroup(sortButtons);
     sortSymbol.setSelected(true);
     sortSymbol.setOnAction(event ->
-      sortAndDraw("Symbol", Comparator.comparing(Stock::getSymbol)));
+        sortAndDraw("Symbol", Comparator.comparing(Stock::getSymbol)));
 
     ToggleButton sortName = new ToggleButton("Name");
     sortName.setToggleGroup(sortButtons);
     sortName.setOnAction(event ->
-      sortAndDraw("Name", Comparator.comparing(Stock::getCompany)));
+        sortAndDraw("Name", Comparator.comparing(Stock::getCompany)));
 
     ToggleButton sortValue = new ToggleButton("Stock value");
     sortValue.setToggleGroup(sortButtons);
     sortValue.setOnAction(event ->
-      sortAndDraw("Current value", Comparator.comparing(Stock::getCurrentPrice)));
+        sortAndDraw("Current value", Comparator.comparing(Stock::getCurrentPrice)));
 
     HBox sortContainer = new HBox();
     sortContainer.getChildren().addAll(
@@ -141,10 +142,10 @@ public class ExchangeStocks extends VBox implements GameObserver {
     }
 
     List<Stock> sortedStocks = gameSession.getExchange()
-      .getAllStocks()
-      .stream()
-      .sorted(ascending ? comparator : comparator.reversed())
-      .toList();
+        .getAllStocks()
+        .stream()
+        .sorted(ascending ? comparator : comparator.reversed())
+        .toList();
 
     drawStocks(sortedStocks);
   }

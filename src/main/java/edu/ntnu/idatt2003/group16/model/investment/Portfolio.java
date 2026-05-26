@@ -8,8 +8,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The {@code Portfolio} class represents a collection of the user's shares.
- * Includes features such as addShare, removeShare, getShares and contains.
+ * Represents a collection of the player's shares.
+ *
+ * <p>The portfolio supports adding, removing, retrieving,
+ * and checking owned shares.</p>
  *
  * @author Robin Strand Prestmo
  */
@@ -26,10 +28,10 @@ public class Portfolio {
   /**
    * Adds a new share to the portfolio.
    *
-   * @param share to be added.
-   * @return {@code true} if the share was added.
-   * @throws IllegalArgumentException if share is null.
-   * @throws IllegalArgumentException if share is already in portfolio
+   * @param share the share to add
+   * @return true if the share was added
+   * @throws IllegalArgumentException if the share is null
+   * @throws IllegalArgumentException if the share is already in the portfolio
    */
   public boolean addShare(Share share) {
     if (share == null) {
@@ -45,10 +47,10 @@ public class Portfolio {
   /**
    * Removes a share from the portfolio.
    *
-   * @param share to be removed.
-   * @return {@code true} if the share was removed.
-   * @throws IllegalArgumentException if share is null.
-   * @throws IllegalArgumentException if share is not in portfolio
+   * @param share the share to remove
+   * @return true if the share was removed
+   * @throws IllegalArgumentException if the share is  null
+   * @throws IllegalArgumentException if the share is not in the portfolio
    */
   public boolean removeShare(Share share) {
     if (share == null) {
@@ -73,9 +75,9 @@ public class Portfolio {
   /**
    * Get all shares with the chosen symbol.
    *
-   * @param symbol to filter the right shares.
-   * @return a list with shares that matches the symbol.
-   * @throws IllegalArgumentException if symbol is null or blank.
+   * @param symbol the stock symbol to filter by
+   * @return a list of shares matching the symbol
+   * @throws IllegalArgumentException if the symbol is null or blank
    */
   public List<Share> getShares(String symbol) {
     if (symbol == null || symbol.isBlank()) {
@@ -88,8 +90,9 @@ public class Portfolio {
   /**
    * Checks if the portfolio contains the given share.
    *
-   * @param share the share to check for.
-   * @return {@code true} if the portfolio contains the share.
+   * @param share the share to check for
+   * @return true if the portfolio contains the share
+   * @throws IllegalArgumentException if the share is  null
    */
   public boolean contains(Share share) {
     if (share == null) {

@@ -5,7 +5,14 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
+/**
+ * Layout used for stock cards in the exchange view.
+ */
 public class StockCardLayout extends GridPane {
+
+  /**
+   * Creates the stock card layout.
+   */
   public StockCardLayout() {
     ColumnConstraints column1 = new ColumnConstraints();
     column1.setPercentWidth(50);

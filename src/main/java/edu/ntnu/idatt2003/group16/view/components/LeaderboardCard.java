@@ -18,7 +18,7 @@ public class LeaderboardCard extends BorderPane {
   /**
    * Draws the leaderboard card.
    *
-   * @param position the positon in the leaderboard
+   * @param position the position in the leaderboard
    * @param name the name of the company/stock
    * @param value the value of the stock
    * @param changePercentage the percentage change of the stock
@@ -43,11 +43,11 @@ public class LeaderboardCard extends BorderPane {
         )
     );
 
-    String changePrecentageString = changePercentage.multiply(BigDecimal.valueOf(100))
+    String changePercentageString = changePercentage.multiply(BigDecimal.valueOf(100))
         .setScale(2, RoundingMode.HALF_UP)
         .toString();
 
-    Label changeLabel = new Label(changePrecentageString + "%");
+    Label changeLabel = new Label(changePercentageString + "%");
     FontIcon changeArrow;
 
     if (changePercentage.signum() == 1) {

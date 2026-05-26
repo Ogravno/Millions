@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller responsible for creating and preparing a new game.
+ */
 public class NewGameController {
   GameSession gameSession;
 
@@ -22,9 +25,18 @@ public class NewGameController {
   StockFileReader stockFileReader;
   List<Stock> stocks;
 
+  /**
+   * Creates a controller for setting up a new game.
+   *
+   * @param gameSession the game session to initialize
+   * @throws IllegalArgumentException if the gameSession is null
+   */
   public NewGameController(GameSession gameSession) {
-    this.gameSession = gameSession;
+    if (gameSession == null) {
+      throw new IllegalArgumentException("GameSession cannot be null.");
+    }
 
+    this.gameSession = gameSession;
     this.stockFileReader = new StockFileReader();
     this.stocks = new ArrayList<>();
   }
@@ -33,6 +45,13 @@ public class NewGameController {
     return stocks;
   }
 
+  /**
+   * Processes stock data from a file and stores the loaded stocks.
+   *
+   * @param file the file containing stock data
+   * @throws IOException if an I/O error occurs while reading the file
+   * @throws IllegalArgumentException if the stock data contains invalid values
+   */
   public void processStockFile(File file) throws IOException, IllegalArgumentException {
     stocks = stockFileReader.readStocks(file.toPath());
   }
@@ -49,10 +68,15 @@ public class NewGameController {
    * @throws IllegalArgumentException if the stock data contains invalid values.
    */
   public void processStockFile(InputStream inputStream)
-    throws IOException, IllegalArgumentException {
+      throws IOException, IllegalArgumentException {
     stocks = stockFileReader.readStocks(inputStream);
   }
 
+  /**
+   * Sets the name of the game.
+   *
+   * @param gameName the name of the game
+   */
   public void setGameName(String gameName) {
     this.gameName = gameName;
   }
@@ -65,10 +89,22 @@ public class NewGameController {
     this.exchange = exchange;
   }
 
+  /**
+   * Creates the player for the new game.
+   *
+   * @param name the name of the player
+   * @param startingMoney the player's starting amount of money
+   */
   public void createPlayer(String name, BigDecimal startingMoney) {
     player = new Player(name, startingMoney);
   }
 
+  /**
+   * Creates the exchange for the new game.
+   *
+   * @param name the name of the exchange
+   * @throws IllegalStateException if no stocks have been loaded
+   */
   public void createExchange(String name) {
     if (stocks.isEmpty()) {
       throw new IllegalStateException("Stocks list cannot be empty");
@@ -77,6 +113,9 @@ public class NewGameController {
     exchange = new Exchange(name, stocks);
   }
 
+  /**
+   * Starts the game using the selected game name, player, and exchange.
+   */
   public void startGame() {
     gameSession.initialGame(gameName, player, exchange);
   }

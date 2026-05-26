@@ -4,19 +4,32 @@ import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.dto.GameSessionDto;
 import edu.ntnu.idatt2003.group16.model.filemanagement.SaveWriter;
-import javafx.application.Platform;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
 import java.util.Optional;
+import javafx.application.Platform;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
+/**
+ * Dialog shown when the game is over.
+ *
+ * <p>The dialog displays a summary of the player's result
+ * and lets the user close the game or return to the main menu.</p>
+ */
 public class EndDialog extends Dialog<Void> {
 
-  public EndDialog(AppController appController, GameController gameController, Runnable backToMainMenuAction) {
-
+  /**
+   * Creates the end dialog.
+   *
+   * @param appController the application controller
+   * @param gameController the game controller
+   * @param backToMainMenuAction the action used to return to the main menu
+   */
+  public EndDialog(AppController appController,
+                   GameController gameController,
+                   Runnable backToMainMenuAction) {
 
     setTitle("Game over");
     setHeaderText("Game over");
@@ -38,7 +51,8 @@ public class EndDialog extends Dialog<Void> {
       getDialogPane().getStylesheets().add(styleSheet.toExternalForm());
     }
 
-    Label startMoneyLabel = new Label("Starting money: " + gameController.getPlayerStartMoney().toString());
+    Label startMoneyLabel = new Label(
+        "Starting money: " + gameController.getPlayerStartMoney().toString());
     Label endMoneyLabel = new Label("Ending money: " + gameController.getFormattedNetWorth());
     Label profitLossLabel = new Label("Profit or loss: " + profitOrLossCalculator(gameController));
     Label prosentChangeLabel = new Label("Profit/loss in %: " + profitInPercent(gameController));
@@ -47,21 +61,21 @@ public class EndDialog extends Dialog<Void> {
 
     VBox content = new VBox(10);
     content.getChildren().addAll(
-      startMoneyLabel,
-      endMoneyLabel,
-      profitLossLabel,
-      prosentChangeLabel,
-      weeksPlayedLabel,
-      currentStatusLabel
+        startMoneyLabel,
+        endMoneyLabel,
+        profitLossLabel,
+        prosentChangeLabel,
+        weeksPlayedLabel,
+        currentStatusLabel
     );
 
     getDialogPane().setContent(content);
 
     ButtonType closeGameButton =
-      new ButtonType("Close Game", ButtonBar.ButtonData.CANCEL_CLOSE);
+        new ButtonType("Close Game", ButtonBar.ButtonData.CANCEL_CLOSE);
 
     ButtonType backToMainMenuButton =
-      new ButtonType("Back to Main Menu", ButtonBar.ButtonData.OK_DONE);
+        new ButtonType("Back to Main Menu", ButtonBar.ButtonData.OK_DONE);
 
     getDialogPane().getButtonTypes().addAll(backToMainMenuButton, closeGameButton);
 
@@ -87,10 +101,10 @@ public class EndDialog extends Dialog<Void> {
   }
 
   private String profitOrLossCalculator(GameController gameController) {
-     BigDecimal profitLoss = gameController.getNetWorth()
-      .subtract(gameController.getPlayerStartMoney());
+    BigDecimal profitLoss = gameController.getNetWorth()
+        .subtract(gameController.getPlayerStartMoney());
 
-     return profitLoss.setScale(2,RoundingMode.HALF_UP).toString();
+    return profitLoss.setScale(2, RoundingMode.HALF_UP).toString();
   }
 
   private String profitInPercent(GameController gameController) {
@@ -103,6 +117,11 @@ public class EndDialog extends Dialog<Void> {
       .toString();
   }
 
+  /**
+   * Opens the dialog and waits for the user response.
+   *
+   * @return an empty optional when the dialog is closed
+   */
   public Optional<Void> showAndGetResult() {
     return showAndWait();
   }

@@ -18,6 +18,14 @@ import javafx.scene.layout.VBox;
  */
 public class BuyDialog extends Dialog<Purchase> {
 
+  /**
+   * Creates a dialog for buying a selected stock.
+   *
+   * @param appController the application controller
+   * @param gameController the game controller used to complete the purchase
+   * @param stock the stock to buy
+   * @throws IllegalArgumentException if appController, gameController or stock is null
+   */
   public BuyDialog(AppController appController, GameController gameController, Stock stock) {
     if (appController == null) {
       throw new IllegalArgumentException("AppController cannot be null");

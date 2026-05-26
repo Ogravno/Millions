@@ -7,6 +7,11 @@ import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import edu.ntnu.idatt2003.group16.view.HistoricalPricesDialog;
 import edu.ntnu.idatt2003.group16.view.SellDialog;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.math.RoundingMode;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,12 +20,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
+/**
+ * View component that displays the player's owned shares.
+ *
+ * <p>The component supports sorting shares and allows the player
+ * to view historical prices or sell shares.</p>
+ * */
 public class PortfolioShares extends VBox implements GameObserver {
   private AppController appController;
   private GameSession gameSession;
@@ -35,7 +41,15 @@ public class PortfolioShares extends VBox implements GameObserver {
   private Comparator<Share> currentSort =
       Comparator.comparing(share -> share.getStock().getSymbol());
 
-  public PortfolioShares(AppController appController, GameSession gameSession, GameController gameController) {
+  /**
+   * Creates the portfolio shares component.
+   *
+   * @param appController the application controller
+   * @param gameSession the active game session
+   * @param gameController the game controller
+   */
+  public PortfolioShares(AppController appController,
+                         GameSession gameSession, GameController gameController) {
     this.appController = appController;
     this.gameSession = gameSession;
     this.gameController = gameController;
@@ -76,6 +90,16 @@ public class PortfolioShares extends VBox implements GameObserver {
     this.columnConstraintsList.add(column7);
 
     sharesHeader.getColumnConstraints().addAll(columnConstraintsList);
+    for (int i = 0; i < 6; i++) {
+      ColumnConstraints columnConstraints = new ColumnConstraints();
+      if (i < 5) {
+        columnConstraints.setPercentWidth(16);
+      } else {
+        columnConstraints.setPercentWidth(20);
+      }
+      columnConstraints.setHalignment(HPos.LEFT);
+      sharesHeader.getColumnConstraints().add(columnConstraints);
+    }
 
     this.sharesBox = new VBox();
     ScrollPane scrollPane = new ScrollPane(sharesBox);
@@ -201,7 +225,8 @@ public class PortfolioShares extends VBox implements GameObserver {
       Button historicPrices = new Button("Historic Prices");
       historicPrices.getStyleClass().add("share-table-button");
       historicPrices.setOnAction(event -> {
-        HistoricalPricesDialog historicalPricesDialog = new HistoricalPricesDialog(appController, share.getStock(), gameSession.getExchange());
+        HistoricalPricesDialog historicalPricesDialog =
+            new HistoricalPricesDialog(appController, share.getStock(), gameSession.getExchange());
         historicalPricesDialog.showAndGetResult();
       });
 

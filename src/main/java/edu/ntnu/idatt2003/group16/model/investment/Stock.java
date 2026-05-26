@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Represents a share in a company.
+ * Represents a stock in a company.
  *
  * @author Robin Strand Prestmo
  */
@@ -65,11 +65,10 @@ public class Stock {
   }
 
   /**
-   * Add´s a new price to the stock.
+   * Adds a new price to the stock.
    *
    * @param newPrice is the new price to the stock
-   * @throws IllegalArgumentException if symbol or company is null/blank,
-   *         or if salesPrice is null or not greater than zero
+   * @throws IllegalArgumentException if newPrice is null or not greater than zero
    */
   public void changeCurrentPrice(BigDecimal newPrice) {
     if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) <= 0) {
@@ -129,11 +128,11 @@ public class Stock {
   /**
    * Gets the price change percentage from a certain number of weeks ago.
    *
-   * <p>Percentage is rounded to 4 decimals</p>
+   * <p>The percentage is rounded to 4 decimals.</p>
    *
    * @param weeksAgo how many weeks to go back
-   * @return the price change
-   * @throws IllegalArgumentException if weeks is not greater than zero
+   * @return the price change percentage
+   * @throws IllegalArgumentException if weeksAgo is not greater than zero
    */
   public BigDecimal getPriceChangePercentage(int weeksAgo) {
     if (weeksAgo <= 0) {

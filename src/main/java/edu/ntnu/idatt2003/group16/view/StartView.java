@@ -13,17 +13,24 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 
-import java.net.URL;
-
+/**
+ * Start view for the application.
+ *
+ * <p>Displays the main menu and allows the user
+ * to start a new game or exit the application.</p>
+ */
 public class StartView {
 
   private final NewGameController newGameController;
 
   private BorderPane root;
 
+  /**
+   * Creates the start view.
+   *
+   * @param gameSession the active game session
+   */
   public StartView(GameSession gameSession) {
     newGameController = new NewGameController(gameSession);
 
@@ -100,6 +107,9 @@ public class StartView {
     return root;
   }
 
+  /**
+   * Shows the start menu view.
+   */
   public void showStartMenuView() {
     showStartMenu();
   }
