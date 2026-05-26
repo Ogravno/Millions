@@ -4,23 +4,29 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+    <!-- Project information -->
   <groupId>edu.ntnu.idatt2003.group16</groupId>
   <artifactId>Millions</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+    <!-- Java version and project settings -->
   <properties>
     <maven.compiler.source>25</maven.compiler.source>
     <maven.compiler.target>25</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+    <!-- External libraries used in the project -->
   <dependencies>
+
+      <!-- JavaFX user interface components -->
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
       <version>25.0.1</version>
     </dependency>
 
+      <!-- JUnit framework for unit testing -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
@@ -28,12 +34,14 @@
       <scope>test</scope>
     </dependency>
 
+      <!-- Ikonli support for JavaFX icons -->
     <dependency>
       <groupId>org.kordamp.ikonli</groupId>
       <artifactId>ikonli-javafx</artifactId>
       <version>12.4.0</version>
     </dependency>
 
+      <!-- Material Design icon pack -->
     <dependency>
       <groupId>org.kordamp.ikonli</groupId>
       <artifactId>ikonli-materialdesign2-pack</artifactId>
@@ -41,20 +49,27 @@
     </dependency>
   </dependencies>
 
+    <!-- Build configuration -->
   <build>
+
+      <!-- Maven plugins -->
     <plugins>
+
+        <!-- Compiles Java source files -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.14.1</version>
       </plugin>
 
+        <!-- Executes JUnit tests -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.4</version>
       </plugin>
 
+        <!-- Runs the JavaFX application -->
       <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
@@ -64,12 +79,14 @@
           </configuration>
       </plugin>
 
+        <!-- Generates Javadoc documentation -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.12.0</version>
       </plugin>
 
+        <!-- Generates code coverage reports with JaCoCo -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -81,6 +98,7 @@
               </goals>
            </execution>
 
+            <!-- Adds JaCoCo agent before tests -->
            <execution>
                 <id>report</id>
                 <phase>test</phase>
@@ -91,6 +109,7 @@
         </executions>
       </plugin>
 
+        <!-- Creates executable JAR files -->
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
