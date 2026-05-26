@@ -117,4 +117,76 @@ class GameSessionTest {
     assertThrows(IllegalArgumentException.class, () ->
       gameSession.sellShare(share));
   }
+
+  @Test
+  void shouldInitializeGame() {
+    TransactionFactory factory = new TransactionFactory();
+
+    Player player = new Player("Robin", new BigDecimal("1000"));
+
+
+    GameSession gameSession =
+      new GameSession(null, null, null, factory);
+
+    gameSession.initialGame("Test Game", player, exchange);
+
+    assertEquals("Test Game", gameSession.getGameName());
+    assertEquals(player, gameSession.getPlayer());
+    assertEquals(exchange, gameSession.getExchange());
+  }
+
+  @Test
+  void shouldResetSession() {
+    TransactionFactory factory = new TransactionFactory();
+
+    Player player = new Player("Robin", new BigDecimal("1000"));
+
+
+    GameSession gameSession =
+      new GameSession("Test Game", player, exchange, factory);
+
+    gameSession.resetSession();
+
+    assertNull(gameSession.getGameName());
+    assertNull(gameSession.getPlayer());
+    assertNull(gameSession.getExchange());
+  }
+
+  @Test
+  void shouldSetGameName() {
+    TransactionFactory factory = new TransactionFactory();
+
+    GameSession gameSession =
+      new GameSession(null, null, null, factory);
+
+    gameSession.setGameName("Millions");
+
+    assertEquals("Millions", gameSession.getGameName());
+  }
+
+  @Test
+  void shouldThrowExceptionWhenGameNameIsNull() {
+    TransactionFactory factory = new TransactionFactory();
+
+    GameSession gameSession =
+      new GameSession(null, null, null, factory);
+
+    assertThrows(
+      IllegalArgumentException.class,
+      () -> gameSession.setGameName(null)
+    );
+  }
+
+  @Test
+  void shouldThrowExceptionWhenGameNameIsBlank() {
+    TransactionFactory factory = new TransactionFactory();
+
+    GameSession gameSession =
+      new GameSession(null, null, null, factory);
+
+    assertThrows(
+      IllegalArgumentException.class,
+      () -> gameSession.setGameName(" ")
+    );
+  }
 }
