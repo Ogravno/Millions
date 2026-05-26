@@ -1,129 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+
+    <modelVersion>4.0.0</modelVersion>
 
     <!-- Project information -->
-  <groupId>edu.ntnu.idatt2003.group16</groupId>
-  <artifactId>Millions</artifactId>
-  <version>1.0-SNAPSHOT</version>
+    <groupId>edu.ntnu.idatt2003.group16</groupId>
+    <artifactId>Millions</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
     <!-- Java version and project settings -->
-  <properties>
-    <maven.compiler.source>25</maven.compiler.source>
-    <maven.compiler.target>25</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <properties>
+
+        <!-- Java settings -->
+        <java.version>25</java.version>
+
+        <!-- Dependency versions -->
+        <javafx.version>25.0.1</javafx.version>
+        <junit.version>6.0.1</junit.version>
+        <ikonli.version>12.4.0</ikonli.version>
+
+        <!-- Plugin versions -->
+        <compiler.plugin.version>3.14.1</compiler.plugin.version>
+        <surefire.plugin.version>3.5.4</surefire.plugin.version>
+        <javafx.plugin.version>0.0.8</javafx.plugin.version>
+        <javadoc.plugin.version>3.12.0</javadoc.plugin.version>
+        <jacoco.version>0.8.14</jacoco.version>
+        <jar.plugin.version>3.4.1</jar.plugin.version>
+
+        <!-- Maven settings -->
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    </properties>
 
     <!-- External libraries used in the project -->
-  <dependencies>
+    <dependencies>
 
-      <!-- JavaFX user interface components -->
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-controls</artifactId>
-      <version>25.0.1</version>
-    </dependency>
+        <!-- JavaFX user interface components -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
 
-      <!-- JUnit framework for unit testing -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>6.0.1</version>
-      <scope>test</scope>
-    </dependency>
+        <!-- JUnit framework for unit testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-      <!-- Ikonli support for JavaFX icons -->
-    <dependency>
-      <groupId>org.kordamp.ikonli</groupId>
-      <artifactId>ikonli-javafx</artifactId>
-      <version>12.4.0</version>
-    </dependency>
+        <!-- Ikonli support for JavaFX icons -->
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-javafx</artifactId>
+            <version>${ikonli.version}</version>
+        </dependency>
 
-      <!-- Material Design icon pack -->
-    <dependency>
-      <groupId>org.kordamp.ikonli</groupId>
-      <artifactId>ikonli-materialdesign2-pack</artifactId>
-      <version>12.4.0</version>
-    </dependency>
-  </dependencies>
+        <!-- Material Design icon pack -->
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-materialdesign2-pack</artifactId>
+            <version>${ikonli.version}</version>
+        </dependency>
+
+    </dependencies>
 
     <!-- Build configuration -->
-  <build>
+    <build>
 
-      <!-- Maven plugins -->
-    <plugins>
+        <!-- Maven plugins -->
+        <plugins>
 
-        <!-- Compiles Java source files -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.1</version>
-      </plugin>
+            <!-- Compiles Java source files -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+            </plugin>
 
-        <!-- Executes JUnit tests -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.4</version>
-      </plugin>
+            <!-- Executes JUnit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.plugin.version}</version>
+            </plugin>
 
-        <!-- Runs the JavaFX application -->
-      <plugin>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-maven-plugin</artifactId>
-        <version>0.0.8</version>
-          <configuration>
-              <mainClass>edu.ntnu.idatt2003.group16.Main</mainClass>
-          </configuration>
-      </plugin>
+            <!-- Runs the JavaFX application -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>${javafx.plugin.version}</version>
 
-        <!-- Generates Javadoc documentation -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.12.0</version>
-      </plugin>
+                <configuration>
+                    <mainClass>
+                        edu.ntnu.idatt2003.group16.Main
+                    </mainClass>
+                </configuration>
 
-        <!-- Generates code coverage reports with JaCoCo -->
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.14</version>
-        <executions>
-           <execution>
-              <goals>
-                  <goal>prepare-agent</goal>
-              </goals>
-           </execution>
+            </plugin>
 
-            <!-- Adds JaCoCo agent before tests -->
-           <execution>
-                <id>report</id>
-                <phase>test</phase>
-             <goals>
-               <goal>report</goal>
-             </goals>
-           </execution>
-        </executions>
-      </plugin>
+            <!-- Generates Javadoc documentation -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${javadoc.plugin.version}</version>
+            </plugin>
 
-        <!-- Creates executable JAR files -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>3.4.1</version>
-            <configuration>
-                <archive>
-                    <manifest>
-                        <mainClass>edu.ntnu.idatt2003.group16.Main</mainClass>
-                    </manifest>
-                </archive>
-            </configuration>
-        </plugin>
+            <!-- Generates code coverage reports with JaCoCo -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
 
+                <executions>
 
-    </plugins>
-  </build>
+                    <!-- Adds JaCoCo agent before tests -->
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+
+                    <!-- Generates coverage report after tests -->
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+
+                </executions>
+
+            </plugin>
+
+            <!-- Creates executable JAR files -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${jar.plugin.version}</version>
+
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>
+                                edu.ntnu.idatt2003.group16.Main
+                            </mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+
+            </plugin>
+        </plugins>
+    </build>
 </project>
+
