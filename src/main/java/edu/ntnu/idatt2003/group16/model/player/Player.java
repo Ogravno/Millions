@@ -144,7 +144,7 @@ public class Player {
    * @return the player's net worth
    * @throws IllegalArgumentException if week is not positive
    */
-  public BigDecimal getNewWorth(int week) {
+  public BigDecimal getNetWorth(int week) {
     if (week < 1) {
       throw new IllegalArgumentException("Parameter week must be positive");
     }
@@ -162,7 +162,7 @@ public class Player {
       throw new IllegalArgumentException("Parameter week must be positive");
     }
 
-    weeklyNetWorth.put(week, getNewWorth(week));
+    weeklyNetWorth.put(week, getNetWorth());
   }
 
   /**
