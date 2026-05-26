@@ -1,5 +1,8 @@
 package edu.ntnu.idatt2003.group16.model.transaction;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.player.Player;
 import edu.ntnu.idatt2003.group16.model.transaction.calculator.TransactionCalculator;
@@ -9,6 +12,11 @@ import edu.ntnu.idatt2003.group16.model.transaction.calculator.TransactionCalcul
  *
  * @author Odin Grav
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = Purchase.class, name = "Purchase"),
+    @JsonSubTypes.Type(value = Sale.class, name = "Sale")
+})
 public abstract class Transaction {
   private Share share;
   private int week;
@@ -37,6 +45,9 @@ public abstract class Transaction {
     this.week = week;
     this.calculator = calculator;
     this.committed = false;
+  }
+
+  public Transaction() {
   }
 
   public Share getShare() {

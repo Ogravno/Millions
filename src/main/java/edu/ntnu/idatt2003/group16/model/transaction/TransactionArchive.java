@@ -1,5 +1,7 @@
 package edu.ntnu.idatt2003.group16.model.transaction;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 

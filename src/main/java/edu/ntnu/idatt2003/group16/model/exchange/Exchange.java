@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.model.exchange;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import edu.ntnu.idatt2003.group16.model.player.Player;
@@ -17,10 +18,9 @@ import java.util.*;
  * @author Robin Strand Prestmo
  */
 public class Exchange {
-  private final String name;
+  private String name;
   private int week;
-  private final Map<String, Stock> stockMap;
-  private final Random random;
+  private Map<String, Stock> stockMap;
 
   /**
    * Creates a new exchange.
@@ -41,7 +41,6 @@ public class Exchange {
     this.name = name;
     this.week = 1;
     this.stockMap = new HashMap<>();
-    this.random = new Random();
 
     for (Stock stock : stocks) {
       if (stock == null) {
@@ -49,6 +48,9 @@ public class Exchange {
       }
       stockMap.put(stock.getSymbol(), stock);
     }
+  }
+
+  public Exchange() {
   }
 
   public String getName() {
@@ -183,6 +185,7 @@ public class Exchange {
   public void advance() {
      week++;
 
+     Random random = new Random();
      stockMap.values().forEach(stock -> {
        BigDecimal currentPrice = stock.getCurrentPrice();
 

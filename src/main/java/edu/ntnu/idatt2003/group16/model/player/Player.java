@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.model.player;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.ntnu.idatt2003.group16.model.investment.Portfolio;
 import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.model.transaction.TransactionArchive;
@@ -14,12 +15,12 @@ import java.util.Map;
  * Class representing a player.
  */
 public class Player {
-  private final String name;
-  private final BigDecimal startingMoney;
+  private String name;
+  private BigDecimal startingMoney;
   private BigDecimal money;
-  private final Portfolio portfolio;
-  private final TransactionArchive transactionArchive;
-  private final Map<Integer, BigDecimal> weeklyNetWorth;
+  private Portfolio portfolio;
+  private TransactionArchive transactionArchive;
+  private Map<Integer, BigDecimal> weeklyNetWorth;
 
   /**
    * Constructor for the {@link Player} class.
@@ -42,6 +43,9 @@ public class Player {
     this.portfolio = new Portfolio();
     this.transactionArchive = new TransactionArchive();
     this.weeklyNetWorth = new HashMap<>();
+  }
+
+  public Player() {
   }
 
   public String getName() {

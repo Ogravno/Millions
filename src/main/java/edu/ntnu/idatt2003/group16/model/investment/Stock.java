@@ -1,5 +1,7 @@
 package edu.ntnu.idatt2003.group16.model.investment;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -12,9 +14,9 @@ import java.util.List;
  * @author Robin Strand Prestmo
  */
 public class Stock {
-  private final String symbol;
-  private final String company;
-  private final List<BigDecimal> prices;
+  private String symbol;
+  private String company;
+  private List<BigDecimal> prices;
 
   /**
    * Creates a new stock.
@@ -45,6 +47,9 @@ public class Stock {
     this.prices = new ArrayList<>();
     this.prices.add(salesPrice);
 
+  }
+
+  public Stock() {
   }
 
   public String getSymbol() {
