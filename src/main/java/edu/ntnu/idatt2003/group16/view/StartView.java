@@ -3,6 +3,8 @@ package edu.ntnu.idatt2003.group16.view;
 import edu.ntnu.idatt2003.group16.controller.NewGameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -75,7 +77,9 @@ public class StartView {
   }
 
   private void showNewGameView() {
-    NewGameView newGameView = new NewGameView(newGameController);
+    EventHandler<ActionEvent> backAction = event -> this.showStartMenu();
+
+    NewGameView newGameView = new NewGameView(newGameController, backAction);
     root.setCenter(newGameView.getView());
   }
 
