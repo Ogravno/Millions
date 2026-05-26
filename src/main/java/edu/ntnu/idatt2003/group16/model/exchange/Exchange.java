@@ -6,7 +6,6 @@ import edu.ntnu.idatt2003.group16.model.player.Player;
 import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.model.transaction.Sale;
 import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -64,7 +63,7 @@ public class Exchange {
    *
    * @param symbol represents a unique identifier for a company with four letters
    * @return true if exchange contains stock, false if not
-   * @throws IllegalArgumentException of symbol is null or blank
+   * @throws IllegalArgumentException if symbol is null or blank
    */
   public boolean hasStock(String symbol) {
     if (symbol == null || symbol.isBlank()) {
@@ -153,7 +152,7 @@ public class Exchange {
 
     transaction.commit(player);
     return transaction;
-  };
+  }
 
   /**
    * Sells a specified quantity of a stock for a player and commits the transaction.
@@ -163,40 +162,41 @@ public class Exchange {
    * @return the completed sale transaction
    * @throws IllegalArgumentException if share or player is null
    */
-   public Transaction sell(Share share, Player player) {
-     if (share == null) {
-       throw new IllegalArgumentException("Share cannot be null");
-     }
-     if (player == null) {
-       throw new IllegalArgumentException("Player cannot be null");
-     }
+  public Transaction sell(Share share, Player player) {
+    if (share == null) {
+      throw new IllegalArgumentException("Share cannot be null");
+    }
+    if (player == null) {
+      throw new IllegalArgumentException("Player cannot be null");
+    }
 
-     Transaction transaction = new Sale(share, week);
-     transaction.commit(player);
-     return transaction;
-   };
+    Transaction transaction = new Sale(share, week);
+    transaction.commit(player);
+    return transaction;
+  }
 
   /**
-   * Makes the time go forward with a week.
-   * Also changing the prices for the stocks.
+   * Advances the exchange by one week.
+   *
+   * <p>This updates the stock prices for all stocks in the exchange.</p>
    */
   public void advance() {
-     week++;
+    week++;
 
-     stockMap.values().forEach(stock -> {
-       BigDecimal currentPrice = stock.getCurrentPrice();
+    stockMap.values().forEach(stock -> {
+      BigDecimal currentPrice = stock.getCurrentPrice();
 
-       double change = (random.nextDouble() - 0.5) * 0.1; // +- 5%
-       BigDecimal multiplier = BigDecimal.valueOf(1 + change);
+      double change = (random.nextDouble() - 0.5) * 0.1; // +- 5%
+      BigDecimal multiplier = BigDecimal.valueOf(1 + change);
 
-       BigDecimal newPrice = currentPrice
-         .multiply(multiplier)
-         .max(BigDecimal.valueOf(0.01)) // Set minimum price
-         .setScale(2, RoundingMode.HALF_UP);
+      BigDecimal newPrice = currentPrice
+          .multiply(multiplier)
+          .max(BigDecimal.valueOf(0.01)) // Set minimum price
+          .setScale(2, RoundingMode.HALF_UP);
 
-       stock.changeCurrentPrice(newPrice);
-     });
-   }
+      stock.changeCurrentPrice(newPrice);
+    });
+  }
 
   /**
    * Get a list of stocks with the most gain in percent since last week.
@@ -206,7 +206,7 @@ public class Exchange {
    * @return list with the limit amount of stocks
    * @throws IllegalArgumentException if limit is less than 1
    */
-   public List<Stock> getGainers(int limit) {
+  public List<Stock> getGainers(int limit) {
     if (limit < 1) {
       throw new IllegalArgumentException("limit cannot be less than 1");
     }
@@ -216,7 +216,7 @@ public class Exchange {
           .reversed())
           .limit(limit)
           .toList();
-   }
+  }
 
   /**
    * Get a list of stocks with the biggest loss in percent since last week.
