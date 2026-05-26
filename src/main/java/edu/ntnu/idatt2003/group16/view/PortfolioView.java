@@ -49,7 +49,7 @@ public class PortfolioView {
 
     root.getColumnConstraints().addAll(column1, column2, column3);
 
-    RowConstraints row1 = new RowConstraints(250);
+    RowConstraints row1 = new RowConstraints(350);
 
     root.getRowConstraints().add(row1);
 

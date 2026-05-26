@@ -55,6 +55,7 @@ public class PortfolioGraph extends VBox implements GameObserver {
 
     LineChart chart = new LineChart(xAxis, yAxis);
     chart.setLegendVisible(false);
+    chart.setCreateSymbols(false);
 
     XYChart.Series series = new XYChart.Series();
 

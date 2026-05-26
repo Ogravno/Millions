@@ -192,3 +192,25 @@
     -fx-border-width: 1 0 0 0;
     -fx-border-color: -border-color;
 }
+
+.chart {
+    -fx-background-color: transparent;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-series-line {
+    -fx-stroke: -main-color;
+    -fx-stroke-width: 1;
+}
+
+.axis-label {
+    -fx-text-fill: -regular-text-color;
+    -fx-font-size: 14;
+}
+
+.chart-vertical-grid-lines, .chart-horizontal-grid-lines {
+    -fx-stroke: -border-color;
+}
