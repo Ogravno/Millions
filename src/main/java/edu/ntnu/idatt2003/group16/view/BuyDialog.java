@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.view;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
@@ -7,6 +8,7 @@ import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.model.transaction.calculator.PurchaseCalculator;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URL;
 import java.util.Optional;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -16,7 +18,10 @@ import javafx.scene.layout.VBox;
  */
 public class BuyDialog extends Dialog<Purchase> {
 
-  public BuyDialog(GameController gameController, Stock stock) {
+  public BuyDialog(AppController appController, GameController gameController, Stock stock) {
+    if (appController == null) {
+      throw new IllegalArgumentException("AppController cannot be null");
+    }
     if (gameController == null) {
       throw new IllegalArgumentException("GameController cannot be null");
     }
@@ -27,6 +32,21 @@ public class BuyDialog extends Dialog<Purchase> {
     setTitle("Buy Stock");
     setHeaderText("Buy " + stock.getSymbol());
     getDialogPane().setPrefSize(300, 225);
+
+    URL themeStyleSheet;
+    if (appController.isDarkTheme()) {
+      themeStyleSheet = getClass().getResource("/css/dark-theme.css");
+    } else {
+      themeStyleSheet = getClass().getResource("/css/light-theme.css");
+    }
+    if (themeStyleSheet != null) {
+      getDialogPane().getStylesheets().add(themeStyleSheet.toExternalForm());
+    }
+
+    URL styleSheet = getClass().getResource("/css/dialog.css");
+    if (styleSheet != null) {
+      getDialogPane().getStylesheets().add(styleSheet.toExternalForm());
+    }
 
     TextField quantityField = new TextField();
 

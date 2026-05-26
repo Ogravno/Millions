@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.view;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import javafx.application.Platform;
 import javafx.scene.control.*;
@@ -7,17 +8,33 @@ import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URL;
 import java.util.Optional;
 
 public class EndDialog extends Dialog<Void> {
 
-  public EndDialog(GameController gameController, Runnable backToMainMenuAction) {
+  public EndDialog(AppController appController, GameController gameController, Runnable backToMainMenuAction) {
 
 
     setTitle("Game over");
     setHeaderText("Game over");
 
     getDialogPane().setPrefSize(300, 225);
+
+    URL themeStyleSheet;
+    if (appController.isDarkTheme()) {
+      themeStyleSheet = getClass().getResource("/css/dark-theme.css");
+    } else {
+      themeStyleSheet = getClass().getResource("/css/light-theme.css");
+    }
+    if (themeStyleSheet != null) {
+      getDialogPane().getStylesheets().add(themeStyleSheet.toExternalForm());
+    }
+
+    URL styleSheet = getClass().getResource("/css/dialog.css");
+    if (styleSheet != null) {
+      getDialogPane().getStylesheets().add(styleSheet.toExternalForm());
+    }
 
     Label startMoneyLabel = new Label("Starting money: " + gameController.getPlayerStartMoney().toString());
     Label endMoneyLabel = new Label("Ending money: " + gameController.getFormattedNetWorth());

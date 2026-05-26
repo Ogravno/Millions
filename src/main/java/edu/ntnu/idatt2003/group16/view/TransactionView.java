@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.view;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.transaction.Transaction;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
@@ -18,6 +19,7 @@ import javafx.scene.layout.VBox;
  * View for displaying transactions
  */
 public class TransactionView implements GameObserver {
+  private final AppController appController;
   private final GameSession gameSession;
 
   private final VBox root;
@@ -31,20 +33,20 @@ public class TransactionView implements GameObserver {
    *
    * @param gameSession the active game session.
    */
-  public TransactionView(GameSession gameSession) {
+  public TransactionView(AppController appController, GameSession gameSession) {
+    if (appController == null) {
+      throw new IllegalArgumentException("AppController cannot be null");
+    }
+
     if (gameSession == null) {
       throw new IllegalArgumentException("GamesSession cannot be null");
     }
 
+    this.appController = appController;
     this.gameSession = gameSession;
 
     this.root = new VBox(10);
     this.root.getStyleClass().add("content-container");
-
-    URL styleSheet = getClass().getResource("/css/transaction-view.css");
-    if (styleSheet != null) {
-      root.getStylesheets().add(styleSheet.toExternalForm());
-    }
 
     Label headline = new Label("Transactions");
     headline.getStyleClass().add("headline");
@@ -115,7 +117,7 @@ public class TransactionView implements GameObserver {
     );
     sortContainer.getStyleClass().addAll("sort-buttons");
 
-    transactionTable = new TransactionTable();
+    transactionTable = new TransactionTable(appController);
 
     VBox transactionContainer = new VBox(
         headline,

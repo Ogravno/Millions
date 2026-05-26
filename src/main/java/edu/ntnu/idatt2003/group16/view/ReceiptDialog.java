@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.view;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
@@ -10,11 +11,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.math.RoundingMode;
+import java.net.URL;
 import java.util.Optional;
 
 public class ReceiptDialog extends Dialog<Void> {
 
-  public ReceiptDialog(Transaction transaction) {
+  public ReceiptDialog(AppController appController, Transaction transaction) {
     Share share = transaction.getShare();
     Stock stock = share.getStock();
 
@@ -22,6 +24,20 @@ public class ReceiptDialog extends Dialog<Void> {
     setHeaderText("Receipt");
     getDialogPane().setPrefSize(300,225);
 
+    URL themeStyleSheet;
+    if (appController.isDarkTheme()) {
+      themeStyleSheet = getClass().getResource("/css/dark-theme.css");
+    } else {
+      themeStyleSheet = getClass().getResource("/css/light-theme.css");
+    }
+    if (themeStyleSheet != null) {
+      getDialogPane().getStylesheets().add(themeStyleSheet.toExternalForm());
+    }
+
+    URL styleSheet = getClass().getResource("/css/dialog.css");
+    if (styleSheet != null) {
+      getDialogPane().getStylesheets().add(styleSheet.toExternalForm());
+    }
 
     Label purchaseOrSale = new Label(transaction.getClass().getSimpleName());
     Label stockSymbolAndName = new Label("Stock: " + stock.getSymbol() + " " + stock.getCompany());

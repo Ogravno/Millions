@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.view;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.model.exchange.Exchange;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +24,27 @@ public class HistoricalPricesDialog extends Dialog<Void> {
   private final VBox historicalPrices = new VBox(10);
   private final Label pageLabel = new Label();
 
-  public HistoricalPricesDialog(Stock stock, Exchange exchange) {
+  public HistoricalPricesDialog(AppController appController, Stock stock, Exchange exchange) {
     this.historicalPriceList = stock.getHistoricalPrices();
 
     setTitle("Stock");
     setHeaderText(stock.getCompany());
     getDialogPane().setPrefSize(300,225);
+
+    URL themeStyleSheet;
+    if (appController.isDarkTheme()) {
+      themeStyleSheet = getClass().getResource("/css/dark-theme.css");
+    } else {
+      themeStyleSheet = getClass().getResource("/css/light-theme.css");
+    }
+    if (themeStyleSheet != null) {
+      getDialogPane().getStylesheets().add(themeStyleSheet.toExternalForm());
+    }
+
+    URL styleSheet = getClass().getResource("/css/dialog.css");
+    if (styleSheet != null) {
+      getDialogPane().getStylesheets().add(styleSheet.toExternalForm());
+    }
 
     Label currentPrice = new Label( "Current Price: " + stock.getCurrentPrice().toString());
     Label highestPrice = new Label("Highest Price: " + stock.getHighestPrice().toString());

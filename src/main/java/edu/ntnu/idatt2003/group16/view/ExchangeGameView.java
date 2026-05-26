@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.view;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
@@ -15,7 +16,7 @@ import javafx.scene.layout.VBox;
  * @author Robin Strand Prestmo
  */
 public class ExchangeGameView implements GameObserver {
-
+  private final AppController appController;
   private final GameSession gameSession;
   private final GameController gameController;
 
@@ -31,7 +32,10 @@ public class ExchangeGameView implements GameObserver {
    *
    * @param gameSession the active game session
    */
-  public ExchangeGameView(GameSession gameSession, GameController gameController) {
+  public ExchangeGameView(AppController appController, GameSession gameSession, GameController gameController) {
+    if (appController == null) {
+      throw new IllegalArgumentException("AppController cannot be null.");
+    }
     if (gameSession == null) {
       throw new IllegalArgumentException("GameSession cannot be null.");
     }
@@ -39,18 +43,14 @@ public class ExchangeGameView implements GameObserver {
       throw new IllegalArgumentException("GameController cannot be null.");
     }
 
+    this.appController = appController;
     this.gameSession = gameSession;
     this.gameController = gameController;
 
     this.root = new BorderPane();
     this.root.getStyleClass().add("content-container");
 
-    URL styleSheet = getClass().getResource("/css/exchange-game-view.css");
-    if (styleSheet != null) {
-      root.getStylesheets().add(styleSheet.toExternalForm());
-    }
-
-    stocksContainer = new ExchangeStocks(gameSession, gameController);
+    stocksContainer = new ExchangeStocks(appController, gameSession, gameController);
 
     winnersLeaderboard = new Leaderboard("Winners");
     winnersLeaderboard.getStyleClass().add("tile");

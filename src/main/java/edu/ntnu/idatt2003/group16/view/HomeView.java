@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.view;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
@@ -30,7 +31,7 @@ public class HomeView {
 
   private final GridPane root;
 
-  public HomeView(GameController gameController, GameSession gameSession) {
+  public HomeView(AppController appController, GameController gameController, GameSession gameSession) {
     this.gameController = gameController;
     this.gameSession = gameSession;
 
@@ -43,7 +44,7 @@ public class HomeView {
     PortfolioOverview portfolio = new PortfolioOverview(gameSession);
     portfolio.getStyleClass().add("tile");
 
-    PortfolioShares shares = new PortfolioShares(gameSession, gameController);
+    PortfolioShares shares = new PortfolioShares(appController, gameSession, gameController);
     shares.getStyleClass().add("tile");
 
     root = new GridPane();
