@@ -72,6 +72,7 @@ public class GameSession implements GameObservable {
    * Advances week and notifies observers after change.
    */
   public void advanceWeek() {
+    player.saveNetWorth(exchange.getWeek());
     exchange.advance();
     notifyObservers();
   }
