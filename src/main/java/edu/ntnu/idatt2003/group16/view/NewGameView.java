@@ -2,9 +2,13 @@ package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.controller.NewGameController;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
+
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -24,7 +28,7 @@ public class NewGameView implements GameObserver {
 
   private final VBox root;
 
-  public NewGameView(NewGameController newGameController) {
+  public NewGameView(NewGameController newGameController, EventHandler<ActionEvent> backAction) {
     this.newGameController = newGameController;
 
     this.root = new VBox();
@@ -152,9 +156,7 @@ public class NewGameView implements GameObserver {
     navigationButtons.add(startButton, 2, 0);
     navigationButtons.getStyleClass().add("navigation-container");
 
-    backButton.setOnAction(event -> {
-
-    });
+    backButton.setOnAction(backAction);
 
     Label gameNameErrorLabel = new Label("Required field");
     gameNameErrorLabel.getStyleClass().addAll("standard-text", "red-text");

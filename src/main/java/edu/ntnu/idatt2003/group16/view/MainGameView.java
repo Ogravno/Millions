@@ -9,11 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
-
-import java.net.URL;
 
 /**
  * Main view for the game.
@@ -23,7 +20,7 @@ public class MainGameView implements GameObserver {
   private final GameController gameController;
   private final GameSession gameSession;
 
-  private final HomeView homeView;
+  private final PortfolioView portfolioView;
   private final ExchangeGameView exchangeGameView;
   private final TransactionView transactionView;
 
@@ -45,7 +42,7 @@ public class MainGameView implements GameObserver {
     this.gameSession = gameSession;
     this.backToMainMenuAction = backToMainMenuAction;
 
-    this.homeView = new HomeView(appController, gameController, gameSession);
+    this.portfolioView = new PortfolioView(appController, gameController, gameSession);
     this.exchangeGameView = new ExchangeGameView(appController, gameSession, gameController);
     this.transactionView = new TransactionView(appController, gameSession);
 
@@ -127,7 +124,7 @@ public class MainGameView implements GameObserver {
     header.setBottom(bottom);
 
     root.setLeft(header);
-    root.setCenter(homeView.getView());
+    root.setCenter(portfolioView.getView());
 
     gameSession.addObserver(this);
     updateView();
@@ -143,7 +140,7 @@ public class MainGameView implements GameObserver {
   }
 
   private void showMainView() {
-    root.setCenter(homeView.getView());
+    root.setCenter(portfolioView.getView());
   }
 
   private void showExchangeView() {

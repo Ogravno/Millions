@@ -3,35 +3,25 @@ package edu.ntnu.idatt2003.group16.view;
 import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
-import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.view.components.PortfolioOverview;
 import edu.ntnu.idatt2003.group16.view.components.PortfolioShares;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * Home view for displaying portfolio and shares.
  */
-public class HomeView {
+public class PortfolioView {
 
   private final GameController gameController;
   private final GameSession gameSession;
 
   private final GridPane root;
 
-  public HomeView(AppController appController, GameController gameController, GameSession gameSession) {
+  public PortfolioView(AppController appController, GameController gameController, GameSession gameSession) {
     this.gameController = gameController;
     this.gameSession = gameSession;
 
