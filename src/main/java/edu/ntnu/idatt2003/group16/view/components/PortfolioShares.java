@@ -16,6 +16,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -27,6 +28,8 @@ public class PortfolioShares extends VBox implements GameObserver {
 
   private final GridPane sharesHeader;
   private final VBox sharesBox;
+
+  private final List<ColumnConstraints> columnConstraintsList;
 
   private Boolean ascending = true;
   private Comparator<Share> currentSort =
@@ -41,16 +44,38 @@ public class PortfolioShares extends VBox implements GameObserver {
 
     this.sharesHeader = new GridPane();
     this.sharesHeader.getStyleClass().add("share-table-header");
-    for(int i = 0; i < 6; i++) {
-      ColumnConstraints columnConstraints = new ColumnConstraints();
-      if (i < 5) {
-        columnConstraints.setPercentWidth(16);
-      } else {
-        columnConstraints.setPercentWidth(20);
-      }
-      columnConstraints.setHalignment(HPos.LEFT);
-      sharesHeader.getColumnConstraints().add(columnConstraints);
-    }
+
+    this.columnConstraintsList = new ArrayList<>();
+
+    ColumnConstraints column1 = new ColumnConstraints();
+    column1.setPercentWidth(10);
+    this.columnConstraintsList.add(column1);
+
+    ColumnConstraints column2 = new ColumnConstraints();
+    column2.setPercentWidth(20);
+    this.columnConstraintsList.add(column2);
+
+    ColumnConstraints column3 = new ColumnConstraints();
+    column3.setPercentWidth(10);
+    this.columnConstraintsList.add(column3);
+
+    ColumnConstraints column4 = new ColumnConstraints();
+    column4.setPercentWidth(10);
+    this.columnConstraintsList.add(column4);
+
+    ColumnConstraints column5 = new ColumnConstraints();
+    column5.setPercentWidth(15);
+    this.columnConstraintsList.add(column5);
+
+    ColumnConstraints column6 = new ColumnConstraints();
+    column6.setPercentWidth(15);
+    this.columnConstraintsList.add(column6);
+
+    ColumnConstraints column7 = new ColumnConstraints();
+    column7.setPercentWidth(20);
+    this.columnConstraintsList.add(column7);
+
+    sharesHeader.getColumnConstraints().addAll(columnConstraintsList);
 
     this.sharesBox = new VBox();
     ScrollPane scrollPane = new ScrollPane(sharesBox);
@@ -89,6 +114,18 @@ public class PortfolioShares extends VBox implements GameObserver {
       updateShares();
     });
 
+    Button totalPurchasePriceButton = new Button("Purchase price");
+    totalPurchasePriceButton.getStyleClass().addAll("standard-text", "bold-text");
+    totalPurchasePriceButton.setOnAction(event -> {
+      currentSort = Comparator.comparing(
+          share -> share.getPurchasePrice()
+              .multiply(share.getQuantity())
+              .setScale(2, RoundingMode.HALF_UP)
+      );
+      ascending = !ascending;
+      updateShares();
+    });
+
     Button totalValueButton = new Button("Total Value");
     totalValueButton.getStyleClass().addAll("standard-text", "bold-text");
     totalValueButton.setOnAction(event -> {
@@ -113,7 +150,8 @@ public class PortfolioShares extends VBox implements GameObserver {
     sharesHeader.add(companyShareHeaderButton, 1, 0);
     sharesHeader.add(quantityShareHeaderButton, 2, 0);
     sharesHeader.add(totalValueButton, 3, 0);
-    sharesHeader.add(changeInPriceShareHeaderButton, 4, 0);
+    sharesHeader.add(totalPurchasePriceButton, 4, 0);
+    sharesHeader.add(changeInPriceShareHeaderButton, 5, 0);
   }
 
   private void updateShares() {
@@ -131,16 +169,7 @@ public class PortfolioShares extends VBox implements GameObserver {
       GridPane shareBox = new GridPane();
       shareBox.getStyleClass().add("share-table-row");
 
-      for(int i = 0; i < 6; i++) {
-        ColumnConstraints columnConstraints = new ColumnConstraints();
-        if (i < 5) {
-          columnConstraints.setPercentWidth(16);
-        } else {
-          columnConstraints.setPercentWidth(20);
-        }
-        columnConstraints.setHalignment(HPos.LEFT);
-        shareBox.getColumnConstraints().add(columnConstraints);
-      }
+      shareBox.getColumnConstraints().addAll(columnConstraintsList);
 
       BigDecimal quantity = share.getQuantity();
       BigDecimal purchasePrice = share.getPurchasePrice();
@@ -157,6 +186,9 @@ public class PortfolioShares extends VBox implements GameObserver {
 
       Label totalValueLabel = new Label("$" + currentPrice.multiply(quantity).toString());
       totalValueLabel.getStyleClass().add("standard-text");
+
+      Label totalPurchasePriceLabel = new Label("$" + purchasePrice.multiply(quantity)
+          .setScale(2, RoundingMode.HALF_UP));
 
       Label changeInPriceLabel = new Label("$" + currentPrice.subtract(purchasePrice).toString());
       changeInPriceLabel.getStyleClass().add("standard-text");
@@ -189,8 +221,9 @@ public class PortfolioShares extends VBox implements GameObserver {
       shareBox.add(companyLabel, 1, 0);
       shareBox.add(quantityLabel, 2, 0);
       shareBox.add(totalValueLabel, 3, 0);
-      shareBox.add(changeInPriceLabel, 4, 0);
-      shareBox.add(buttons, 5, 0);
+      shareBox.add(totalPurchasePriceLabel, 4, 0);
+      shareBox.add(changeInPriceLabel, 5, 0);
+      shareBox.add(buttons, 6, 0);
 
       sharesBox.getChildren().add(shareBox);
     }
