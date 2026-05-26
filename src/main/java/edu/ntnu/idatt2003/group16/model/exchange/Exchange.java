@@ -16,10 +16,9 @@ import java.util.*;
  * @author Robin Strand Prestmo
  */
 public class Exchange {
-  private final String name;
+  private String name;
   private int week;
-  private final Map<String, Stock> stockMap;
-  private final Random random;
+  private Map<String, Stock> stockMap;
 
   /**
    * Creates a new exchange.
@@ -40,7 +39,6 @@ public class Exchange {
     this.name = name;
     this.week = 1;
     this.stockMap = new HashMap<>();
-    this.random = new Random();
 
     for (Stock stock : stocks) {
       if (stock == null) {
@@ -48,6 +46,9 @@ public class Exchange {
       }
       stockMap.put(stock.getSymbol(), stock);
     }
+  }
+
+  public Exchange() {
   }
 
   public String getName() {
@@ -183,8 +184,9 @@ public class Exchange {
   public void advance() {
     week++;
 
-    stockMap.values().forEach(stock -> {
-      BigDecimal currentPrice = stock.getCurrentPrice();
+     Random random = new Random();
+     stockMap.values().forEach(stock -> {
+       BigDecimal currentPrice = stock.getCurrentPrice();
 
       double change = (random.nextDouble() - 0.5) * 0.1; // +- 5%
       BigDecimal multiplier = BigDecimal.valueOf(1 + change);

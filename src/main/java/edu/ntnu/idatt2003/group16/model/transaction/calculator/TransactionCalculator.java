@@ -1,5 +1,8 @@
 package edu.ntnu.idatt2003.group16.model.transaction.calculator;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.math.BigDecimal;
 
 /**
@@ -7,6 +10,11 @@ import java.math.BigDecimal;
  *
  * @author Odin Grav
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = PurchaseCalculator.class, name = "PurchaseCalculator"),
+    @JsonSubTypes.Type(value = SaleCalculator.class, name = "SaleCalculator")
+})
 public interface TransactionCalculator {
   /**
    * Method to calculate the gross value.

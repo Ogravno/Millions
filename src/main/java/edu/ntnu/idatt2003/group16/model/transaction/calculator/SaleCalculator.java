@@ -12,9 +12,9 @@ import java.math.RoundingMode;
  * @author Odin Grav
  */
 public class SaleCalculator implements TransactionCalculator {
-  private final BigDecimal purchasePrice;
-  private final BigDecimal salesPrice;
-  private final BigDecimal quantity;
+  private BigDecimal purchasePrice;
+  private BigDecimal salesPrice;
+  private BigDecimal quantity;
 
   /**
    * Constructor for the {@link SaleCalculator} class.
@@ -30,6 +30,9 @@ public class SaleCalculator implements TransactionCalculator {
     this.purchasePrice = share.getPurchasePrice();
     this.salesPrice = share.getStock().getCurrentPrice();
     this.quantity = share.getQuantity();
+  }
+
+  public SaleCalculator() {
   }
 
   /**

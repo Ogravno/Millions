@@ -2,6 +2,9 @@ package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.controller.NewGameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
+import edu.ntnu.idatt2003.group16.model.dto.GameSessionDto;
+import edu.ntnu.idatt2003.group16.model.filemanagement.SaveReader;
+import edu.ntnu.idatt2003.group16.model.player.Player;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -55,7 +58,17 @@ public class StartView {
 
     Button loadGameButton = new Button("Load Game");
     loadGameButton.setOnAction(event -> {
+      GameSessionDto gameSessionDto = SaveReader.loadGame("save");
 
+      newGameController.setGameName(gameSessionDto.gameName());
+      newGameController.setPlayer(gameSessionDto.player());
+      newGameController.setExchange(gameSessionDto.exchange());
+
+      gameSessionDto.player().getPortfolio().getShares().forEach(share -> {
+        share.setStock(gameSessionDto.exchange().getStock(share.getStock().getSymbol()));
+      });
+
+      newGameController.startGame();
     });
     loadGameButton.getStyleClass().addAll("menu-button", "standard-text");
 

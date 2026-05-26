@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.model.transaction;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.ntnu.idatt2003.group16.model.investment.Share;
 import edu.ntnu.idatt2003.group16.model.player.Player;
 import edu.ntnu.idatt2003.group16.model.transaction.calculator.PurchaseCalculator;
@@ -21,6 +22,9 @@ public class Purchase extends Transaction {
    */
   public Purchase(Share share, int week) {
     super(share, week, new PurchaseCalculator(share));
+  }
+
+  public Purchase() {
   }
 
   /**

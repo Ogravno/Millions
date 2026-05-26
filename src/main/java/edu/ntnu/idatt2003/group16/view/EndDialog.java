@@ -2,6 +2,8 @@ package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
+import edu.ntnu.idatt2003.group16.model.dto.GameSessionDto;
+import edu.ntnu.idatt2003.group16.model.filemanagement.SaveWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
@@ -79,12 +81,18 @@ public class EndDialog extends Dialog<Void> {
 
     Button backButton = (Button) getDialogPane().lookupButton(backToMainMenuButton);
     backButton.setOnAction(event -> {
+      SaveWriter.saveGame(new GameSessionDto(gameController.getGameSession().getGameName(),
+          gameController.getGameSession().getPlayer(),
+          gameController.getGameSession().getExchange()));
       close();
       backToMainMenuAction.run();
     });
 
     Button closeButton = (Button) getDialogPane().lookupButton(closeGameButton);
     closeButton.setOnAction(event -> {
+      SaveWriter.saveGame(new GameSessionDto(gameController.getGameSession().getGameName(),
+          gameController.getGameSession().getPlayer(),
+          gameController.getGameSession().getExchange()));
       Platform.exit();
     });
 

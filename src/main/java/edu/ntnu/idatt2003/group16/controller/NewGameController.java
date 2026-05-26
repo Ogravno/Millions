@@ -81,6 +81,14 @@ public class NewGameController {
     this.gameName = gameName;
   }
 
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
+
+  public void setExchange(Exchange exchange) {
+    this.exchange = exchange;
+  }
+
   /**
    * Creates the player for the new game.
    *

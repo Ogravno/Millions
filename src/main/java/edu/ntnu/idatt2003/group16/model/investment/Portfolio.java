@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.group16.model.investment;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.ntnu.idatt2003.group16.model.transaction.calculator.SaleCalculator;
 import java.math.BigDecimal;
 import java.util.ArrayList;

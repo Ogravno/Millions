@@ -11,10 +11,10 @@ import java.util.UUID;
  * @author Robin Strand Prestmo
  */
 public class Share {
-  private final UUID id = UUID.randomUUID();
-  private final Stock stock;
-  private final BigDecimal quantity;
-  private final BigDecimal purchasePrice;
+  private UUID id = UUID.randomUUID();
+  private Stock stock;
+  private BigDecimal quantity;
+  private BigDecimal purchasePrice;
 
   /**
    * Creates a new share.
@@ -45,6 +45,16 @@ public class Share {
     this.purchasePrice = purchasePrice;
   }
 
+  public void setStock(Stock stock) {
+    if (stock == null) {
+      throw new IllegalArgumentException("Stock cannot be null.");
+    }
+
+    this.stock = stock;
+  }
+
+  public Share() {
+  }
 
   // Ref https://www.geeksforgeeks.org/java/equals-hashcode-methods-java/
 
