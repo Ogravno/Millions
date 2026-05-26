@@ -2,11 +2,9 @@ package edu.ntnu.idatt2003.group16.view;
 
 import edu.ntnu.idatt2003.group16.controller.NewGameController;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
-
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -28,6 +26,12 @@ public class NewGameView implements GameObserver {
 
   private final VBox root;
 
+  /**
+   * Creates the new game view.
+   *
+   * @param newGameController the controller for creating a new game
+   * @param backAction the action used to return to the previous view
+   */
   public NewGameView(NewGameController newGameController, EventHandler<ActionEvent> backAction) {
     this.newGameController = newGameController;
 
@@ -98,7 +102,7 @@ public class NewGameView implements GameObserver {
     selectStandardStocks.setOnAction(event -> {
       try {
         InputStream inputStream =
-          getClass().getResourceAsStream("/stockFiles/stocks.csv");
+            getClass().getResourceAsStream("/stockFiles/stocks.csv");
 
         if (inputStream == null) {
           selectFile.getChildren().add(defaultFileNotFoundErrorLabel);
