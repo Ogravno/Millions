@@ -2,12 +2,15 @@ package edu.ntnu.idatt2003.group16.view.components;
 
 import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
+import java.math.RoundingMode;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import java.math.RoundingMode;
 
+/**
+ * View component that displays an overview of the player's portfolio.
+ */
 public class PortfolioOverview extends HBox implements GameObserver {
   GameSession gameSession;
 
@@ -16,6 +19,11 @@ public class PortfolioOverview extends HBox implements GameObserver {
   Label moneyValueLabel;
   Label statusLabel;
 
+  /**
+   * Creates a portfolio overview for the current game session.
+   *
+   * @param gameSession the active game session
+   */
   public PortfolioOverview(GameSession gameSession) {
     this.gameSession = gameSession;
 
@@ -39,6 +47,9 @@ public class PortfolioOverview extends HBox implements GameObserver {
     moneyValueLabel = new Label();
     moneyValueLabel.getStyleClass().add("standard-text");
 
+    statusLabel = new Label();
+    statusLabel.getStyleClass().add("sub-heading");
+
     VBox portfolioInfo = new VBox(
         newWorthCaption,
         netWorthLabel,
@@ -47,9 +58,6 @@ public class PortfolioOverview extends HBox implements GameObserver {
         moneyValueCaption,
         moneyValueLabel
     );
-
-    statusLabel = new Label();
-    statusLabel.getStyleClass().add("sub-heading");
 
     BorderPane layout = new BorderPane();
     layout.setTop(headline);
