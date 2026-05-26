@@ -1,9 +1,14 @@
 package edu.ntnu.idatt2003.group16.model.player;
 
 import edu.ntnu.idatt2003.group16.model.investment.Portfolio;
+import edu.ntnu.idatt2003.group16.model.transaction.Purchase;
 import edu.ntnu.idatt2003.group16.model.transaction.TransactionArchive;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class representing a player.
@@ -14,6 +19,7 @@ public class Player {
   private BigDecimal money;
   private final Portfolio portfolio;
   private final TransactionArchive transactionArchive;
+  private final Map<Integer, BigDecimal> weeklyNetWorth;
 
   /**
    * Constructor for the {@link Player} class.
@@ -35,6 +41,7 @@ public class Player {
     this.money = new BigDecimal(startingMoney.toString());
     this.portfolio = new Portfolio();
     this.transactionArchive = new TransactionArchive();
+    this.weeklyNetWorth = new HashMap<>();
   }
 
   public String getName() {
@@ -126,6 +133,37 @@ public class Player {
    */
   public BigDecimal getNetWorth() {
     return money.add(portfolio.getNetWorth());
+  }
+
+  /**
+   * Get the players net worth for the specified week.
+   *
+   * <p>The player's net worth is calculated by adding together the player's money
+   * and the net worth of the player's portfolio.</p>
+   *
+   * @param week week to get the net worth from
+   * @return the player's net worth
+   * @throws IllegalArgumentException if week is not positive
+   */
+  public BigDecimal getNetWorth(int week) {
+    if (week < 1) {
+      throw new IllegalArgumentException("Parameter week must be positive");
+    }
+
+    return weeklyNetWorth.get(week);
+  }
+
+  /**
+   * Saves the net worth of the player.
+   *
+    * @param week week to get the net worth from
+   */
+  public void saveNetWorth(int week) {
+    if (week < 1) {
+      throw new IllegalArgumentException("Parameter week must be positive");
+    }
+
+    weeklyNetWorth.put(week, getNetWorth());
   }
 
   /**

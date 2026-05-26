@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.group16.view;
 import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
+import edu.ntnu.idatt2003.group16.view.components.PortfolioGraph;
 import edu.ntnu.idatt2003.group16.view.components.PortfolioOverview;
 import edu.ntnu.idatt2003.group16.view.components.PortfolioShares;
 import javafx.scene.control.Label;
@@ -34,10 +35,7 @@ public class PortfolioView {
     this.gameController = gameController;
     this.gameSession = gameSession;
 
-    Label graphPanel = new Label("Future graph");
-    graphPanel.getStyleClass().add("standard-text");
-
-    VBox graphContainer = new VBox(graphPanel);
+    PortfolioGraph graphContainer = new PortfolioGraph(gameSession);
     graphContainer.getStyleClass().add("tile");
 
     PortfolioOverview portfolio = new PortfolioOverview(gameSession);
@@ -60,7 +58,7 @@ public class PortfolioView {
 
     root.getColumnConstraints().addAll(column1, column2, column3);
 
-    RowConstraints row1 = new RowConstraints(250);
+    RowConstraints row1 = new RowConstraints(350);
 
     root.getRowConstraints().add(row1);
 
