@@ -87,7 +87,7 @@ Run ```mvn clean javafx:run``` to run the application.
 
 ## How to run the tests
 
-The test are written using JUint5.
+The test are written using JUint6.
 
 Run ```mvn clean install``` to run the tests.
 
