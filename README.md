@@ -39,16 +39,17 @@ src/
     │       ├── controller/          # Application controllers
     │       ├── factory/             # Factory classes
     │       ├── model/               # Core domain logic
+    │       │   ├── dto/             # Data Transfer Objects for saving and loading game data
     │       │   ├── exchange/        # Exchange and market logic
     │       │   ├── filemanagement/  # File handling
     │       │   ├── investment/      # Stocks and shares
     │       │   ├── player/          # Player and portfolio
-    │       │   └── transaction/     # Transactions and calculators
-    │       │       └── calculator/  # Transaction calculations
+    │       │   ├── transaction/     # Transactions and calculators
+    │       │   │    └── calculator/ # Transaction calculations
+    │       │   └── GameSession.java # Main game session class
     │       ├── observer/            # Observer pattern interfaces/classes
     │       ├── view/                # JavaFX views and dialogs
     │       │   └── components/      # Reusable GUI components
-    │       ├── GameSession.java     # Main game session class
     │       └── Main.java            # Application entry point
     │
     └── resources/
@@ -63,14 +64,14 @@ src/
     └── java/
         └── edu/ntnu/idatt2003/group16/
             ├── factory/
-            ├── model/
-            │   ├── exchange/
-            │   ├── filemanagement/
-            │   ├── investment/
-            │   ├── player/
-            │   └── transaction/
-            │       └── calculator/
-            └── GameSessionTest.java
+            └── model/
+                ├── exchange/
+                ├── filemanagement/
+                ├── investment/
+                ├── player/
+                ├── transaction/
+                │    └── calculator/
+                └── GameSessionTest.java
 ```
 
 ## Link to repository
@@ -96,7 +97,3 @@ Alternatively, using Intellij:
 - Right-click on java folder → Run tests
 
 An HTML test coverage report is generated when the sests are run. The report can be found under ```target/site/jacoco```.
-
-## References
-
-
