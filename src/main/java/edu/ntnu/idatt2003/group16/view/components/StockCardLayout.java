@@ -27,7 +27,7 @@ public class StockCardLayout extends GridPane {
     column3.setHalignment(HPos.RIGHT);
 
     ColumnConstraints column4 = new ColumnConstraints();
-    column4.setPercentWidth(15);
+    column4.setPercentWidth(20);
     column4.setHalignment(HPos.RIGHT);
 
     this.getColumnConstraints().addAll(column1, column2, column3, column4);
