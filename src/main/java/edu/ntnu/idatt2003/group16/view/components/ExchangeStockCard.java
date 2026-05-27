@@ -4,6 +4,7 @@ import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -11,7 +12,7 @@ import javafx.scene.layout.VBox;
  *
  * @author Odin Grav
  */
-public class ExchangeStockCard extends VBox {
+public class ExchangeStockCard extends HBox {
   /**
    * Draws a stock card for the exchange view.
    *
@@ -59,6 +60,13 @@ public class ExchangeStockCard extends VBox {
       layout.add(changePercentLabel, i, 2);
       layout.add(weekLabel, i, 3);
     }
+
+    Button buyButton = new Button("Buy");
+    buyButton.getStyleClass().add("stock-card-button");
+    buyButton.setOnAction(event -> {
+      BuyDialog buyDialog = new BuyDialog(stock);
+      buyDialog.showAndGetResult();
+    });
 
     this.getChildren().add(layout);
   }
