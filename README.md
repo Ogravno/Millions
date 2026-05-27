@@ -26,6 +26,19 @@ Main features
 - File handling for loading stock data
 - Graphical user interface built with JavaFX
 
+## Uer Manual
+The staring page presents playrs with the optin of startng a new game or leading a save file. The game currently only suports 1 save file and pressing ```Load Game``` will load up the most recent save file. If the player chooses to start a new game they must select a csv file with the following format: ```# Ticker,Name,Price```. For example:
+```
+NVDA,Nvidia,191.27
+AAPL,Apple Inc.,276.43
+MSFT,Microsoft,404.68
+```
+A stock file can be found at src/main/recsources/stocckFiles/stocks.csv. It is this one that will be selected by pressing ```Select standard stocks``` in the new game menu.
+
+During a game players can purchase, sell and get an overview over the stocks in the game. Purchasing shares is done on the Exchange page. The Portfolio page presents players with an oveview over their current portfolio and lets them sell their shares. The Transactions page gives users an overview of their previous transactions. Advancing to the next week can be done by pressing the ```Advance``` button in the bottom of the sidebar.
+
+Saving the game can be done by pressing the ```Save and to Maim Menu``` button on the bottom of the sidebar. To end the game, players must press the ```End game``` button on the bottom of the sidebar and will then be given the choice between returning to the Main Menu or Closing the game. Note: This will not save any progress.
+
 ## Project Structure
 The project follows a layered and modular architecture.
 
@@ -79,17 +92,31 @@ https://github.com/Ogravno/Millions
 
 ## How to run the project
 
+### Windows
+If you are using Windows, you can download `StockSim-windows.zip`,
+extract the ZIP file, and start the application by running:
+
+StockSim.exe
+
+No Java installation is required.
+
+### MacOS / Linux
+
+Clone or download the repository before running the project.
+
 Requirements:
+
 - JDK version 25
 - Maven version 3.9.x
 
-Run ```mvn clean javafx:run``` to run the application.
+Open the project folder in a terminal or IDE and run:
+Run ```mvn javafx:run``` to run the application.
 
 ## How to run the tests
 
 The test are written using JUint6.
 
-Run ```mvn clean install``` to run the tests.
+Run ```mvn clean test``` to run the tests.
 
 Alternatively, using Intellij:  
 - Open src folder
