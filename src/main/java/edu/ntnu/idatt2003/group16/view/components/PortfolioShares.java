@@ -90,18 +90,6 @@ public class PortfolioShares extends VBox implements GameObserver {
     column7.setPercentWidth(20);
     this.columnConstraintsList.add(column7);
 
-    sharesHeader.getColumnConstraints().addAll(columnConstraintsList);
-    for (int i = 0; i < 6; i++) {
-      ColumnConstraints columnConstraints = new ColumnConstraints();
-      if (i < 5) {
-        columnConstraints.setPercentWidth(16);
-      } else {
-        columnConstraints.setPercentWidth(20);
-      }
-      columnConstraints.setHalignment(HPos.LEFT);
-      sharesHeader.getColumnConstraints().add(columnConstraints);
-    }
-
     this.sharesBox = new VBox();
     ScrollPane scrollPane = new ScrollPane(sharesBox);
     scrollPane.setFitToWidth(true);
@@ -115,6 +103,8 @@ public class PortfolioShares extends VBox implements GameObserver {
   }
 
   private void createSharesHeader() {
+    sharesHeader.getColumnConstraints().addAll(columnConstraintsList);
+
     Button symbolShareHeaderButton = new Button("Symbol");
     symbolShareHeaderButton.getStyleClass().addAll("standard-text", "bold-text");
     symbolShareHeaderButton.setCursor(Cursor.HAND);
