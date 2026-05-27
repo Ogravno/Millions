@@ -92,10 +92,24 @@ https://github.com/Ogravno/Millions
 
 ## How to run the project
 
+### Windows
+If you are using Windows, you can download `StockSim-windows.zip`,
+extract the ZIP file, and start the application by running:
+
+StockSim.exe
+
+No Java installation is required.
+
+### MacOS / Linux
+
+Clone or download the repository before running the project.
+
 Requirements:
+
 - JDK version 25
 - Maven version 3.9.x
 
+Open the project folder in a terminal or IDE and run:
 Run ```mvn javafx:run``` to run the application.
 
 ## How to run the tests
