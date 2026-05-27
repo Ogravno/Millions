@@ -1,0 +1,216 @@
+.header {
+    -fx-background-color: -tile-color;
+    -fx-max-width: infinity;
+}
+
+.header > * {
+    -fx-alignment: CENTER_CENTER;
+}
+
+.sidebar-logo {
+    -fx-text-fill: -regular-text-color;
+    -fx-font-size: 32px;
+    -fx-font-weight: 600;
+    -fx-padding: 16 10 16 10;
+    -fx-alignment: CENTER_CENTER;
+}
+
+.navigation {
+    -fx-alignment: TOP_CENTER;
+}
+
+.navigation > .toggle-button {
+    -fx-text-fill: -regular-text-color;
+    -fx-max-width: infinity;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 2;
+    -fx-padding: 10 16 10 16;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.navigation > .toggle-button > .ikonli-font-icon {
+    -fx-icon-color: -regular-text-color;
+    -fx-icon-size: 14;
+}
+
+.navigation > .toggle-button:hover {
+    fx-border-color: transparent transparent transparent -main-color;
+    -fx-text-fill: -main-color;
+}
+
+.navigation > .toggle-button:hover > .ikonli-font-icon {
+    -fx-icon-color: -main-color;
+}
+
+.navigation > .toggle-button:selected {
+    -fx-border-color: transparent transparent transparent -main-color;
+    -fx-text-fill: -main-color;
+}
+
+.navigation > .toggle-button:selected > .ikonli-font-icon {
+    -fx-icon-color: -main-color;
+}
+
+.navigation > .toggle-button:pressed {
+    -fx-background-color: -button-hover-color;
+}
+
+.bottom-sidebar {
+    -fx-alignment: CENTER;
+    -fx-padding: 0 0 20 0;
+    -fx-spacing: 10;
+}
+
+.week-counter {
+    -fx-alignment: CENTER;
+    -fx-spacing: 5;
+}
+
+.week-counter > .label {
+    -fx-text-fill: -regular-text-color;
+}
+
+.theme-button {
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 0;
+    -fx-padding: 0 0 0 0;
+    -fx-background-color: transparent;
+}
+
+.theme-button > .ikonli-font-icon {
+    -fx-icon-color: -regular-text-color;
+    -fx-icon-size: 20;
+}
+
+.theme-button:hover > .ikonli-font-icon {
+    -fx-icon-color: -main-color;
+}
+
+.theme-button:pressed > .ikonli-font-icon {
+    -fx-icon-color: -hover-color;
+}
+
+.content-container {
+    -fx-background-color: -background-color;
+}
+
+.stock-filters {
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: -border-color;
+}
+
+.searchbar {
+    -fx-background-color: -tile-color;
+    -fx-text-fill: -regular-text-color;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-insets: 5 0 5 0;
+    -fx-background-insets: 5 0 5 0;
+}
+
+.sort-buttons {
+    -fx-border-insets: 5 10 5 10;
+    -fx-background-insets: 5 10 5 10;
+    -fx-padding: 5 0 5 0;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.sort-buttons > .toggle-button,
+.share-table-button,
+.sidebar-button {
+    -fx-text-fill: -regular-text-color;
+    -fx-background-color: transparent;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1;
+    -fx-padding: 2 5 2 5;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.sort-buttons > .toggle-button:hover,
+.share-table-button:hover,
+.sidebar-button:hover {
+    -fx-border-color: -main-color;
+    -fx-text-fill: -main-color;
+}
+
+.sort-buttons > .toggle-button:selected {
+    -fx-border-color: -main-color;
+    -fx-text-fill: -main-color;
+}
+
+.sort-buttons > .toggle-button:pressed,
+.share-table-button:pressed,
+.sidebar-button:pressed {
+    -fx-background-color: -button-hover-color;
+}
+
+.stock-card {
+    -fx-border-width: 1 0 0 0;
+    -fx-border-color: -border-color;
+    -fx-padding: 5 10 5 10;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .scroll-bar:vertical > .track {
+    -fx-background-color: -tile-color;
+}
+
+.scroll-pane > .scroll-bar:vertical > .thumb {
+    -fx-background-color: -border-color;
+    -fx-background-radius: 3;
+}
+
+.scroll-pane > .scroll-bar:vertical > .decrement-button,
+.scroll-pane > .scroll-bar:vertical > .increment-button{
+    -fx-background-color: transparent;
+    -fx-shape: "";
+    -fx-padding: 0;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+}
+
+.share-table-header > .button {
+    -fx-padding: 0 0 0 0;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 0;
+    -fx-text-fill: -regular-text-color;
+}
+
+.share-table-row {
+    -fx-padding: 2 0 2 0;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-color: -border-color;
+}
+
+.chart {
+    -fx-background-color: transparent;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-series-line {
+    -fx-stroke: -main-color;
+    -fx-stroke-width: 1;
+}
+
+.axis-label {
+    -fx-text-fill: -regular-text-color;
+    -fx-font-size: 14;
+}
+
+.chart-vertical-grid-lines, .chart-horizontal-grid-lines {
+    -fx-stroke: -border-color;
+}

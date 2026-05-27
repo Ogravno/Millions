@@ -1,0 +1,37 @@
+.leaderboard {
+    -fx-background-color: -tile-color;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1 1 1 1;
+}
+
+.leaderboardCard {
+    -fx-min-width: 300;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 5 10 5 10 5;
+}
+
+.leaderboardCard > * {
+    -fx-alignment: CENTER-LEFT;
+    -fx-spacing: 10;
+}
+
+.stock-card-button {
+    -fx-text-fill: -regular-text-color;
+    -fx-background-color: transparent;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1;
+    -fx-padding: 2 5 2 5;
+    -fx-max-width: 1000;
+    -fx-background-insets: 0 0 0 10;
+    -fx-border-insets: 0 0 0 10;
+}
+
+.stock-card-button:hover {
+    -fx-border-color: -main-color;
+    -fx-text-fill: -main-color;
+}
+
+.stock-card-button:pressed {
+    -fx-background-color: -button-hover-color;
+}

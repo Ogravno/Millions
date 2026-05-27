@@ -1,0 +1,152 @@
+package edu.ntnu.idatt2003.group16.model.investment;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * Represents a stock in a company.
+ *
+ * @author Robin Strand Prestmo
+ */
+public class Stock {
+  private String symbol;
+  private String company;
+  private List<BigDecimal> prices;
+
+  /**
+   * Creates a new stock.
+   *
+   * @param symbol is the company´s unique identifier
+   * @param company is the name of the company
+   * @param salesPrice is the present price of the stock
+   * @throws IllegalArgumentException if symbol or company is null/blank,
+   *         or if salesPrice is null or not greater than zero.
+   */
+  public Stock(String symbol, String company, BigDecimal salesPrice) {
+    if (symbol == null || symbol.isBlank()) {
+      throw new IllegalArgumentException("Symbol cannot be null or blank.");
+    }
+
+    if (company == null || company.isBlank()) {
+      throw new IllegalArgumentException("Company cannot be null or blank.");
+    }
+
+    if (salesPrice == null || salesPrice.compareTo(BigDecimal.ZERO) <= 0) {
+      throw new IllegalArgumentException("Sales price cannot be null,"
+          + " and must be greater than zero.");
+    }
+
+    this.symbol = symbol;
+    this.company = company;
+
+    this.prices = new ArrayList<>();
+    this.prices.add(salesPrice);
+
+  }
+
+  public Stock() {
+  }
+
+  public String getSymbol() {
+    return symbol;
+  }
+
+  public String getCompany() {
+    return company;
+  }
+
+  public BigDecimal getCurrentPrice() {
+    return prices.getLast();
+  }
+
+  /**
+   * Adds a new price to the stock.
+   *
+   * @param newPrice is the new price to the stock
+   * @throws IllegalArgumentException if newPrice is null or not greater than zero
+   */
+  public void changeCurrentPrice(BigDecimal newPrice) {
+    if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) <= 0) {
+      throw new IllegalArgumentException("Sales price cannot be null, "
+          + "and must be greater than zero.");
+    }
+
+    prices.add(newPrice);
+  }
+
+  /**
+   * Returns an unmodifiable list of the historical prices of a stock.
+   *
+   * @return an unmodifiable list
+   */
+  public List<BigDecimal> getHistoricalPrices() {
+    return Collections.unmodifiableList(prices);
+  }
+
+  /**
+   * Gets the highest all-time price for the stock.
+   *
+   * @return highest price as {@code BigDecimal}
+   * @throws IllegalStateException if the list is empty
+   */
+  public BigDecimal getHighestPrice() {
+    return prices.stream().max(BigDecimal::compareTo)
+      .orElseThrow(() -> new IllegalStateException("No prices found"));
+  }
+
+  /**
+   * Gets the lowest all-time price for the stock.
+   *
+   * @return lowest price as {@code BigDecimal}
+   * @throws IllegalStateException if the list is empty
+   */
+  public BigDecimal getLowestPrice() {
+    return prices.stream().min(BigDecimal::compareTo)
+      .orElseThrow(() -> new IllegalStateException("No prices found"));
+  }
+
+  /**
+   * Gets the latest price change for a stock.
+   *
+   * @return the latest price change as {@code BigDecimal},
+   *         or 0 if there are fewer than two prices in the list.
+   */
+  public BigDecimal getLatestPriceChange() {
+    if (prices.size() <= 1) {
+      return new BigDecimal("0");
+    }
+    BigDecimal latestPrice = prices.getLast();
+    BigDecimal secondLatestPrice = prices.get(prices.size() - 2);
+    return latestPrice.subtract(secondLatestPrice);
+  }
+
+  /**
+   * Gets the price change percentage from a certain number of weeks ago.
+   *
+   * <p>The percentage is rounded to 4 decimals.</p>
+   *
+   * @param weeksAgo how many weeks to go back
+   * @return the price change percentage
+   * @throws IllegalArgumentException if weeksAgo is not greater than zero
+   */
+  public BigDecimal getPriceChangePercentage(int weeksAgo) {
+    if (weeksAgo <= 0) {
+      throw new IllegalArgumentException("Parameter weeksAgo must be greater than zero.");
+    }
+
+    if (weeksAgo >= prices.size()) {
+      weeksAgo = prices.size() - 1;
+    }
+
+    BigDecimal priceWeeksAgo = prices.get(prices.size() - (weeksAgo + 1));
+
+    return prices.getLast()
+        .subtract(priceWeeksAgo)
+        .divide(priceWeeksAgo, 4, RoundingMode.HALF_UP);
+  }
+}

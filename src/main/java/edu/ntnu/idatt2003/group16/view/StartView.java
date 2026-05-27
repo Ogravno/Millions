@@ -1,0 +1,116 @@
+package edu.ntnu.idatt2003.group16.view;
+
+import edu.ntnu.idatt2003.group16.controller.NewGameController;
+import edu.ntnu.idatt2003.group16.model.GameSession;
+import edu.ntnu.idatt2003.group16.model.dto.GameSessionDto;
+import edu.ntnu.idatt2003.group16.model.filemanagement.SaveReader;
+import edu.ntnu.idatt2003.group16.model.player.Player;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
+/**
+ * Start view for the application.
+ *
+ * <p>Displays the main menu and allows the user
+ * to start a new game or exit the application.</p>
+ */
+public class StartView {
+
+  private final NewGameController newGameController;
+
+  private BorderPane root;
+
+  /**
+   * Creates the start view.
+   *
+   * @param gameSession the active game session
+   */
+  public StartView(GameSession gameSession) {
+    newGameController = new NewGameController(gameSession);
+
+    root = new BorderPane();
+
+    showStartMenu();
+  }
+
+  private void showStartMenu() {
+    Label  logoNormal = new Label("Stock");
+    logoNormal.getStyleClass().add("logo");
+
+    Label  logoHighlight = new Label("Sim");
+    logoHighlight.getStyleClass().add("logo-highlight");
+
+    HBox logo = new HBox();
+    logo.getChildren().addAll(logoNormal, logoHighlight);
+    logo.getStyleClass().add("logo-container");
+
+    Button newGameButton = new Button("New Game");
+    newGameButton.setOnAction(event -> {
+      showNewGameView();
+    });
+    newGameButton.getStyleClass().addAll("menu-button", "standard-text");
+
+    Button loadGameButton = new Button("Load Game");
+    loadGameButton.setOnAction(event -> {
+      GameSessionDto gameSessionDto = SaveReader.loadGame("save");
+
+      newGameController.setGameName(gameSessionDto.gameName());
+      newGameController.setPlayer(gameSessionDto.player());
+      newGameController.setExchange(gameSessionDto.exchange());
+
+      gameSessionDto.player().getPortfolio().getShares().forEach(share -> {
+        share.setStock(gameSessionDto.exchange().getStock(share.getStock().getSymbol()));
+      });
+
+      newGameController.startGame();
+    });
+    loadGameButton.getStyleClass().addAll("menu-button", "standard-text");
+
+    Button exitGameButton = new Button("Exit");
+    exitGameButton.setOnAction(event -> {
+      Platform.exit();
+    });
+    exitGameButton.getStyleClass().addAll("menu-button", "standard-text");
+
+    VBox menuOptions = new VBox();
+    menuOptions.getChildren().addAll(
+        newGameButton,
+        loadGameButton,
+        exitGameButton
+    );
+    menuOptions.getStyleClass().add("menu-option-container");
+
+    VBox startMenu = new VBox();
+    startMenu.getChildren().addAll(
+        logo,
+        menuOptions
+    );
+    startMenu.getStyleClass().add("start-menu");
+
+    root.setCenter(startMenu);
+  }
+
+  private void showNewGameView() {
+    EventHandler<ActionEvent> backAction = event -> this.showStartMenu();
+
+    NewGameView newGameView = new NewGameView(newGameController, backAction);
+    root.setCenter(newGameView.getView());
+  }
+
+  public BorderPane getView() {
+    return root;
+  }
+
+  /**
+   * Shows the start menu view.
+   */
+  public void showStartMenuView() {
+    showStartMenu();
+  }
+}

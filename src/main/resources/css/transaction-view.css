@@ -1,0 +1,13 @@
+.transaction-table-header,
+.transaction-table-row {
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: -border-color;
+}
+
+.transaction-table-header {
+    -fx-padding: 0 0 2 0;
+}
+
+.transaction-table-row {
+    -fx-padding: 2 0 2 0;
+}
