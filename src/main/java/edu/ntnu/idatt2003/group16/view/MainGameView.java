@@ -3,6 +3,8 @@ package edu.ntnu.idatt2003.group16.view;
 import edu.ntnu.idatt2003.group16.controller.AppController;
 import edu.ntnu.idatt2003.group16.controller.GameController;
 import edu.ntnu.idatt2003.group16.model.GameSession;
+import edu.ntnu.idatt2003.group16.model.dto.GameSessionDto;
+import edu.ntnu.idatt2003.group16.model.filemanagement.SaveWriter;
 import edu.ntnu.idatt2003.group16.observer.GameObserver;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -78,13 +80,6 @@ public class MainGameView implements GameObserver {
     goToTransactionsViewButton.setToggleGroup(navButtons);
     goToTransactionsViewButton.setOnAction(event -> showTransactionsView());
 
-    Button endGame = new Button("End game");
-    endGame.getStyleClass().add("sidebar-button");
-    endGame.setOnAction(event -> {
-      EndDialog endDialog = new EndDialog(appController, gameController, backToMainMenuAction);
-      endDialog.showAndGetResult();
-    });
-
     VBox navigation = new VBox(
         goToMainViewButton,
         goToExchangeViewButton,
@@ -112,9 +107,26 @@ public class MainGameView implements GameObserver {
       appController.changeTheme(this.getView().getScene());
     });
 
+    Button saveAndBackButton = new Button("Save and to Main Menu");
+    saveAndBackButton.getStyleClass().add("sidebar-button");
+    saveAndBackButton.setOnAction(event -> {
+      SaveWriter.saveGame(new GameSessionDto(gameController.getGameSession().getGameName(),
+          gameController.getGameSession().getPlayer(),
+          gameController.getGameSession().getExchange()));
+      backToMainMenuAction.run();
+    });
+
+    Button endGame = new Button("End game");
+    endGame.getStyleClass().add("sidebar-button");
+    endGame.setOnAction(event -> {
+      EndDialog endDialog = new EndDialog(appController, gameController, backToMainMenuAction);
+      endDialog.showAndGetResult();
+    });
+
     VBox bottom = new VBox(
         weekCounter,
         themeButton,
+        saveAndBackButton,
         endGame
     );
     bottom.getStyleClass().add("bottom-sidebar");

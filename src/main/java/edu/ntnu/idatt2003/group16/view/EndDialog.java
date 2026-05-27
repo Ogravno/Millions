@@ -81,18 +81,12 @@ public class EndDialog extends Dialog<Void> {
 
     Button backButton = (Button) getDialogPane().lookupButton(backToMainMenuButton);
     backButton.setOnAction(event -> {
-      SaveWriter.saveGame(new GameSessionDto(gameController.getGameSession().getGameName(),
-          gameController.getGameSession().getPlayer(),
-          gameController.getGameSession().getExchange()));
       close();
       backToMainMenuAction.run();
     });
 
     Button closeButton = (Button) getDialogPane().lookupButton(closeGameButton);
     closeButton.setOnAction(event -> {
-      SaveWriter.saveGame(new GameSessionDto(gameController.getGameSession().getGameName(),
-          gameController.getGameSession().getPlayer(),
-          gameController.getGameSession().getExchange()));
       Platform.exit();
     });
 
