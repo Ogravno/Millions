@@ -1,8 +1,15 @@
 package edu.ntnu.idatt2003.group16.view.components;
 
+import edu.ntnu.idatt2003.group16.controller.AppController;
+import edu.ntnu.idatt2003.group16.controller.GameController;
+import edu.ntnu.idatt2003.group16.model.GameSession;
 import edu.ntnu.idatt2003.group16.model.investment.Stock;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
+import edu.ntnu.idatt2003.group16.view.BuyDialog;
+import edu.ntnu.idatt2003.group16.view.HistoricalPricesDialog;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -18,7 +25,8 @@ public class ExchangeStockCard extends VBox {
    * @param stock the stock to draw a card for
    * @throws IllegalArgumentException if stock is null
    */
-  public ExchangeStockCard(Stock stock) {
+  public ExchangeStockCard(AppController appController, GameController gameController,
+                           Stock stock) {
     if (stock == null) {
       throw new IllegalArgumentException("Stock cannot be null");
     }
@@ -59,6 +67,24 @@ public class ExchangeStockCard extends VBox {
       layout.add(changePercentLabel, i, 2);
       layout.add(weekLabel, i, 3);
     }
+
+    Button buyButton = new Button("Buy");
+    buyButton.getStyleClass().add("stock-card-button");
+    buyButton.setOnAction(event -> {
+      BuyDialog buyDialog = new BuyDialog(appController, gameController, stock);
+      buyDialog.showAndGetResult();
+    });
+
+    Button priceHistoryButton = new Button("Price History");
+    priceHistoryButton.getStyleClass().add("stock-card-button");
+    priceHistoryButton.setOnAction(event -> {
+      HistoricalPricesDialog historicalPricesDialog = new HistoricalPricesDialog(appController,
+          stock, gameController.getGameSession().getExchange());
+      historicalPricesDialog.showAndGetResult();
+    });
+
+    layout.add(buyButton, 3, 0);
+    layout.add(priceHistoryButton, 3, 2, 1, 2);
 
     this.getChildren().add(layout);
   }

@@ -121,7 +121,7 @@ public class ExchangeStocks extends VBox implements GameObserver {
     stocksBox.getChildren().clear();
 
     stocks.forEach(stock -> {
-      ExchangeStockCard stockCard = new ExchangeStockCard(stock);
+      ExchangeStockCard stockCard = new ExchangeStockCard(appController, gameController, stock);
       stockCard.getStyleClass().add("stock-card");
       stockCard.setCursor(Cursor.HAND);
       stockCard.setOnMouseClicked(event -> {

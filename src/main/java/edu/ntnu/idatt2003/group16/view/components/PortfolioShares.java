@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.math.RoundingMode;
 import javafx.geometry.HPos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -116,6 +117,7 @@ public class PortfolioShares extends VBox implements GameObserver {
   private void createSharesHeader() {
     Button symbolShareHeaderButton = new Button("Symbol");
     symbolShareHeaderButton.getStyleClass().addAll("standard-text", "bold-text");
+    symbolShareHeaderButton.setCursor(Cursor.HAND);
     symbolShareHeaderButton.setOnAction(event -> {
       currentSort = Comparator.comparing(share -> share.getStock().getSymbol());
       ascending = !ascending;
@@ -124,6 +126,7 @@ public class PortfolioShares extends VBox implements GameObserver {
 
     Button companyShareHeaderButton = new Button("Company Name");
     companyShareHeaderButton.getStyleClass().addAll("standard-text", "bold-text");
+    companyShareHeaderButton.setCursor(Cursor.HAND);
     companyShareHeaderButton.setOnAction(event -> {
       currentSort = Comparator.comparing(share -> share.getStock().getCompany());
       ascending = !ascending;
@@ -132,6 +135,7 @@ public class PortfolioShares extends VBox implements GameObserver {
 
     Button quantityShareHeaderButton = new Button("Quantity");
     quantityShareHeaderButton.getStyleClass().addAll("standard-text", "bold-text");
+    quantityShareHeaderButton.setCursor(Cursor.HAND);
     quantityShareHeaderButton.setOnAction(event -> {
       currentSort = Comparator.comparing(Share::getQuantity);
       ascending = !ascending;
@@ -140,6 +144,7 @@ public class PortfolioShares extends VBox implements GameObserver {
 
     Button totalPurchasePriceButton = new Button("Purchase price");
     totalPurchasePriceButton.getStyleClass().addAll("standard-text", "bold-text");
+    totalPurchasePriceButton.setCursor(Cursor.HAND);
     totalPurchasePriceButton.setOnAction(event -> {
       currentSort = Comparator.comparing(
           share -> share.getPurchasePrice()
@@ -152,6 +157,7 @@ public class PortfolioShares extends VBox implements GameObserver {
 
     Button totalValueButton = new Button("Total Value");
     totalValueButton.getStyleClass().addAll("standard-text", "bold-text");
+    totalValueButton.setCursor(Cursor.HAND);
     totalValueButton.setOnAction(event -> {
       currentSort = Comparator.comparing(
           share -> share.getStock().getCurrentPrice().multiply(share.getQuantity())
@@ -162,6 +168,7 @@ public class PortfolioShares extends VBox implements GameObserver {
 
     Button changeInPriceShareHeaderButton = new Button("Change in Price");
     changeInPriceShareHeaderButton.getStyleClass().addAll("standard-text", "bold-text");
+    changeInPriceShareHeaderButton.setCursor(Cursor.HAND);
     changeInPriceShareHeaderButton.setOnAction(event -> {
       currentSort = Comparator.comparing(
           share -> share.getStock().getCurrentPrice().subtract(share.getPurchasePrice())
