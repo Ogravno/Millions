@@ -64,7 +64,7 @@ public class NewGameView implements GameObserver {
     Label startingMoneyLabel = new Label("Starting money:");
     startingMoneyLabel.getStyleClass().add("standard-text");
     TextField startingMoneyField = new TextField();
-    startingMoneyField.setPromptText("Starting money");
+    startingMoneyField.setPromptText("Minimum 100");
     startingMoneyField.getStyleClass().add("standard-text");
 
     VBox startingMoneyInput = new VBox();
@@ -174,7 +174,7 @@ public class NewGameView implements GameObserver {
     Label startingMoneyInvalidFormatLabel = new Label("Invalid format");
     startingMoneyInvalidFormatLabel.getStyleClass().addAll("standard-text", "red-text");
 
-    Label startingMoneyAmountErrorLabel = new Label("Must be greater than 0");
+    Label startingMoneyAmountErrorLabel = new Label("Must be at least 100");
     startingMoneyAmountErrorLabel.getStyleClass().addAll("standard-text", "red-text");
 
     Label missingFileErrorLabel = new Label("Must select a file");
@@ -228,10 +228,12 @@ public class NewGameView implements GameObserver {
         failed = true;
       }
 
-      if (startingMoney.signum() != 1) {
+      if (startingMoney.compareTo(new BigDecimal("100")) < 0) {
         if (!startingMoneyInput.getChildren().contains(startingMoneyAmountErrorLabel)) {
           startingMoneyInput.getChildren().add(startingMoneyAmountErrorLabel);
         }
+        failed = true;
+
       } else {
         startingMoneyInput.getChildren().remove(startingMoneyAmountErrorLabel);
       }
