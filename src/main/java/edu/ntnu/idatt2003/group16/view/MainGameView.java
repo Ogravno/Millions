@@ -61,7 +61,7 @@ public class MainGameView implements GameObserver {
       }
     });
 
-    ToggleButton goToMainViewButton = new ToggleButton("Home");
+    ToggleButton goToMainViewButton = new ToggleButton("Portfolio");
     FontIcon portfolioIcon = new FontIcon("mdi2f-finance");
     goToMainViewButton.setGraphic(portfolioIcon);
     goToMainViewButton.setToggleGroup(navButtons);
